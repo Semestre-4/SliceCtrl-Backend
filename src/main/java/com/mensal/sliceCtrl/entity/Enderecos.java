@@ -33,6 +33,19 @@ public class Enderecos extends AbstractEntity {
     @Size(min = 3, max = 50, message = "A cidade pode ter entre 3 e 50 caracteres")
     String cidade;
 
+
+    @NotNull(message = "É obrigatorio informar o estado")
+    @NotBlank(message = "É obrigatorio informar o estado")
+    @Column(name = "estado", nullable = false)
+    @Size(min = 1, max = 3, message = "O estado pode ter entre 1 e 3 caracteres, informe o prefixo do estado")
+    String estado;
+
+    @NotNull(message = "É obrigatorio informar o pais")
+    @NotBlank(message = "É obrigatorio informar o pais")
+    @Column(name = "pais", nullable = false)
+    @Size(min = 3, max = 50, message = "O pais pode ter entre 3 e 50 caracteres")
+    String pais;
+
     @NotNull(message = "É obrigatorio informar o CEP")
     @Column(name = "cep", nullable = false)
     @Size(min = 7, max = 11, message = "CEP Informado incorretamente")
