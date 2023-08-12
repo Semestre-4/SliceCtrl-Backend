@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -27,6 +29,14 @@ public class Pedido extends AbstractEntity {
 
     @Column(name = "codigo_pedido", nullable = false, unique = true)
     private String codigo;
+
+    @ManyToMany
+    @JoinTable(
+            name = "pedido_pizza",
+            joinColumns = @JoinColumn(name = "pedido_id"),
+            inverseJoinColumns = @JoinColumn(name = "pizza_id")
+    )
+    private List<Pizza> pizzas = new ArrayList<>();
 
     @NotNull(message = "O status do pedido é obrigatório")
     @Column(name = "status_enum", nullable = false)

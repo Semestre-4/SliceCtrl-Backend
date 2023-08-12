@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,6 +23,9 @@ public class Pizza extends AbstractEntity {
 
     @Column(name = "observacao")
     private String observacao;
+
+    @ManyToMany(mappedBy = "pizzas")
+    private List<Pedido> pedidos = new ArrayList<>();
 
 //    @ManyToMany
 //    @JoinTable(
