@@ -6,6 +6,7 @@ import com.mensal.sliceCtrl.service.EnderecoService;
 import com.sun.source.tree.TryTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class EnderecoController {
     }
 
     @PostMapping
-    private ResponseEntity<String> cadastrar(@RequestBody EnderecosDTO enderecosDTO){
+    private ResponseEntity<String> cadastrar( @RequestBody EnderecosDTO enderecosDTO){
         try{
         this.enderecoService.cadastrar(enderecosDTO);
         return ResponseEntity.ok().body("Cadastrado com sucesso");
@@ -44,7 +45,7 @@ public class EnderecoController {
     }
 
     @PutMapping
-    private ResponseEntity<String> editar(@RequestParam("id") Long id, @RequestBody EnderecosDTO enderecosDTO){
+    private ResponseEntity<String> editar(  @RequestParam("id") Long id, @RequestBody EnderecosDTO enderecosDTO){
         try{
             this.enderecoService.editar(enderecosDTO, id);
             return ResponseEntity.ok().body("Editado com sucesso!");
