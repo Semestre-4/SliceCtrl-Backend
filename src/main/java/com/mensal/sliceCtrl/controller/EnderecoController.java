@@ -2,10 +2,11 @@ package com.mensal.sliceCtrl.controller;
 
 import com.mensal.sliceCtrl.DTO.EnderecosDTO;
 import com.mensal.sliceCtrl.service.EnderecoService;
+import com.sun.source.tree.TryTree;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +21,29 @@ public class EnderecoController {
     private List<EnderecosDTO> getAll (){
         return this.enderecoService.getAll();
     }
+
+    @GetMapping("/id")
+    private EnderecosDTO getById(@RequestParam("id") Long id){
+        return this.enderecoService.getById(id);
+    }
+
+    @GetMapping("/cep")
+    private List<EnderecosDTO> getByCep(@RequestParam("cep") String cep){
+        return this.enderecoService.getByCep(cep);
+    }
+
+
+    @PostMapping
+    private ResponseEntity<String> cadastrar(@RequestBody EnderecosDTO enderecosDTO){
+        try{
+        this.enderecoService.cadastrar(enderecosDTO);
+        return ResponseEntity.ok().body("Cadastrado com sucesso");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
 
 
 }

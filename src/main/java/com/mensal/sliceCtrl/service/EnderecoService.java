@@ -5,6 +5,7 @@ import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -61,4 +62,24 @@ public class EnderecoService {
     return enderecosDTOS;
     }
 
+    public EnderecosDTO getById(Long id){
+        Enderecos enderecos = this.enderecoRepository.findById(id).orElse(null);
+        EnderecosDTO enderecosDTO = toEnderecosDTO(enderecos);
+        return enderecosDTO;
+    }
+
+    public List<EnderecosDTO> getByCep(String cep){
+        List<EnderecosDTO> enderecosDTOS = enderecoRepository.findByCep(cep).stream().map(this::toEnderecosDTO).toList();
+        return  enderecosDTOS;
+    }
+
+
+
+    public String cadastrar(EnderecosDTO enderecosDTO){
+        Enderecos enderecos = toEnderecos(enderecosDTO);
+
+        this.enderecoRepository.save(enderecos);
+
+        return "Cadastrado com sucesso";
+    }
 }
