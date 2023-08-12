@@ -46,4 +46,16 @@ public class IngredienteController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping
+    private ResponseEntity<String> deletar(@RequestParam("id") final  Long id){
+
+        try{
+            this.ingredienteService.delete(id);
+            return ResponseEntity.ok().body("Deletado com sucesso!");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
 }

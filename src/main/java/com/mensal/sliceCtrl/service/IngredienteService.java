@@ -80,4 +80,14 @@ public class IngredienteService {
         return ResponseEntity.ok().body("Editado com sucesso");
     }
 
+    public String delete(final Long id) {
+
+        final Ingredientes ingredientes = this.ingredienteRepository.findById(id).orElse(null);
+        Assert.notNull(ingredientes, "Endereco inexistente!");
+        this.ingredienteRepository.delete(ingredientes);
+
+        return "Deletado com sucesso!";
+
+    }
+
 }
