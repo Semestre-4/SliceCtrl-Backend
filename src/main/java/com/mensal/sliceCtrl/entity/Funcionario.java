@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "funcionarios",schema = "public")
@@ -37,5 +38,8 @@ public class Funcionario extends AbstractEntity{
     @Column(name = "salario_func",nullable = false)
     @NotNull(message = "O campo 'salario' não pode ser nulo")
     private BigDecimal salario;
+
+    @OneToMany(mappedBy = "funcionario")
+    private List<Pedido> pedidos;
 
 }
