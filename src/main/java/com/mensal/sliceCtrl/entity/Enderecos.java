@@ -15,7 +15,6 @@ import lombok.Setter;
 @Data
 public class Enderecos extends AbstractEntity {
 
-
     @NotNull(message = "A rua não pode ser nula")
     @Size(min = 2, max = 50, message = "A rua deve conter entre 2 e 50 caracteres")
     @Column(name = "rua", nullable = false)

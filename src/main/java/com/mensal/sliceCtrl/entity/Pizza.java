@@ -4,11 +4,16 @@ import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 
 @Entity
 @Table(name = "pizzas",schema = "public")
-@Data
+@Getter
+@Setter
 public class Pizza extends AbstractEntity {
 
     @NotBlank(message = "O tamanho da pizza é obrigatório")
@@ -24,6 +29,6 @@ public class Pizza extends AbstractEntity {
 //            joinColumns = @JoinColumn(name = "pizza_id"),
 //            inverseJoinColumns = @JoinColumn(name = "sabor_id")
 //    )
-//    private List<Sabor> sabor;
+//    private List<Sabores> sabor;
 
 }

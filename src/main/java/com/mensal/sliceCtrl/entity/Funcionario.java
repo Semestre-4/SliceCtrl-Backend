@@ -5,16 +5,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "funcionarios",schema = "public")
-@Data
-public class Funcionario extends AbstractEntity {
-
-
+@Getter
+@Setter
+public class Funcionario extends AbstractEntity{
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
@@ -36,5 +38,8 @@ public class Funcionario extends AbstractEntity {
     @Column(name = "salario_func",nullable = false)
     @NotNull(message = "O campo 'salario' não pode ser nulo")
     private BigDecimal salario;
+
+    @OneToMany(mappedBy = "funcionario")
+    private List<Pedido> pedidos;
 
 }
