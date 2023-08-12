@@ -22,13 +22,13 @@ public class EnderecoController {
         return this.enderecoService.getAll();
     }
 
-    @GetMapping("/id")
-    private EnderecosDTO getById(@RequestParam("id") Long id){
+    @GetMapping("/{id}")
+    private EnderecosDTO getById(@PathVariable("id") Long id){
         return this.enderecoService.getById(id);
     }
 
-    @GetMapping("/cep")
-    private List<EnderecosDTO> getByCep(@RequestParam("cep") String cep){
+    @GetMapping("/cep={cep}")
+    private List<EnderecosDTO> getByCep(@PathVariable("cep") String cep){
         return this.enderecoService.getByCep(cep);
     }
 
