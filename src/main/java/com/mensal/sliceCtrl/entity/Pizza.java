@@ -9,10 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "pizzas",schema = "public")
 @Data
-public class Pizza {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Pizza extends AbstractEntity {
 
     @NotBlank(message = "O tamanho da pizza é obrigatório")
     @Column(name = "tamanho_pizza",nullable = false)

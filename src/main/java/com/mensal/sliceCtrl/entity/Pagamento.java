@@ -11,10 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "pagamentos",schema = "public")
 @Data
-public class Pagamento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Pagamento extends AbstractEntity {
 
     @OneToOne
     @JoinColumn(name = "pedido_id")
