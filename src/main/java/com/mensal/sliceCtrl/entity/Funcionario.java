@@ -5,18 +5,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "funcionarios",schema = "public")
-@Data
-public class Funcionario {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Getter
+@Setter
+public class Funcionario extends AbstractEntity{
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
