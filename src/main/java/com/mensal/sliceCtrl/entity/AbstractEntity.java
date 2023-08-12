@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Table(name = "AbstractEntity", schema = "public")
 public class AbstractEntity {
 
     @Id
@@ -23,6 +25,7 @@ public class AbstractEntity {
     @Column(name = "data_edicao")
     private LocalDateTime edicao;
 
+    @Getter @Setter
     @Column(name = "ativo", nullable = false)
     private boolean ativo;
 

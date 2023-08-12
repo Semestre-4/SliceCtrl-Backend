@@ -13,11 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "clientes", schema = "public")
 @Data
-public class Cliente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Cliente extends AbstractEntity {
 
     @NotBlank(message = "O nome do cliente é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")

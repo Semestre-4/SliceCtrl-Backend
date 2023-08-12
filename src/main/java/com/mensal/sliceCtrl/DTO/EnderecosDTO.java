@@ -9,28 +9,42 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 
 public class EnderecosDTO extends AbstractEntityDTO {
 
-    Integer numero;
+    private String rua;
 
-    String complemento;
+    private Integer numero;
 
-    String bairro;
+    private String complemento;
 
-    String cidade;
+    private String bairro;
+
+    private String cidade;
 
 
-    String estado;
+    private String estado;
 
-    String pais;
+    private String pais;
 
-    String cep;
+    private String cep;
 
     public EnderecosDTO() {
     }
 
-    public EnderecosDTO(String complemento, String bairro, String cidade, String estado, String pais, String cep) {
+    public EnderecosDTO(String rua, String bairro, String cidade, String estado, String pais, String cep) {
+        this.rua = rua;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.pais = pais;
+        this.cep = cep;
+    }
+
+    public EnderecosDTO(String rua, String complemento, String bairro, String cidade, String estado, String pais, String cep) {
+        this.rua = rua;
         this.complemento = complemento;
         this.bairro = bairro;
         this.cidade = cidade;
@@ -39,7 +53,8 @@ public class EnderecosDTO extends AbstractEntityDTO {
         this.cep = cep;
     }
 
-    public EnderecosDTO(Integer numero, String bairro, String cidade, String estado, String pais, String cep) {
+    public EnderecosDTO(String rua, Integer numero, String bairro, String cidade, String estado, String pais, String cep) {
+        this.rua = rua;
         this.numero = numero;
         this.bairro = bairro;
         this.cidade = cidade;
@@ -48,15 +63,8 @@ public class EnderecosDTO extends AbstractEntityDTO {
         this.cep = cep;
     }
 
-    public EnderecosDTO(String bairro, String cidade, String estado, String pais, String cep) {
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.pais = pais;
-        this.cep = cep;
-    }
-
-    public EnderecosDTO(Integer numero, String complemento, String bairro, String cidade, String estado, String pais, String cep) {
+    public EnderecosDTO(String rua, Integer numero, String complemento, String bairro, String cidade, String estado, String pais, String cep) {
+        this.rua = rua;
         this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
@@ -64,6 +72,15 @@ public class EnderecosDTO extends AbstractEntityDTO {
         this.estado = estado;
         this.pais = pais;
         this.cep = cep;
+    }
+
+
+    public String getRua() {
+        return rua;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
     }
 
     public Integer getNumero() {

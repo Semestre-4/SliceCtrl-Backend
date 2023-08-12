@@ -12,11 +12,9 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "funcionarios",schema = "public")
 @Data
-public class Funcionario {
+public class Funcionario extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
