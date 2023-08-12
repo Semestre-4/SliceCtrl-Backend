@@ -23,9 +23,13 @@ public class AbstractEntity {
     @Column(name = "data_edicao")
     private LocalDateTime edicao;
 
+    @Column(name = "ativo", nullable = false)
+    private boolean ativo;
+
     @PrePersist
     private void prePersist() {
         this.cadastro = LocalDateTime.now();
+        this.ativo = true;
     }
 
     @PreUpdate
