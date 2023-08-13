@@ -39,7 +39,7 @@ public class EnderecoService {
     public Enderecos toEnderecos(EnderecosDTO enderecosDTO){
 
         Enderecos enderecos = new Enderecos();
-
+        enderecos.setId(enderecosDTO.getId());
         enderecos.setAtivo(enderecosDTO.isAtivo());
         enderecos.setCadastro(enderecosDTO.getCadastro());
         enderecos.setEdicao(enderecosDTO.getEdicao());
