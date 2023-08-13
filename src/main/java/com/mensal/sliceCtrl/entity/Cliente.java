@@ -48,7 +48,6 @@ public class Cliente extends AbstractEntity {
     )
     private List<Enderecos> enderecos = new ArrayList<>();
 
-    @Size(min = 1, message = "A lista de pedidos deve conter pelo menos um item")
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos;
 

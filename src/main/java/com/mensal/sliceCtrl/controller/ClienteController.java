@@ -1,10 +1,12 @@
 package com.mensal.sliceCtrl.controller;
 
 import com.mensal.sliceCtrl.DTO.ClienteDTO;
+import com.mensal.sliceCtrl.entity.Cliente;
 import com.mensal.sliceCtrl.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<ClienteDTO> getClienteById(@PathVariable("id") Long id) {
         ClienteDTO cliente = clienteService.findById(id);
         if (cliente != null) {
@@ -26,7 +28,7 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/{nome}")
+    @GetMapping("/nome/{nome}")
     public ResponseEntity<List<ClienteDTO>> getClientesByNome(@PathVariable("nome") String nome) {
         List<ClienteDTO> clientes = clienteService.findByNome(nome);
         if (!clientes.isEmpty()) {
@@ -53,18 +55,22 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<ClienteDTO> postCliente(@RequestBody ClienteDTO clienteDTO) {
-        ClienteDTO createdCliente = clienteService.createCliente(clienteDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCliente);
+    public ResponseEntity<?> postCliente(@RequestBody @Validated ClienteDTO clienteDTO) {
+        try{
+            Cliente createdCliente = clienteService.createCliente(clienteDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCliente);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ClienteDTO> putCliente(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
-        ClienteDTO updatedCliente = clienteService.updateCliente(id, clienteDTO);
-        if (updatedCliente != null) {
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> putCliente(@PathVariable Long id, @RequestBody @Validated ClienteDTO clienteDTO) {
+        try {
+            Cliente updatedCliente = clienteService.updateCliente(id, clienteDTO);
             return ResponseEntity.ok(updatedCliente);
-        } else {
-            return ResponseEntity.notFound().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e);
         }
     }
 
