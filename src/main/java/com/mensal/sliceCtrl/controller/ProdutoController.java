@@ -33,9 +33,14 @@ public class ProdutoController {
         return this.produtoService.getById(id);
     }
 
-    @GetMapping("/categoria={categoria}")
-    private ProdutosDTO getByCategoria(@PathVariable("categoria") String categoria){
-        return  this.produtoService.getByCategoria(categoria);
+    @GetMapping("/{categoriaName}")
+    public List<ProdutosDTO> getProductsByCategoria(@PathVariable String categoriaName) {
+        try {
+            Categorias categoria = Categorias.valueOf(categoriaName);
+            return produtoService.findByCategoria(categoria);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Categoria Invalida: " + categoriaName);
+        }
     }
 
     @GetMapping("/disponivel={disponivel}")
