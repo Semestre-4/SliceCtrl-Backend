@@ -4,15 +4,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-public class ClienteDTO extends AbstractEntityDTO{
+@Getter @Setter
+public class ClientesDTO extends AbstractEntityDTO{
 
     @NotBlank(message = "O nome do cliente é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
@@ -33,6 +32,6 @@ public class ClienteDTO extends AbstractEntityDTO{
 
     private List<EnderecosDTO> enderecos;
 
-    private List<PedidoDTO> pedidos;
+    private List<PedidosDTO> pedidos;
 
 }

@@ -1,11 +1,9 @@
 package com.mensal.sliceCtrl.service;
 
-import com.mensal.sliceCtrl.DTO.ClienteDTO;
-import com.mensal.sliceCtrl.DTO.FuncionarioDTO;
-import com.mensal.sliceCtrl.DTO.PedidoDTO;
-import com.mensal.sliceCtrl.entity.Cliente;
-import com.mensal.sliceCtrl.entity.Funcionario;
-import com.mensal.sliceCtrl.entity.Pedido;
+import com.mensal.sliceCtrl.DTO.FuncionariosDTO;
+import com.mensal.sliceCtrl.DTO.PedidosDTO;
+import com.mensal.sliceCtrl.entity.Funcionarios;
+import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.repository.FuncionarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -26,58 +24,58 @@ public class FuncionarioService {
         this.modelMapper = modelMapper;
     }
 
-    public FuncionarioDTO findById(Long id) {
+    public FuncionariosDTO findById(Long id) {
         try {
-            Funcionario funcionarioEncontrado = funcionarioRepository.findById(id)
+            Funcionarios funcionariosEncontrado = funcionarioRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado: " + id));
-            return toFuncDTO(funcionarioEncontrado);
+            return toFuncDTO(funcionariosEncontrado);
         } catch (EntityNotFoundException ex) {
             throw new RuntimeException("Ocorreu um erro ao tentar recuperar o registro do funcionário.", ex);
         }
     }
 
-    public List<FuncionarioDTO> findByNome(String nome) {
+    public List<FuncionariosDTO> findByNome(String nome) {
         return funcionarioRepository.findByNome(nome).stream().map(this::toFuncDTO).toList();
     }
 
-    public FuncionarioDTO findByCPF(String cpf) {
+    public FuncionariosDTO findByCPF(String cpf) {
         return toFuncDTO(funcionarioRepository.findByCpf(cpf));
     }
 
-    public List<FuncionarioDTO> findAll() {
+    public List<FuncionariosDTO> findAll() {
         return funcionarioRepository.findAll().stream().map(this::toFuncDTO).toList();
     }
 
-    public Funcionario createFuncionario(FuncionarioDTO funcionarioDTO) {
-        Funcionario funcionario = toFunc(funcionarioDTO);
-        return funcionarioRepository.save(funcionario);
+    public Funcionarios createFuncionario(FuncionariosDTO funcionariosDTO) {
+        Funcionarios funcionarios = toFunc(funcionariosDTO);
+        return funcionarioRepository.save(funcionarios);
     }
 
-    public Funcionario updateFuncionario(Long id, FuncionarioDTO funcionarioDTO) {
-        Funcionario existingFunc = funcionarioRepository.findById(id)
+    public Funcionarios updateFuncionario(Long id, FuncionariosDTO funcionariosDTO) {
+        Funcionarios existingFunc = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = " + id + " nao encontrado"));
 
-        Funcionario funcionario = toFunc(funcionarioDTO);
-        return funcionarioRepository.save(funcionario);
+        Funcionarios funcionarios = toFunc(funcionariosDTO);
+        return funcionarioRepository.save(funcionarios);
     }
 
     public void deleteFuncionario(Long id) {
-        Funcionario funcToDelete = funcionarioRepository.findById(id)
+        Funcionarios funcToDelete = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + "nao encontrado"));
         funcionarioRepository.delete(funcToDelete);
     }
 
 
-    private Pedido toPedido(PedidoDTO pedidoDTO) {
-        return modelMapper.map(pedidoDTO, Pedido.class);
+    private Pedidos toPedido(PedidosDTO pedidosDTO) {
+        return modelMapper.map(pedidosDTO, Pedidos.class);
     }
 
-    public FuncionarioDTO toFuncDTO(Funcionario funcionario) {
-        return modelMapper.map(funcionario, FuncionarioDTO.class);
+    public FuncionariosDTO toFuncDTO(Funcionarios funcionarios) {
+        return modelMapper.map(funcionarios, FuncionariosDTO.class);
     }
 
-    public Funcionario toFunc(FuncionarioDTO funcionarioDTO) {
-        return modelMapper.map(funcionarioDTO, Funcionario.class);
+    public Funcionarios toFunc(FuncionariosDTO funcionariosDTO) {
+        return modelMapper.map(funcionariosDTO, Funcionarios.class);
     }
 
 }

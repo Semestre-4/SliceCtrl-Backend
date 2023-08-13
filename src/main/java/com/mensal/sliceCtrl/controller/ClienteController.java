@@ -1,7 +1,7 @@
 package com.mensal.sliceCtrl.controller;
 
-import com.mensal.sliceCtrl.DTO.ClienteDTO;
-import com.mensal.sliceCtrl.entity.Cliente;
+import com.mensal.sliceCtrl.DTO.ClientesDTO;
+import com.mensal.sliceCtrl.entity.Clientes;
 import com.mensal.sliceCtrl.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,8 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<ClienteDTO> getClienteById(@PathVariable("id") Long id) {
-        ClienteDTO cliente = clienteService.findById(id);
+    public ResponseEntity<ClientesDTO> getClienteById(@PathVariable("id") Long id) {
+        ClientesDTO cliente = clienteService.findById(id);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
         } else {
@@ -29,8 +29,8 @@ public class ClienteController {
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<ClienteDTO>> getClientesByNome(@PathVariable("nome") String nome) {
-        List<ClienteDTO> clientes = clienteService.findByNome(nome);
+    public ResponseEntity<List<ClientesDTO>> getClientesByNome(@PathVariable("nome") String nome) {
+        List<ClientesDTO> clientes = clienteService.findByNome(nome);
         if (!clientes.isEmpty()) {
             return ResponseEntity.ok(clientes);
         } else {
@@ -39,8 +39,8 @@ public class ClienteController {
     }
 
     @GetMapping("/{cpf}")
-    public ResponseEntity<ClienteDTO> getClientesByCPF(@PathVariable("cpf") String cpf) {
-        ClienteDTO cliente = clienteService.findByCPF(cpf);
+    public ResponseEntity<ClientesDTO> getClientesByCPF(@PathVariable("cpf") String cpf) {
+        ClientesDTO cliente = clienteService.findByCPF(cpf);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
         } else {
@@ -49,26 +49,26 @@ public class ClienteController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ClienteDTO>> getAllClientes() {
-        List<ClienteDTO> clientes = clienteService.findAll();
+    public ResponseEntity<List<ClientesDTO>> getAllClientes() {
+        List<ClientesDTO> clientes = clienteService.findAll();
         return ResponseEntity.ok(clientes);
     }
 
     @PostMapping
-    public ResponseEntity<?> postCliente(@RequestBody @Validated ClienteDTO clienteDTO) {
+    public ResponseEntity<?> postCliente(@RequestBody @Validated ClientesDTO clientesDTO) {
         try{
-            Cliente createdCliente = clienteService.createCliente(clienteDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdCliente);
+            Clientes createdClientes = clienteService.createCliente(clientesDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdClientes);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> putCliente(@PathVariable Long id, @RequestBody @Validated ClienteDTO clienteDTO) {
+    public ResponseEntity<?> putCliente(@PathVariable Long id, @RequestBody @Validated ClientesDTO clientesDTO) {
         try {
-            Cliente updatedCliente = clienteService.updateCliente(id, clienteDTO);
-            return ResponseEntity.ok(updatedCliente);
+            Clientes updatedClientes = clienteService.updateCliente(id, clientesDTO);
+            return ResponseEntity.ok(updatedClientes);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e);
         }

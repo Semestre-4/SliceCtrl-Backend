@@ -1,9 +1,8 @@
 package com.mensal.sliceCtrl.controller;
 
 
-import com.mensal.sliceCtrl.DTO.FuncionarioDTO;
-import com.mensal.sliceCtrl.entity.Cliente;
-import com.mensal.sliceCtrl.entity.Funcionario;
+import com.mensal.sliceCtrl.DTO.FuncionariosDTO;
+import com.mensal.sliceCtrl.entity.Funcionarios;
 import com.mensal.sliceCtrl.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,8 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<FuncionarioDTO> getFuncionarioById(@PathVariable("id") Long id) {
-        FuncionarioDTO cliente = funcionarioService.findById(id);
+    public ResponseEntity<FuncionariosDTO> getFuncionarioById(@PathVariable("id") Long id) {
+        FuncionariosDTO cliente = funcionarioService.findById(id);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
         } else {
@@ -31,46 +30,46 @@ public class FuncionarioController {
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<FuncionarioDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
-        List<FuncionarioDTO> funcionarioDTOS = funcionarioService.findByNome(nome);
-        if (!funcionarioDTOS.isEmpty()) {
-            return ResponseEntity.ok(funcionarioDTOS);
+    public ResponseEntity<List<FuncionariosDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
+        List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findByNome(nome);
+        if (!funcionariosDTOS.isEmpty()) {
+            return ResponseEntity.ok(funcionariosDTOS);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/{cpf}")
-    public ResponseEntity<FuncionarioDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
-        FuncionarioDTO funcionarioDTO = funcionarioService.findByCPF(cpf);
-        if (funcionarioDTO != null) {
-            return ResponseEntity.ok(funcionarioDTO);
+    public ResponseEntity<FuncionariosDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
+        FuncionariosDTO funcionariosDTO = funcionarioService.findByCPF(cpf);
+        if (funcionariosDTO != null) {
+            return ResponseEntity.ok(funcionariosDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<FuncionarioDTO>> getAllFuncionarios() {
-        List<FuncionarioDTO> funcionarioDTOS = funcionarioService.findAll();
-        return ResponseEntity.ok(funcionarioDTOS);
+    public ResponseEntity<List<FuncionariosDTO>> getAllFuncionarios() {
+        List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findAll();
+        return ResponseEntity.ok(funcionariosDTOS);
     }
 
     @PostMapping
-    public ResponseEntity<?> postFuncionario(@RequestBody @Validated FuncionarioDTO funcionarioDTO) {
+    public ResponseEntity<?> postFuncionario(@RequestBody @Validated FuncionariosDTO funcionariosDTO) {
         try {
-            Funcionario funcionario = funcionarioService.createFuncionario(funcionarioDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(funcionario);
+            Funcionarios funcionarios = funcionarioService.createFuncionario(funcionariosDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(funcionarios);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> putFuncionario(@PathVariable Long id, @RequestBody @Validated FuncionarioDTO funcionarioDTO) {
+    public ResponseEntity<?> putFuncionario(@PathVariable Long id, @RequestBody @Validated FuncionariosDTO funcionariosDTO) {
         try {
-            Funcionario updatedFuncionario = funcionarioService.updateFuncionario(id, funcionarioDTO);
-            return ResponseEntity.ok(updatedFuncionario);
+            Funcionarios updatedFuncionarios = funcionarioService.updateFuncionario(id, funcionariosDTO);
+            return ResponseEntity.ok(updatedFuncionarios);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }

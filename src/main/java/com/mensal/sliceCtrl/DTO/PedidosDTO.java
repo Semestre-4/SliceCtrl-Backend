@@ -1,30 +1,31 @@
 package com.mensal.sliceCtrl.DTO;
 
-import com.mensal.sliceCtrl.entity.Cliente;
-import com.mensal.sliceCtrl.entity.Funcionario;
-import com.mensal.sliceCtrl.entity.Pagamento;
+import com.mensal.sliceCtrl.entity.Clientes;
+import com.mensal.sliceCtrl.entity.Funcionarios;
+import com.mensal.sliceCtrl.entity.Pagamentos;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-public class PedidoDTO extends AbstractEntityDTO{
+@Getter @Setter
+public class PedidosDTO extends AbstractEntityDTO{
 
-    private Cliente clienteDTO;
+    private Clientes clientesDTO;
 
-    private Funcionario funcionarioDTO;
+    private Funcionarios funcionariosDTO;
 
     private String codigo;
 
     private List<ProdutosDTO> produtos;
 
-    private List<PizzaDTO> pizzas;
+    private List<PizzasDTO> pizzas;
 
     @NotNull(message = "O status do pedido é obrigatório")
     private Status status;
@@ -38,7 +39,7 @@ public class PedidoDTO extends AbstractEntityDTO{
     @DecimalMin(value = "0.0", message = "O valor total deve ser maior ou igual a 0")
     private BigDecimal valorTotal;
 
-    private Pagamento pagamento;
+    private Pagamentos pagamentos;
 
     private boolean forEntrega;
 

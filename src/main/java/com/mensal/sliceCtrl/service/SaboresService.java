@@ -1,10 +1,6 @@
 package com.mensal.sliceCtrl.service;
 
-import com.mensal.sliceCtrl.DTO.ClienteDTO;
-import com.mensal.sliceCtrl.DTO.EnderecosDTO;
 import com.mensal.sliceCtrl.DTO.SaboresDTO;
-import com.mensal.sliceCtrl.entity.Cliente;
-import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.entity.Sabores;
 import com.mensal.sliceCtrl.repository.SaboresRepository;
 import org.modelmapper.ModelMapper;

@@ -16,7 +16,8 @@ import java.util.List;
 
 @Entity
 @Table(name="enderecos", schema = "public")
-@Data
+@Getter
+@Setter
 public class Enderecos extends AbstractEntity {
 
     @NotNull(message = "A rua não pode ser nula")
@@ -61,6 +62,6 @@ public class Enderecos extends AbstractEntity {
     private String cep;
 
     @ManyToMany(mappedBy = "enderecos")
-    private List<Cliente> clientes = new ArrayList<>();
+    private List<Clientes> clientes = new ArrayList<>();
 
 }

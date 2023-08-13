@@ -1,21 +1,17 @@
 package com.mensal.sliceCtrl.service;
 
-import com.mensal.sliceCtrl.DTO.ClienteDTO;
+import com.mensal.sliceCtrl.DTO.ClientesDTO;
 import com.mensal.sliceCtrl.DTO.EnderecosDTO;
-import com.mensal.sliceCtrl.DTO.IngredientesDTO;
-import com.mensal.sliceCtrl.DTO.PedidoDTO;
-import com.mensal.sliceCtrl.entity.Cliente;
+import com.mensal.sliceCtrl.DTO.PedidosDTO;
+import com.mensal.sliceCtrl.entity.Clientes;
 import com.mensal.sliceCtrl.entity.Enderecos;
-import com.mensal.sliceCtrl.entity.Ingredientes;
-import com.mensal.sliceCtrl.entity.Pedido;
+import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.repository.ClienteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,65 +26,65 @@ public class ClienteService {
         this.modelMapper = modelMapper;
     }
 
-    public ClienteDTO findById(Long id) {
+    public ClientesDTO findById(Long id) {
         try {
-            Cliente clienteEncontrado = clienteRepository.findById(id)
+            Clientes clientesEncontrado = clienteRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com o ID: " + id));
-            return toClienteDTO(clienteEncontrado);
+            return toClienteDTO(clientesEncontrado);
         } catch (EntityNotFoundException ex) {
             throw new RuntimeException("Ocorreu um erro ao tentar recuperar o cliente.", ex);
         }
     }
 
 
-    public List<ClienteDTO> findByNome(String nome) {
+    public List<ClientesDTO> findByNome(String nome) {
         return clienteRepository.findByNome(nome).stream().map(this::toClienteDTO).toList();
     }
 
-    public ClienteDTO findByCPF(String cpf) {
+    public ClientesDTO findByCPF(String cpf) {
         return toClienteDTO(clienteRepository.findByCpf(cpf));
     }
 
-    public List<ClienteDTO> findAll() {
+    public List<ClientesDTO> findAll() {
         return clienteRepository.findAll().stream().map(this::toClienteDTO).toList();
     }
 
-    public Cliente createCliente(ClienteDTO clienteDTO) {
-        Cliente cliente = toCliente(clienteDTO);
-        return  clienteRepository.save(cliente);
+    public Clientes createCliente(ClientesDTO clientesDTO) {
+        Clientes clientes = toCliente(clientesDTO);
+        return  clienteRepository.save(clientes);
     }
 
-    public Cliente updateCliente(Long id, ClienteDTO clienteDTO) {
-        Cliente existingCliente = clienteRepository.findById(id)
+    public Clientes updateCliente(Long id, ClientesDTO clientesDTO) {
+        Clientes existingClientes = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = " + id + " nao encontrado"));
 
 
-        Cliente cliente = toCliente(clienteDTO);
+        Clientes clientes = toCliente(clientesDTO);
 
-        return clienteRepository.save(cliente);
+        return clienteRepository.save(clientes);
     }
 
     public void deleteCliente(Long id) {
-        Cliente clienteToDelete = clienteRepository.findById(id)
+        Clientes clientesToDelete = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = : " + id + "nao encontrado"));
 
-        clienteRepository.delete(clienteToDelete);
+        clienteRepository.delete(clientesToDelete);
     }
 
     private Enderecos toEnderecos(EnderecosDTO enderecoDTO) {
         return modelMapper.map(enderecoDTO, Enderecos.class);
     }
 
-    private Pedido toPedido(PedidoDTO pedidoDTO) {
-        return modelMapper.map(pedidoDTO, Pedido.class);
+    private Pedidos toPedido(PedidosDTO pedidosDTO) {
+        return modelMapper.map(pedidosDTO, Pedidos.class);
     }
 
-    public ClienteDTO toClienteDTO(Cliente cliente) {
-        return modelMapper.map(cliente, ClienteDTO.class);
+    public ClientesDTO toClienteDTO(Clientes clientes) {
+        return modelMapper.map(clientes, ClientesDTO.class);
     }
 
-    public Cliente toCliente(ClienteDTO clienteDTO) {
-        return modelMapper.map(clienteDTO, Cliente.class);
+    public Clientes toCliente(ClientesDTO clientesDTO) {
+        return modelMapper.map(clientesDTO, Clientes.class);
     }
 
 
