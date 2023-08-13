@@ -37,10 +37,10 @@ public class ClienteController {
     }
 
     @GetMapping("/{cpf}")
-    public ResponseEntity<List<ClienteDTO>> getClientesByCPF(@PathVariable("cpf") String cpf) {
-        List<ClienteDTO> clientes = clienteService.findByCPF(cpf);
-        if (!clientes.isEmpty()) {
-            return ResponseEntity.ok(clientes);
+    public ResponseEntity<ClienteDTO> getClientesByCPF(@PathVariable("cpf") String cpf) {
+        ClienteDTO cliente = clienteService.findByCPF(cpf);
+        if (cliente != null) {
+            return ResponseEntity.ok(cliente);
         } else {
             return ResponseEntity.notFound().build();
         }

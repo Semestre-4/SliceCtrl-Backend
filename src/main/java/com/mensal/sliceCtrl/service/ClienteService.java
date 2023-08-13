@@ -9,6 +9,7 @@ import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.entity.Pedido;
 import com.mensal.sliceCtrl.repository.ClienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,30 +30,41 @@ public class ClienteService {
     }
 
     public ClienteDTO findById(Long id) {
-        return null;
+        return toClienteDTO(clienteRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Cliente not found with ID: " + id)));
     }
 
     public List<ClienteDTO> findByNome(String nome) {
-        return null;
+        return clienteRepository.findByNome(nome).stream().map(this::toClienteDTO).toList();
     }
 
-    public List<ClienteDTO> findByCPF(String cpf) {
-        return null;
+    public ClienteDTO findByCPF(String cpf) {
+        return toClienteDTO(clienteRepository.findByCpf(cpf));
     }
 
     public List<ClienteDTO> findAll() {
-        return null;
+        return clienteRepository.findAll().stream().map(this::toClienteDTO).toList();
     }
 
     public ClienteDTO createCliente(ClienteDTO clienteDTO) {
-        return null;
+        Cliente cliente = toCliente(clienteDTO);
+        Cliente savedCliente = clienteRepository.save(cliente);
+        return toClienteDTO(savedCliente);
     }
 
     public ClienteDTO updateCliente(Long id, ClienteDTO clienteDTO) {
-        return null;
+        Cliente existingCliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = : " + id + "nao encontrado"));
+
+        Cliente updatedCliente = clienteRepository.save(existingCliente);
+        return toClienteDTO(updatedCliente);
     }
 
     public void deleteCliente(Long id) {
+        Cliente clienteToDelete = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = : " + id + "nao encontrado"));
+
+        clienteRepository.delete(clienteToDelete);
     }
 
     private Enderecos toEnderecos(EnderecosDTO enderecoDTO) {
