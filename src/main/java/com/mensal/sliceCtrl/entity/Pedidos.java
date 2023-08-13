@@ -11,21 +11,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Table(name = "pedidos", schema = "public")
 @Getter
 @Setter
-public class Pedido extends AbstractEntity {
+public class Pedidos extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
-    private Cliente cliente;
+    private Clientes clientes;
 
     @ManyToOne
     @JoinColumn(name = "funcionario_id", nullable = false)
-    private Funcionario funcionario;
+    private Funcionarios funcionarios;
 
     @Column(name = "codigo_pedido", nullable = false, unique = true)
     private String codigo;
@@ -44,7 +43,7 @@ public class Pedido extends AbstractEntity {
             joinColumns = @JoinColumn(name = "pedido_id"),
             inverseJoinColumns = @JoinColumn(name = "pizza_id")
     )
-    private List<Pizza> pizzas = new ArrayList<>();
+    private List<Pizzas> pizzas = new ArrayList<>();
 
     @NotNull(message = "O status do pedido é obrigatório")
     @Column(name = "status_enum", nullable = false)
@@ -63,7 +62,7 @@ public class Pedido extends AbstractEntity {
     private BigDecimal valorTotal;
 
     @OneToOne(mappedBy = "pedido")
-    private Pagamento pagamento;
+    private Pagamentos pagamentos;
 
     @Column(name = "for_entrega")
     private boolean forEntrega;

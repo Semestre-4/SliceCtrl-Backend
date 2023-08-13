@@ -7,13 +7,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "produtos", schema = "public")
+@Getter
+@Setter
 public class Produtos extends AbstractEntity{
 
     @NotNull(message = "É obrigatorio informar o nome do produto")
@@ -46,6 +50,6 @@ public class Produtos extends AbstractEntity{
 
     @JsonIgnore
     @ManyToMany(mappedBy = "produtos")
-    private List<Pedido> pedidos = new ArrayList<>();
+    private List<Pedidos> pedidos = new ArrayList<>();
 
 }

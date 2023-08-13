@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
@@ -16,7 +15,7 @@ import java.util.List;
 @Table(name = "funcionarios",schema = "public")
 @Getter
 @Setter
-public class Funcionario extends AbstractEntity{
+public class Funcionarios extends AbstractEntity{
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
@@ -40,6 +39,6 @@ public class Funcionario extends AbstractEntity{
     private BigDecimal salario;
 
     @OneToMany(mappedBy = "funcionario")
-    private List<Pedido> pedidos;
+    private List<Pedidos> pedidos;
 
 }

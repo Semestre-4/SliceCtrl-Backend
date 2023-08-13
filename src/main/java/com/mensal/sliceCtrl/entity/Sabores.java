@@ -1,18 +1,22 @@
 package com.mensal.sliceCtrl.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "sabores", schema = "public")
 public class Sabores extends AbstractEntity{
 
@@ -36,7 +40,7 @@ public class Sabores extends AbstractEntity{
     private List<Ingredientes> ingredientes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "sabor")
-    private List<Pizza> pizzas = new ArrayList<>();
+    private List<Pizzas> pizzas = new ArrayList<>();
 
 
 }

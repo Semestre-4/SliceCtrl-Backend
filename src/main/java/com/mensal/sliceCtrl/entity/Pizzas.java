@@ -2,8 +2,6 @@ package com.mensal.sliceCtrl.entity;
 
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +13,8 @@ import java.util.List;
 @Table(name = "pizzas",schema = "public")
 @Getter
 @Setter
-public class Pizza extends Produtos {
+public class Pizzas extends Produtos {
 
-    @NotBlank(message = "O tamanho da pizza é obrigatório")
     @Column(name = "tamanho_pizza",nullable = true)
     private Tamanho tamanho;
 
@@ -25,7 +22,7 @@ public class Pizza extends Produtos {
     private String observacao;
 
     @ManyToMany(mappedBy = "pizzas")
-    private List<Pedido> pedidos = new ArrayList<>();
+    private List<Pedidos> pedidos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
