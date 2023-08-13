@@ -63,7 +63,7 @@ public class ProdutoController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/deletar")
     private ResponseEntity<String> deletar(@RequestParam("id") Long id){
         try{
             this.produtoService.deletar(id);
