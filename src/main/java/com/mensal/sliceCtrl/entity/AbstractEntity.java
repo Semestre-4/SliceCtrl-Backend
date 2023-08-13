@@ -8,8 +8,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Table(name = "AbstractEntity", schema = "public")
-public class AbstractEntity {
+public abstract class AbstractEntity {
 
     @Id
     @Getter @Setter
