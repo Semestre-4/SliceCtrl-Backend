@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter @Setter
-public class PizzasDTO extends ProdutosDTO {
+public class PizzasDTO extends AbstractEntityDTO{
 
     @NotBlank(message = "O tamanho da pizza é obrigatório")
     private Tamanho tamanho;
