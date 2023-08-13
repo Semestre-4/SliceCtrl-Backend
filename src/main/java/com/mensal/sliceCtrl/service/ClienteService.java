@@ -13,6 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,15 @@ public class ClienteService {
     }
 
     public ClienteDTO findById(Long id) {
-        return toClienteDTO(clienteRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Cliente not found with ID: " + id)));
+        try {
+            Cliente clienteEncontrado = clienteRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com o ID: " + id));
+            return toClienteDTO(clienteEncontrado);
+        } catch (EntityNotFoundException ex) {
+            throw new RuntimeException("Ocorreu um erro ao tentar recuperar o cliente.", ex);
+        }
     }
+
 
     public List<ClienteDTO> findByNome(String nome) {
         return clienteRepository.findByNome(nome).stream().map(this::toClienteDTO).toList();
@@ -46,18 +53,19 @@ public class ClienteService {
         return clienteRepository.findAll().stream().map(this::toClienteDTO).toList();
     }
 
-    public ClienteDTO createCliente(ClienteDTO clienteDTO) {
+    public Cliente createCliente(ClienteDTO clienteDTO) {
         Cliente cliente = toCliente(clienteDTO);
-        Cliente savedCliente = clienteRepository.save(cliente);
-        return toClienteDTO(savedCliente);
+        return  clienteRepository.save(cliente);
     }
 
-    public ClienteDTO updateCliente(Long id, ClienteDTO clienteDTO) {
+    public Cliente updateCliente(Long id, ClienteDTO clienteDTO) {
         Cliente existingCliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = : " + id + "nao encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = " + id + " nao encontrado"));
 
-        Cliente updatedCliente = clienteRepository.save(existingCliente);
-        return toClienteDTO(updatedCliente);
+
+        Cliente cliente = toCliente(clienteDTO);
+
+        return clienteRepository.save(cliente);
     }
 
     public void deleteCliente(Long id) {
