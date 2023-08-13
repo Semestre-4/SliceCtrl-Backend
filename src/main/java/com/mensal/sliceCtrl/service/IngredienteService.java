@@ -5,6 +5,7 @@ import com.mensal.sliceCtrl.DTO.IngredientesDTO;
 import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.repository.IngredienteRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,31 +19,16 @@ public class IngredienteService {
     @Autowired
     private IngredienteRepository ingredienteRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+
     public IngredientesDTO toIngredientesDTO (Ingredientes ingredientes){
-        IngredientesDTO ingredientesDTO = new IngredientesDTO();
-
-        ingredientesDTO.setId(ingredientes.getId());
-        ingredientesDTO.setEdicao(ingredientes.getEdicao());
-        ingredientesDTO.setCadastro(ingredientes.getCadastro());
-        ingredientesDTO.setAtivo(ingredientes.isAtivo());
-        ingredientesDTO.setNomeIngrediente(ingredientes.getNomeIngrediente());
-        ingredientesDTO.setQtdeIngrediente(ingredientes.getQtdeIngrediente());
-
-        return  ingredientesDTO;
+        return modelMapper.map(ingredientes, IngredientesDTO.class);
     }
 
     public Ingredientes toIngredientes(IngredientesDTO ingredientesDTO){
-        Ingredientes ingredientes = new Ingredientes();
-
-        ingredientes.setId(ingredientesDTO.getId());
-        ingredientes.setEdicao(ingredientesDTO.getEdicao());
-        ingredientes.setCadastro(ingredientesDTO.getCadastro());
-        ingredientes.setAtivo(ingredientesDTO.isAtivo());
-
-        ingredientes.setNomeIngrediente(ingredientesDTO.getNomeIngrediente());
-        ingredientes.setQtdeIngrediente(ingredientesDTO.getQtdeIngrediente());
-
-        return  ingredientes;
+        return modelMapper.map(ingredientesDTO, Ingredientes.class);
     }
 
 
