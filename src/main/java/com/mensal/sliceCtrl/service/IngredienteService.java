@@ -31,6 +31,11 @@ public class IngredienteService {
         return modelMapper.map(ingredientesDTO, Ingredientes.class);
     }
 
+    public IngredientesDTO getById(Long id){
+        Ingredientes ingredientes = this.ingredienteRepository.findById(id).orElse(null);
+        IngredientesDTO ingredientesDTO = toIngredientesDTO(ingredientes);
+        return ingredientesDTO;
+    }
 
     public List<IngredientesDTO> getAll(){
         List<IngredientesDTO> ingredientesDTO = ingredienteRepository.findAll().stream().map(this::toIngredientesDTO).toList();
