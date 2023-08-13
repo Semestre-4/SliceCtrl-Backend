@@ -64,7 +64,7 @@ public class ClienteController {
         }
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> putCliente(@PathVariable Long id, @RequestBody @Validated ClienteDTO clienteDTO) {
         try {
             Cliente updatedCliente = clienteService.updateCliente(id, clienteDTO);
