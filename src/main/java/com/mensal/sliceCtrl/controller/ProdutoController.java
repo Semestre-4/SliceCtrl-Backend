@@ -32,5 +32,14 @@ public class ProdutoController {
         return this.produtoService.getById(id);
     }
 
+    @GetMapping("/categoria={categoria}")
+    private ProdutosDTO getByCategoria(@PathVariable("categoria") String categoria){
+        return  this.produtoService.getByCategoria(categoria);
+    }
 
-}
+
+
+    }
+
+
+

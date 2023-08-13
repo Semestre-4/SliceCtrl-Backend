@@ -46,6 +46,15 @@ public class ProdutoService {
         return produtosDTO;
     }
 
+    public ProdutosDTO getByCategoria(String categoria){
+        Produtos produtos = this.produtoRepository.findByCategoria(categoria);
+        ProdutosDTO produtosDTO = toProdutosDTO(produtos);
+        return produtosDTO;
+    }
+
+
+
+
 
 
 }

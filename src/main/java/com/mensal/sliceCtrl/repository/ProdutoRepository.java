@@ -13,5 +13,9 @@ public interface ProdutoRepository  extends JpaRepository<Produtos, Long> {
     @Query("from Produtos where nomeProduto Like :nomeProduto")
     public Produtos findByNome(@Param("nomeProduto") final String nomeProduto);
 
+    @Query("from Produtos where categoria = :categoria")
+    public Produtos findByCategoria(@Param("categoria") final String categoria);
+
+
 
 }
