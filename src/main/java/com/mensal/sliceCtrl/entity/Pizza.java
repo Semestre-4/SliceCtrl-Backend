@@ -27,12 +27,12 @@ public class Pizza extends AbstractEntity {
     @ManyToMany(mappedBy = "pizzas")
     private List<Pedido> pedidos = new ArrayList<>();
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "pizza_sabor",
-//            joinColumns = @JoinColumn(name = "pizza_id"),
-//            inverseJoinColumns = @JoinColumn(name = "sabor_id")
-//    )
-//    private List<Sabores> sabor;
+    @ManyToMany
+    @JoinTable(
+            name = "pizza_sabor",
+            joinColumns = @JoinColumn(name = "pizza_id"),
+            inverseJoinColumns = @JoinColumn(name = "sabor_id")
+    )
+    private List<Sabores> sabor;
 
 }
