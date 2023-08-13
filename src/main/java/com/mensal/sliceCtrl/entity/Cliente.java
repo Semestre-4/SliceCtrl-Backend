@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,6 +39,14 @@ public class Cliente extends AbstractEntity {
     @Email(message = "O email é inválido")
     @Column(name = "email-cliente")
     private String email;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "cliente_endereco",
+            joinColumns = { @JoinColumn(name = "cliente_id") },
+            inverseJoinColumns = { @JoinColumn(name = "endereco_id") }
+    )
+    private List<Enderecos> enderecos = new ArrayList<>();
 
     @Size(min = 1, message = "A lista de pedidos deve conter pelo menos um item")
     @OneToMany(mappedBy = "cliente")
