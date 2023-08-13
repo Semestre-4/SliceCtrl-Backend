@@ -1,18 +1,18 @@
 package com.mensal.sliceCtrl.DTO;
 
-import com.mensal.sliceCtrl.entity.Enderecos;
-import com.mensal.sliceCtrl.entity.Pedido;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class ClienteDTO {
+public class ClienteDTO extends AbstractEntityDTO{
 
     @NotBlank(message = "O nome do cliente é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
