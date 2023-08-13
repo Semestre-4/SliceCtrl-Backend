@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mensal.sliceCtrl.entity.enums.Categorias;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -43,6 +44,7 @@ public class Produtos extends AbstractEntity{
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "produtos")
     private List<Pedido> pedidos = new ArrayList<>();
 

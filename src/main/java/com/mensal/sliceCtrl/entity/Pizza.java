@@ -18,7 +18,7 @@ import java.util.List;
 public class Pizza extends Produtos {
 
     @NotBlank(message = "O tamanho da pizza é obrigatório")
-    @Column(name = "tamanho_pizza",nullable = false)
+    @Column(name = "tamanho_pizza",nullable = true)
     private Tamanho tamanho;
 
     @Column(name = "observacao")
