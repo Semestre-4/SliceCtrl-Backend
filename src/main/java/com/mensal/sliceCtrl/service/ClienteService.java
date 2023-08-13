@@ -55,6 +55,14 @@ public class ClienteService {
     public void deleteCliente(Long id) {
     }
 
+    private Enderecos toEnderecos(EnderecosDTO enderecoDTO) {
+        return modelMapper.map(enderecoDTO, Enderecos.class);
+    }
+
+    private Pedido toPedido(PedidoDTO pedidoDTO) {
+        return modelMapper.map(pedidoDTO, Pedido.class);
+    }
+
     public ClienteDTO toClienteDTO(Cliente cliente) {
         return modelMapper.map(cliente, ClienteDTO.class);
     }
