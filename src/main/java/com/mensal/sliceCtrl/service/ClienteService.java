@@ -1,8 +1,9 @@
 package com.mensal.sliceCtrl.service;
 
-import com.mensal.sliceCtrl.DTO.ClientesDTO;
+
 import com.mensal.sliceCtrl.DTO.EnderecosDTO;
 import com.mensal.sliceCtrl.DTO.PedidosDTO;
+import com.mensal.sliceCtrl.DTO.ClientesDTO;
 import com.mensal.sliceCtrl.entity.Clientes;
 import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Pedidos;
