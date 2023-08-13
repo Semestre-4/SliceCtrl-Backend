@@ -19,9 +19,9 @@ public class PedidoDTO {
 
     private String codigo;
 
-    private List<Produtos> produtos;
+    private List<ProdutosDTO> produtos;
 
-    private List<Pizza> pizzas;
+    private List<PizzaDTO> pizzas;
 
     @NotNull(message = "O status do pedido é obrigatório")
     private Status status;

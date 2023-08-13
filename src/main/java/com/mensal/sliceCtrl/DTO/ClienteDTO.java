@@ -6,10 +6,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
 
+@Data
 public class ClienteDTO {
 
     @NotBlank(message = "O nome do cliente é obrigatório")
@@ -29,8 +31,8 @@ public class ClienteDTO {
     @Email(message = "O email é inválido")
     private String email;
 
-    private List<Enderecos> enderecos;
+    private List<EnderecosDTO> enderecos;
 
-    private List<Pedido> pedidos;
+    private List<PedidoDTO> pedidos;
 
 }
