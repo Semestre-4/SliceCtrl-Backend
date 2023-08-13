@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "produtos", schema = "public")
@@ -23,11 +26,9 @@ public class Produtos extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private Categorias categoria;
 
-
     @NotNull(message = "É obrigatorio informar a quantidade de estoque")
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
-
 
     @Column(name = "qtde_pedido")
     private Integer qtdePedido;
@@ -41,5 +42,8 @@ public class Produtos extends AbstractEntity{
 
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
+
+    @ManyToMany(mappedBy = "produtos")
+    private List<Pedido> pedidos = new ArrayList<>();
 
 }
