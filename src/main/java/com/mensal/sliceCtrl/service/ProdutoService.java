@@ -47,16 +47,13 @@ public class ProdutoService {
         return produtosDTO;
     }
 
-    public ProdutosDTO getByCategoria(String categoria) {
-        Produtos produtos = this.produtoRepository.findByCategoria(categoria);
-        ProdutosDTO produtosDTO = toProdutosDTO(produtos);
-        return produtosDTO;
+    public List<ProdutosDTO> findByCategoria(Categorias categoria) {
+        return this.produtoRepository.findByCategoria(categoria).stream().map(this::toProdutosDTO).toList();
     }
 
 
     public List<ProdutosDTO> getByDisponivel(Boolean disponivel) {
         List<ProdutosDTO> produtosDTO = produtoRepository.findByDisponivel(disponivel).stream().map(this::toProdutosDTO).toList();
-
         return produtosDTO;
     }
 
@@ -76,4 +73,5 @@ public class ProdutoService {
         this.produtoRepository.deleteById(id);
         return ResponseEntity.ok().body("Deletado com sucesso!");
     }
+
 }
