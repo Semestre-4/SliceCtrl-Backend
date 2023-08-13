@@ -1,12 +1,13 @@
 package com.mensal.sliceCtrl.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="ingredientes", schema = "public")
@@ -22,5 +23,11 @@ public class Ingredientes extends AbstractEntity{
     @NotNull(message = "É obrigatorio informar a quantidade de ingredientes")
     @Column(name = "quantidade_ingrediente", nullable = false)
     private double qtdeIngrediente;
+
+
+    @ManyToMany(mappedBy = "ingredientes")
+    private List<Sabores> sabores = new ArrayList<>();
+
+
 
 }

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,8 +23,16 @@ public class Sabores extends AbstractEntity{
     @Column(name = "descricao_sabor", nullable = true)
     private String descricao;
 
-    @NotNull(message = "É necessario informar o ingrediente")
-    @JoinColumn(name = "ingrediente", nullable = false)
     @ManyToMany
-    private List<Ingredientes> ingredientes;
+    @JoinTable(
+            name = "sabor-ingrediente",
+            joinColumns = @JoinColumn(name = "sabor_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingrediente_id")
+    )
+    private List<Ingredientes> ingredientes = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "sabor")
+    private List<Pizza> pizzas = new ArrayList<>();
+
+
 }
