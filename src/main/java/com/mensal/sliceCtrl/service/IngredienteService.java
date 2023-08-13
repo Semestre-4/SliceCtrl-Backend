@@ -34,6 +34,7 @@ public class IngredienteService {
     public Ingredientes toIngredientes(IngredientesDTO ingredientesDTO){
         Ingredientes ingredientes = new Ingredientes();
 
+        ingredientes.setId(ingredientesDTO.getId());
         ingredientes.setEdicao(ingredientesDTO.getEdicao());
         ingredientes.setCadastro(ingredientesDTO.getCadastro());
         ingredientes.setAtivo(ingredientesDTO.isAtivo());

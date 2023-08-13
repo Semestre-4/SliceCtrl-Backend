@@ -10,7 +10,7 @@ import lombok.Data;
 
 import java.util.List;
 
-public class SaboresDTO extends AbstractEntity {
+public class SaboresDTO extends AbstractEntityDTO {
 
     private String nomeSabor;
 
@@ -36,6 +36,7 @@ public class SaboresDTO extends AbstractEntity {
         return nomeSabor;
     }
 
+
     public void setNomeSabor(String nomeSabor) {
         this.nomeSabor = nomeSabor;
     }
@@ -55,4 +56,6 @@ public class SaboresDTO extends AbstractEntity {
     public void setIngredientes(List<Ingredientes> ingredientes) {
         this.ingredientes = ingredientes;
     }
+
+
 }

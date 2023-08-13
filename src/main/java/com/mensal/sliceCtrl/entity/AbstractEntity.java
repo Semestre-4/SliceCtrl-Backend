@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class AbstractEntity {
 
     @Id
-    @Getter
+    @Getter @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     private Long id;
@@ -40,6 +40,5 @@ public class AbstractEntity {
         this.edicao = LocalDateTime.now();
 
     }
-
 
 }
