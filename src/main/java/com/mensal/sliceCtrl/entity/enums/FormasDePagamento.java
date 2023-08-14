@@ -1,8 +1,8 @@
 package com.mensal.sliceCtrl.entity.enums;
 
 public enum FormasDePagamento {
-    Dinhero,
-    Pix,
-    Credito,
-    Debito
+    DINHERO,
+    PIX,
+    CREDITO,
+    DEBITO
 }

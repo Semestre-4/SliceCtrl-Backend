@@ -1,12 +1,12 @@
 package com.mensal.sliceCtrl.entity.enums;
 
 public enum Status {
-    Pendentes,
-    Preparando,
-    Pronto,
-    Entregues,
-    Cancelados,
-    Pagos,
-    Todos
+    PENDENTE,
+    PAGO,
+    EM_PREPARO,
+    PRONTO,
+    CANCELADO,
+    ENTREGUE,
+    TODOS
 
 }

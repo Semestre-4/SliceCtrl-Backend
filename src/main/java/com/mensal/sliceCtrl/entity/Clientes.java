@@ -39,13 +39,11 @@ public class Clientes extends AbstractEntity {
     @Column(name = "email-cliente")
     private String email;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "cliente_endereco",
-            joinColumns = { @JoinColumn(name = "cliente_id") },
-            inverseJoinColumns = { @JoinColumn(name = "endereco_id") }
-    )
-    private List<Enderecos> enderecos = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "cliente_endereco",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "endereco_id"))
+    private List<Enderecos> enderecos;
 
     @OneToMany(mappedBy = "cliente")
     private List<Pedidos> pedidos;

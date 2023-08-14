@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -62,6 +63,7 @@ public class Enderecos extends AbstractEntity {
     private String cep;
 
     @ManyToMany(mappedBy = "enderecos")
-    private List<Clientes> clientes = new ArrayList<>();
+    @JsonIgnore
+    private List<Clientes> clientes;
 
 }
