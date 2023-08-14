@@ -16,8 +16,8 @@ public class PedidosDTO extends AbstractEntityDTO {
     private Long clienteId;
     private Long funcionarioId;
     private String codigo;
-    private List<Long> produtosIds;
-    private List<Long> pizzasIds;
+    private List<ProdutosDTO> produtos;
+    private List<PizzasDTO> pizzas;
 
     @NotNull(message = "O status do pedido é obrigatório")
     private Status status;
