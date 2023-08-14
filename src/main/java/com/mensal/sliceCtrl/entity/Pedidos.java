@@ -47,6 +47,7 @@ public class Pedidos extends AbstractEntity {
 
     @NotNull(message = "O status do pedido é obrigatório")
     @Column(name = "status_enum", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @DecimalMin(value = "0.0", message = "O valor do pedido deve ser maior ou igual a 0")

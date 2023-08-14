@@ -17,6 +17,7 @@ import java.util.List;
 public class Pizzas extends Produtos {
 
     @Column(name = "tamanho_pizza",nullable = true)
+    @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
 
     @Column(name = "observacao")
