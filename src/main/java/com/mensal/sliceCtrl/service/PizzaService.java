@@ -3,6 +3,7 @@ package com.mensal.sliceCtrl.service;
 
 import com.mensal.sliceCtrl.DTO.PizzasDTO;
 import com.mensal.sliceCtrl.entity.Pizzas;
+import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import com.mensal.sliceCtrl.repository.PizzaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -43,26 +44,26 @@ public class PizzaService {
         }
     }
 
-//    public PizzaDTO findByNomeSabor(String nomeSabor) {
-//        try {
-//            Pizza pizzaEncontrado = pizzaRepository.findByNomeSabor(nomeSabor);
-//            return toPizzaDTO(pizzaEncontrado);
-//        } catch (EntityNotFoundException ex) {
-//            throw new RuntimeException("Ocorreu um erro ao tentar recuperar a pizza.", ex);
-//        }
-//    }
+    public PizzasDTO findByNomeSabor(String nomeSabor) {
+        try {
+            Pizzas pizzaEncontrado = pizzaRepository.findByNomeSabor(nomeSabor);
+            return toPizzaDTO(pizzaEncontrado);
+        } catch (EntityNotFoundException ex) {
+            throw new RuntimeException("Ocorreu um erro ao tentar recuperar a pizza.", ex);
+        }
+    }
 
-//    public List<PizzaDTO> findByTamanho(Tamanho tamanho) {
-//        return pizzaRepository.findByTamanho(tamanho).stream().map(this::toPizzaDTO).toList();
-//    }
+    public List<PizzasDTO> findByTamanho(Tamanho tamanho) {
+        return pizzaRepository.findByTamanho(tamanho).stream().map(this::toPizzaDTO).toList();
+    }
 
     public List<PizzasDTO> findAll() {
         return pizzaRepository.findAll().stream().map(this::toPizzaDTO).toList();
     }
 
-//    public List<PizzaDTO> findByDisponivel(boolean disponivel) {
-//        return pizzaRepository.findByDisponivel(disponivel).stream().map(this::toPizzaDTO).toList();
-//    }
+    public List<PizzasDTO> findByDisponivel() {
+        return pizzaRepository.findByDisponivelTrue().stream().map(this::toPizzaDTO).toList();
+    }
 
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
         Pizzas pizza = toPizza(pizzaDTO);

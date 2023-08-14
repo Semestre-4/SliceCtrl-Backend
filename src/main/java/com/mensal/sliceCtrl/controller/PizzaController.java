@@ -3,6 +3,7 @@ package com.mensal.sliceCtrl.controller;
 
 import com.mensal.sliceCtrl.DTO.PizzasDTO;
 import com.mensal.sliceCtrl.entity.Pizzas;
+import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import com.mensal.sliceCtrl.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,16 +21,17 @@ public class PizzaController {
     public PizzaService pizzaService;
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<PizzasDTO> getPizzaById(@PathVariable("id") Long id) {
-        PizzasDTO pizzaDTO = pizzaService.findById(id);
-        if (pizzaDTO != null) {
+    public ResponseEntity<?> getPizzaById(@PathVariable("id") Long id) {
+        try {
+            PizzasDTO pizzaDTO = pizzaService.findById(id);
             return ResponseEntity.ok(pizzaDTO);
-        } else {
-            return ResponseEntity.notFound().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e);
         }
+
     }
 
-    @GetMapping("/nome/{nome}")
+    @GetMapping("/nome/{nomeProduto}")
     public ResponseEntity<PizzasDTO> getPizzaByNome(@PathVariable("nomeProduto") String nomeProduto) {
         PizzasDTO pizzaDTOS = pizzaService.findByNome(nomeProduto);
         if (pizzaDTOS != null) {
@@ -39,25 +41,25 @@ public class PizzaController {
         }
     }
 
-//    @GetMapping("/sabor/{nomeSabor}")
-//    public ResponseEntity<PizzaDTO> getPizzaByNomeSabor(@PathVariable("nomeSabor") String nomeSabor) {
-//        PizzaDTO pizzaDTOS = pizzaService.findByNomeSabor(nomeSabor);
-//        if (pizzaDTOS != null) {
-//            return ResponseEntity.ok(pizzaDTOS);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    @GetMapping("/sabor/{nomeSabor}")
+    public ResponseEntity<PizzasDTO> getPizzaByNomeSabor(@PathVariable("nomeSabor") String nomeSabor) {
+        PizzasDTO pizzaDTOS = pizzaService.findByNomeSabor(nomeSabor);
+        if (pizzaDTOS != null) {
+            return ResponseEntity.ok(pizzaDTOS);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-//    @GetMapping("/tamanho/{tamanhoName}")
-//    public List<PizzaDTO> getPizzaByTamanho(@PathVariable String tamanhoName) {
-//        try {
-//            Tamanho tamanho = Tamanho.valueOf(tamanhoName);
-//            return pizzaService.findByTamanho(tamanho);
-//        } catch (IllegalArgumentException e) {
-//            throw new RuntimeException("Tamanho Invalido: " + tamanhoName);
-//        }
-//    }
+    @GetMapping("/tamanho/{tamanhoName}")
+    public List<PizzasDTO> getPizzaByTamanho(@PathVariable String tamanhoName) {
+        try {
+            Tamanho tamanho = Tamanho.valueOf(tamanhoName);
+            return pizzaService.findByTamanho(tamanho);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Tamanho Invalido: " + tamanhoName);
+        }
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<PizzasDTO>> getAllPizzas() {
@@ -65,11 +67,11 @@ public class PizzaController {
         return ResponseEntity.ok(pizzaDTOS);
     }
 
-//
-//    @GetMapping("/{disponivel}")
-//    private List<PizzaDTO> getByAvailable(@PathVariable("disponivel") boolean disponivel){
-//        return  this.pizzaService.findByDisponivel(disponivel);
-//    }
+
+    @GetMapping("/disponivel")
+    private List<PizzasDTO> getByAvailable(){
+        return this.pizzaService.findByDisponivel();
+    }
 
     @PostMapping
     public ResponseEntity<?> postPizza(@RequestBody @Validated PizzasDTO pizzaDTO) {
