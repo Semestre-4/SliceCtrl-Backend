@@ -51,9 +51,7 @@ public class EnderecoService {
 
     public String cadastrar(EnderecosDTO enderecosDTO){
         Enderecos enderecos = toEnderecos(enderecosDTO);
-
         this.enderecoRepository.save(enderecos);
-
         return "Cadastrado com sucesso";
     }
 

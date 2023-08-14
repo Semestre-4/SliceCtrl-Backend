@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.DTO;
 
+import com.mensal.sliceCtrl.entity.Enderecos;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +32,5 @@ public class ClientesDTO extends AbstractEntityDTO{
     private String email;
 
     private List<EnderecosDTO> enderecos;
-
-    private List<PedidosDTO> pedidos;
 
 }
