@@ -20,11 +20,11 @@ public class Pedidos extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
-    private Clientes clientes;
+    private Clientes cliente;
 
     @ManyToOne
     @JoinColumn(name = "funcionario_id", nullable = false)
-    private Funcionarios funcionarios;
+    private Funcionarios funcionario;
 
     @Column(name = "codigo_pedido", nullable = false, unique = true)
     private String codigo;
@@ -47,6 +47,7 @@ public class Pedidos extends AbstractEntity {
 
     @NotNull(message = "O status do pedido é obrigatório")
     @Column(name = "status_enum", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @DecimalMin(value = "0.0", message = "O valor do pedido deve ser maior ou igual a 0")
@@ -62,7 +63,7 @@ public class Pedidos extends AbstractEntity {
     private BigDecimal valorTotal;
 
     @OneToOne(mappedBy = "pedido")
-    private Pagamentos pagamentos;
+    private Pagamentos pagamento;
 
     @Column(name = "for_entrega")
     private boolean forEntrega;

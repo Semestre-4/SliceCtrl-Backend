@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter @Setter
 public class ProdutosDTO extends AbstractEntityDTO {
 
-    String nomeProduto;
+    private String nomeProduto;
     private Categorias categoria;
     private Integer qtdeEstoque;
     private Integer qtdePedido;

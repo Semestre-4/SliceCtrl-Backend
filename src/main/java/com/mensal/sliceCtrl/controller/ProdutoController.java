@@ -33,7 +33,7 @@ public class ProdutoController {
         return this.produtoService.getById(id);
     }
 
-    @GetMapping("/{categoriaName}")
+    @GetMapping("/categoria={categoriaName}")
     public List<ProdutosDTO> getProductsByCategoria(@PathVariable String categoriaName) {
         try {
             Categorias categoria = Categorias.valueOf(categoriaName);
@@ -68,7 +68,7 @@ public class ProdutoController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/deletar")
     private ResponseEntity<String> deletar(@RequestParam("id") Long id){
         try{
             this.produtoService.deletar(id);

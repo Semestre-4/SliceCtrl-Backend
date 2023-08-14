@@ -25,7 +25,10 @@ public class IngredienteController {
     private IngredientesDTO getByNome(@RequestParam("nome") String nome){
         return this.ingredienteService.getByNome(nome);
     }
-
+    @GetMapping("/{id}")
+    private IngredientesDTO getById(@PathVariable("id") Long id){
+        return this.ingredienteService.getById(id);
+    }
 
     @PostMapping
     private ResponseEntity<String> cadastrar(@RequestBody final IngredientesDTO ingredientesDTO){

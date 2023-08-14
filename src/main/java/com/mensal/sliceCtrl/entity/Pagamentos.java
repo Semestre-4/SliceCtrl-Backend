@@ -17,10 +17,11 @@ public class Pagamentos extends AbstractEntity {
 
     @OneToOne
     @JoinColumn(name = "pedido_id")
-    private Pedidos pedidos;
+    private Pedidos pedido;
 
     @NotNull(message = "A forma de pagamento não pode ser nula")
     @Column(name = "formasDePagamento", nullable = false)
+    @Enumerated(EnumType.STRING)
     private FormasDePagamento formasDePagamento;
 
     @Column(name = "data_pagamento")

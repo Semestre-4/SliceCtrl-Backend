@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -40,6 +41,7 @@ public class Sabores extends AbstractEntity{
     private List<Ingredientes> ingredientes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "sabor")
+    @JsonIgnore
     private List<Pizzas> pizzas = new ArrayList<>();
 
 

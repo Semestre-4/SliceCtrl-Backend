@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.util.List;
 public class Pizzas extends Produtos {
 
     @Column(name = "tamanho_pizza",nullable = true)
+    @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
 
     @Column(name = "observacao")
