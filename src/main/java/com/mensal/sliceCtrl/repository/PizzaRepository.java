@@ -9,9 +9,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PizzaRepository extends JpaRepository<Pizzas,Long> {
-    @Query("SELECT p FROM Pizzas p WHERE p.nomeProduto = :nomeProduto")
-    Pizzas findByNome(@Param("nomeProduto") String nomeProduto);
-
     @Query("SELECT p FROM Pizzas p JOIN p.sabor s WHERE s.nomeSabor = :nomeSabor")
     Pizzas findByNomeSabor(@Param("nomeSabor") String nomeSabor);
     @Query("SELECT p FROM Pizzas p WHERE p.tamanho = :tamanho")

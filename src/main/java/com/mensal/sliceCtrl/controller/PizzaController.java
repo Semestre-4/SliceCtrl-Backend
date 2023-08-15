@@ -31,16 +31,6 @@ public class PizzaController {
 
     }
 
-    @GetMapping("/nome/{nomeProduto}")
-    public ResponseEntity<PizzasDTO> getPizzaByNome(@PathVariable("nomeProduto") String nomeProduto) {
-        PizzasDTO pizzaDTOS = pizzaService.findByNome(nomeProduto);
-        if (pizzaDTOS != null) {
-            return ResponseEntity.ok(pizzaDTOS);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @GetMapping("/sabor/{nomeSabor}")
     public ResponseEntity<PizzasDTO> getPizzaByNomeSabor(@PathVariable("nomeSabor") String nomeSabor) {
         PizzasDTO pizzaDTOS = pizzaService.findByNomeSabor(nomeSabor);

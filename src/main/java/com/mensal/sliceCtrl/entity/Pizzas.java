@@ -3,6 +3,7 @@ package com.mensal.sliceCtrl.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Table(name = "pizzas",schema = "public")
 @Getter
 @Setter
-public class Pizzas extends Produtos {
+public class Pizzas extends AbstractEntity {
 
     @Column(name = "tamanho_pizza",nullable = true)
     @Enumerated(EnumType.STRING)
@@ -22,6 +23,10 @@ public class Pizzas extends Produtos {
 
     @Column(name = "observacao")
     private String observacao;
+
+    @NotNull(message = "É obrigatorio informar o preço do produto")
+    @Column(name = "preco_produto", nullable = false)
+    private Double preco;
 
     @ManyToMany(mappedBy = "pizzas")
     private List<Pedidos> pedidos = new ArrayList<>();
@@ -33,5 +38,9 @@ public class Pizzas extends Produtos {
             inverseJoinColumns = @JoinColumn(name = "sabor_id")
     )
     private List<Sabores> sabor;
+
+    @Column(name = "is_disponivel", nullable = false)
+    private boolean disponivel;
+
 
 }

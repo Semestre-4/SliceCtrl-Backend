@@ -35,15 +35,6 @@ public class PizzaService {
         }
     }
 
-    public PizzasDTO findByNome(String nomeProduto) {
-        try {
-            Pizzas pizzaEncontrado = pizzaRepository.findByNome(nomeProduto);
-            return toPizzaDTO(pizzaEncontrado);
-        } catch (EntityNotFoundException ex) {
-            throw new RuntimeException("Ocorreu um erro ao tentar recuperar a pizza.", ex);
-        }
-    }
-
     public PizzasDTO findByNomeSabor(String nomeSabor) {
         try {
             Pizzas pizzaEncontrado = pizzaRepository.findByNomeSabor(nomeSabor);

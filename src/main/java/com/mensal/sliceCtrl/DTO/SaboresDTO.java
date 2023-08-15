@@ -11,5 +11,6 @@ import java.util.List;
 public class SaboresDTO extends AbstractEntityDTO {
     private String nomeSabor;
     private String descricao;
+    private Integer qtdeEstoque;
     private List<IngredientesDTO> ingredientes;
 }

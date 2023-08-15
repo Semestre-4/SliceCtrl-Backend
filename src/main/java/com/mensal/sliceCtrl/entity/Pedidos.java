@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -62,8 +63,9 @@ public class Pedidos extends AbstractEntity {
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
 
-    @OneToOne(mappedBy = "pedido")
-    private Pagamentos pagamento;
+    @Column(name = "forma_pagemento",nullable = false)
+    @NotNull(message = "A forma de pagamento do pedido é obrigatório")
+    private FormasDePagamento formasDePagamento;
 
     @Column(name = "for_entrega")
     private boolean forEntrega;
@@ -73,6 +75,9 @@ public class Pedidos extends AbstractEntity {
 
     @Column(name = "for_dineIn")
     private boolean forDineIn;
+
+    @Column(name = "is_pago")
+    private boolean isPago;
 
     @PrePersist
     public void generateCodigoPedido() {
