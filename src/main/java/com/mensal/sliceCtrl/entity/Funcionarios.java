@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +40,7 @@ public class Funcionarios extends AbstractEntity{
     private BigDecimal salario;
 
     @OneToMany(mappedBy = "funcionario")
+    @JsonIgnore
     private List<Pedidos> pedidos;
 
 }

@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
@@ -8,6 +9,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +19,10 @@ import java.util.List;
 @Table(name = "pizzas",schema = "public")
 @Getter
 @Setter
-public class Pizzas extends AbstractEntity {
+public class Pizzas extends AbstractEntity implements Serializable {
+
+    @Serial
+    private static  final  long serialVersionUID =1L;
 
     @Column(name = "tamanho_pizza",nullable = true)
     @Enumerated(EnumType.STRING)
@@ -34,16 +40,15 @@ public class Pizzas extends AbstractEntity {
     private Integer qtdeEstoque;
 
     @ManyToMany(mappedBy = "pizzas")
-    @JsonIgnore
     private List<Pedidos> pedidos = new ArrayList<>();
 
     @ManyToMany
-    @JsonIgnore
     @JoinTable(
             name = "pizza_sabor",
             joinColumns = @JoinColumn(name = "pizza_id"),
             inverseJoinColumns = @JoinColumn(name = "sabor_id")
     )
+    @JsonIgnore
     private List<Sabores> sabor;
 
     @Column(name = "is_disponivel", nullable = false)

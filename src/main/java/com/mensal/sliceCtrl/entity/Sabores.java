@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +33,6 @@ public class Sabores extends AbstractEntity{
     @Column(name = "descricao_sabor", nullable = true)
     private String descricao;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "sabor-ingrediente",
@@ -41,7 +43,6 @@ public class Sabores extends AbstractEntity{
     private List<Ingredientes> ingredientes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "sabor")
-    @JsonIgnore
     private List<Pizzas> pizzas = new ArrayList<>();
 
 

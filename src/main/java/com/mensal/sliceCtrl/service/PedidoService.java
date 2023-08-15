@@ -85,7 +85,6 @@ public class PedidoService {
         return pedidoRepository.findOrdersWithPendingPayments().stream().map(this::toPedidosDTO).toList();
     }
 
-    @Transactional
     public Pedidos efetuarPedido(PedidosDTO pedidosDTO) {
         if (pedidosDTO == null) {
             throw new IllegalArgumentException("O objeto PedidosDTO não pode ser nulo");
