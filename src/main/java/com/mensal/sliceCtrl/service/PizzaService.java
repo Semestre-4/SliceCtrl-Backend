@@ -2,25 +2,31 @@ package com.mensal.sliceCtrl.service;
 
 
 import com.mensal.sliceCtrl.DTO.PizzasDTO;
+import com.mensal.sliceCtrl.DTO.SaboresDTO;
 import com.mensal.sliceCtrl.entity.Pizzas;
+import com.mensal.sliceCtrl.entity.Sabores;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import com.mensal.sliceCtrl.repository.PizzaRepository;
+import com.mensal.sliceCtrl.repository.SaboresRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PizzaService {
 
     private final PizzaRepository pizzaRepository;
+    private final SaboresRepository saboresRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public PizzaService(PizzaRepository pizzaRepository, ModelMapper modelMapper) {
+    public PizzaService(PizzaRepository pizzaRepository,SaboresRepository saboresRepository, ModelMapper modelMapper) {
         this.pizzaRepository = pizzaRepository;
+        this.saboresRepository = saboresRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -57,15 +63,28 @@ public class PizzaService {
     }
 
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
-        Pizzas pizza = toPizza(pizzaDTO);
+        List<Sabores> sabores = new ArrayList<>();
+        for (SaboresDTO saboresDTO : pizzaDTO.getSabor()) {
+            Sabores saboresEx = saboresRepository.findById(saboresDTO.getId())
+                    .orElseThrow(() ->
+                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " nao encontrada"));
+            sabores.add(saboresEx);
+        }
+        Pizzas pizza = toPizza(pizzaDTO,sabores);
         return pizzaRepository.save(pizza);
     }
 
     public Pizzas updatePizza(Long id, PizzasDTO pizzaDTO) {
         Pizzas existingPizza = pizzaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pizza com ID = " + id + " nao encontrada"));
-
-        Pizzas pizza = toPizza(pizzaDTO);
+        List<Sabores> sabores = new ArrayList<>();
+        for (SaboresDTO saboresDTO : pizzaDTO.getSabor()) {
+            Sabores saboresEx = saboresRepository.findById(saboresDTO.getId())
+                    .orElseThrow(() ->
+                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " nao encontrada"));
+            sabores.add(saboresEx);
+        }
+        Pizzas pizza = toPizza(pizzaDTO,sabores);
         return pizzaRepository.save(pizza);
     }
 
@@ -79,8 +98,10 @@ public class PizzaService {
         return modelMapper.map(pizza, PizzasDTO.class);
     }
 
-    public Pizzas toPizza(PizzasDTO pizzaDTO) {
-        return modelMapper.map(pizzaDTO, Pizzas.class);
+    public Pizzas toPizza(PizzasDTO pizzaDTO,List<Sabores> sabores) {
+        Pizzas pizzas = modelMapper.map(pizzaDTO, Pizzas.class);
+        pizzas.setSabor(sabores);
+        return pizzas;
     }
 
 }

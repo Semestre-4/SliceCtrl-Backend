@@ -27,7 +27,10 @@ public class PizzasDTO extends AbstractEntityDTO{
     @NotNull(message = "É obrigatorio informar o preço do produto")
     private Double preco;
 
-    private List<SaboresDTO> sabor;
+    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
+    @Column(name = "qtde_estoque", nullable = false)
+    private Integer qtdeEstoque;
 
+    private List<SaboresDTO> sabor;
 
 }

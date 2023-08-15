@@ -35,15 +35,9 @@ public class Produtos extends AbstractEntity{
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
-    @Column(name = "qtde_pedido")
-    private Integer qtdePedido;
-
     @NotNull(message = "É obrigatorio informar o preço do produto")
     @Column(name = "preco_produto", nullable = false)
     private Double preco;
-
-    @Column(name = "descricao_sabor", nullable = true)
-    private String descricao;
 
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;

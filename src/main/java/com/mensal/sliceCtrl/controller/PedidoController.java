@@ -97,7 +97,7 @@ public class PedidoController {
             Pedidos createdPedido = pedidoService.efetuarPedido(pedidosDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPedido);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(e);
         }
     }
 

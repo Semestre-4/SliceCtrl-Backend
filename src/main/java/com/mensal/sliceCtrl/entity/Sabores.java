@@ -30,10 +30,6 @@ public class Sabores extends AbstractEntity{
     @Column(name = "descricao_sabor", nullable = true)
     private String descricao;
 
-    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
-    @Column(name = "qtde_estoque", nullable = false)
-    private Integer qtdeEstoque;
-
     @JsonIgnore
     @ManyToMany
     @JoinTable(

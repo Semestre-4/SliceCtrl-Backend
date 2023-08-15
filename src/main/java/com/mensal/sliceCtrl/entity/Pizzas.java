@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
@@ -28,10 +29,16 @@ public class Pizzas extends AbstractEntity {
     @Column(name = "preco_produto", nullable = false)
     private Double preco;
 
+    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
+    @Column(name = "qtde_estoque", nullable = false)
+    private Integer qtdeEstoque;
+
     @ManyToMany(mappedBy = "pizzas")
+    @JsonIgnore
     private List<Pedidos> pedidos = new ArrayList<>();
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "pizza_sabor",
             joinColumns = @JoinColumn(name = "pizza_id"),
@@ -41,6 +48,14 @@ public class Pizzas extends AbstractEntity {
 
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
+
+    @PrePersist @PreUpdate
+    public void UpdateDisponivelFlag(){
+        if (qtdeEstoque != null && qtdeEstoque > 0){
+            setDisponivel(true);
+        }
+    }
+
 
 
 }

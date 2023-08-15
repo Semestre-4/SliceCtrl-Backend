@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import jakarta.persistence.*;
@@ -27,10 +28,11 @@ public class Pedidos extends AbstractEntity {
     @JoinColumn(name = "funcionario_id", nullable = false)
     private Funcionarios funcionario;
 
-    @Column(name = "codigo_pedido", nullable = false, unique = true)
-    private String codigo;
+//    @Column(name = "codigo_pedido", nullable = false, unique = true)
+//    private String codigo;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "pedido_produto",
             joinColumns = @JoinColumn(name = "pedido_id"),
@@ -39,6 +41,7 @@ public class Pedidos extends AbstractEntity {
     private List<Produtos> produtos = new ArrayList<>();
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "pedido_pizza",
             joinColumns = @JoinColumn(name = "pedido_id"),
@@ -65,6 +68,7 @@ public class Pedidos extends AbstractEntity {
 
     @Column(name = "forma_pagemento",nullable = false)
     @NotNull(message = "A forma de pagamento do pedido é obrigatório")
+    @Enumerated(EnumType.STRING)
     private FormasDePagamento formasDePagamento;
 
     @Column(name = "for_entrega")
@@ -78,28 +82,29 @@ public class Pedidos extends AbstractEntity {
 
     @Column(name = "is_pago")
     private boolean isPago;
-
-    @PrePersist
-    public void generateCodigoPedido() {
-        this.codigo = generateCodigoPedidoLogic();
-    }
-
-    private String generateCodigoPedidoLogic() {
-
-        String sequenceNumber = getId().toString();
-
-        String randomPart = generateRandomPart();
-
-        return String.format("PEDIDO-%s-%s", sequenceNumber, randomPart);
-    }
-
-    private String generateRandomPart() {
-        // Generate a random part using a random number generator
-        StringBuilder randomPart = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 4; i++) {
-            randomPart.append(random.nextInt(10));
-        }
-        return randomPart.toString();
-    }
+//
+//    @PrePersist
+//    public void generateCodigoPedido() {
+//        this.codigo = generateCodigoPedidoLogic();
+//    }
+//
+//    private String generateCodigoPedidoLogic() {
+//        Long sequenceNumber = getId();
+//        String sequencePart = sequenceNumber != null ? sequenceNumber.toString() : "UNKNOWN"; // Provide a default value
+//
+//        String randomPart = generateRandomPart();
+//
+//        return String.format("PEDIDO-%s-%s", sequencePart, randomPart);
+//    }
+//
+//
+//    private String generateRandomPart() {
+//        // Generate a random part using a random number generator
+//        StringBuilder randomPart = new StringBuilder();
+//        Random random = new Random();
+//        for (int i = 0; i < 4; i++) {
+//            randomPart.append(random.nextInt(10));
+//        }
+//        return randomPart.toString();
+//    }
 }
