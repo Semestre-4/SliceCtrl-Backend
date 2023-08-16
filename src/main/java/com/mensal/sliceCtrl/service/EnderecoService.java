@@ -4,6 +4,7 @@ import com.mensal.sliceCtrl.DTO.EnderecosDTO;
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
 import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Ingredientes;
+import com.mensal.sliceCtrl.repository.ClienteRepository;
 import com.mensal.sliceCtrl.repository.EnderecoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,15 @@ import java.util.List;
 @Service
 public class EnderecoService {
 
-    @Autowired
-    private EnderecoRepository enderecoRepository;
+    private final EnderecoRepository enderecoRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
-
+    public EnderecoService(EnderecoRepository enderecoRepository,
+                          ModelMapper modelMapper) {
+        this.enderecoRepository = enderecoRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public EnderecosDTO toEnderecosDTO (Enderecos enderecos){
         return modelMapper.map(enderecos, EnderecosDTO.class);
@@ -31,49 +35,36 @@ public class EnderecoService {
     }
 
     public List<EnderecosDTO> getAll(){
-        List<EnderecosDTO> enderecosDTOS = enderecoRepository.findAll().stream().map(this::toEnderecosDTO).toList();
-
-    return enderecosDTOS;
+        return enderecoRepository.findAll().stream().map(this::toEnderecosDTO).toList();
     }
 
     public EnderecosDTO getById(Long id){
         Enderecos enderecos = this.enderecoRepository.findById(id).orElse(null);
-        EnderecosDTO enderecosDTO = toEnderecosDTO(enderecos);
-        return enderecosDTO;
+        return toEnderecosDTO(enderecos);
     }
 
     public List<EnderecosDTO> getByCep(String cep){
-        List<EnderecosDTO> enderecosDTOS = enderecoRepository.findByCep(cep).stream().map(this::toEnderecosDTO).toList();
-        return  enderecosDTOS;
+        return enderecoRepository.findByCep(cep).stream().map(this::toEnderecosDTO).toList();
     }
 
-
-
-    public String cadastrar(EnderecosDTO enderecosDTO){
+    public Enderecos cadastrar(EnderecosDTO enderecosDTO){
         Enderecos enderecos = toEnderecos(enderecosDTO);
-        this.enderecoRepository.save(enderecos);
-        return "Cadastrado com sucesso";
+        return this.enderecoRepository.save(enderecos);
     }
 
     public Enderecos editar(EnderecosDTO enderecosDTO, Long id){
-
         final Enderecos enderecosBanco = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecosBanco, "Endereco inexistente!");
-        Assert.isTrue(enderecosBanco.getId().equals(enderecosDTO.getId()), "Endereco informado não é o mesmo endereco a ser atualizado");
+        Assert.isTrue(enderecosBanco.getId().equals(enderecosDTO.getId()),
+                "Endereco informado não é o mesmo endereco a ser atualizado");
 
         Enderecos enderecos = toEnderecos(enderecosDTO);
-
         return this.enderecoRepository.save(enderecos);
-
     }
 
-    public String delete(final Long id) {
-
+    public void delete(final Long id) {
         final Enderecos enderecos = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecos, "Endereco inexistente!");
-        this.enderecoRepository.delete(enderecos);
-
-        return "Deletado com sucesso!";
-
+        this.enderecoRepository.delete(enderecos);;
     }
     }

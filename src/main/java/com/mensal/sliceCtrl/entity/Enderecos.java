@@ -12,6 +12,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
 @Table(name="enderecos", schema = "public")
 @Getter
 @Setter
-public class Enderecos extends AbstractEntity {
+public class Enderecos extends AbstractEntity{
 
     @NotNull(message = "A rua não pode ser nula")
     @Size(min = 2, max = 50, message = "A rua deve conter entre 2 e 50 caracteres")

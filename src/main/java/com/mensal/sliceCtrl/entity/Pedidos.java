@@ -1,5 +1,10 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -7,6 +12,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +23,16 @@ import java.util.Random;
 @Table(name = "pedidos", schema = "public")
 @Getter
 @Setter
-public class Pedidos extends AbstractEntity {
+public class Pedidos extends AbstractEntity{
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnoreProperties("pedidos")
     private Clientes cliente;
 
     @ManyToOne
     @JoinColumn(name = "funcionario_id", nullable = false)
+    @JsonIgnoreProperties("pedidos")
     private Funcionarios funcionario;
 
     @Column(name = "codigo_pedido", nullable = false, unique = true)
@@ -35,6 +44,7 @@ public class Pedidos extends AbstractEntity {
             joinColumns = @JoinColumn(name = "pedido_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
+    @JsonIgnoreProperties("pedidos")
     private List<Produtos> produtos = new ArrayList<>();
 
     @ManyToMany
@@ -43,6 +53,7 @@ public class Pedidos extends AbstractEntity {
             joinColumns = @JoinColumn(name = "pedido_id"),
             inverseJoinColumns = @JoinColumn(name = "pizza_id")
     )
+    @JsonIgnoreProperties("pedidos")
     private List<Pizzas> pizzas = new ArrayList<>();
 
     @NotNull(message = "O status do pedido é obrigatório")
@@ -62,8 +73,10 @@ public class Pedidos extends AbstractEntity {
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
 
-    @OneToOne(mappedBy = "pedido")
-    private Pagamentos pagamento;
+    @Column(name = "forma_pagemento",nullable = false)
+    @NotNull(message = "A forma de pagamento do pedido é obrigatório")
+    @Enumerated(EnumType.STRING)
+    private FormasDePagamento formasDePagamento;
 
     @Column(name = "for_entrega")
     private boolean forEntrega;
@@ -74,19 +87,23 @@ public class Pedidos extends AbstractEntity {
     @Column(name = "for_dineIn")
     private boolean forDineIn;
 
+    @Column(name = "is_pago")
+    private boolean isPago;
+
     @PrePersist
     public void generateCodigoPedido() {
         this.codigo = generateCodigoPedidoLogic();
     }
 
     private String generateCodigoPedidoLogic() {
-
-        String sequenceNumber = getId().toString();
+        Long sequenceNumber = getId();
+        String sequencePart = sequenceNumber != null ? sequenceNumber.toString() : "UNKNOWN"; // Provide a default value
 
         String randomPart = generateRandomPart();
 
-        return String.format("PEDIDO-%s-%s", sequenceNumber, randomPart);
+        return String.format("PEDIDO-%s-%s", sequencePart, randomPart);
     }
+
 
     private String generateRandomPart() {
         // Generate a random part using a random number generator

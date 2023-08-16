@@ -1,6 +1,5 @@
 package com.mensal.sliceCtrl.controller;
 
-
 import com.mensal.sliceCtrl.DTO.PizzasDTO;
 import com.mensal.sliceCtrl.entity.Pizzas;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
@@ -13,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Esta classe representa a controller para lidar com operações relacionadas a pizzas.
+ */
+
 @RestController
 @RequestMapping("api/pizza")
 public class PizzaController {
@@ -20,24 +23,19 @@ public class PizzaController {
     @Autowired
     public PizzaService pizzaService;
 
+    /**
+     * Recupera uma pizza pelo seu ID.
+     *
+     * @param id O ID da pizza a ser recuperada.
+     * @return ResponseEntity contendo as informações da pizza, se encontrada, ou uma resposta de erro.
+     */
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> getPizzaById(@PathVariable("id") Long id) {
+    public ResponseEntity<PizzasDTO> getPizzaById(@PathVariable("id") Long id) {
         try {
             PizzasDTO pizzaDTO = pizzaService.findById(id);
             return ResponseEntity.ok(pizzaDTO);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e);
-        }
-
-    }
-
-    @GetMapping("/nome/{nomeProduto}")
-    public ResponseEntity<PizzasDTO> getPizzaByNome(@PathVariable("nomeProduto") String nomeProduto) {
-        PizzasDTO pizzaDTOS = pizzaService.findByNome(nomeProduto);
-        if (pizzaDTOS != null) {
-            return ResponseEntity.ok(pizzaDTOS);
-        } else {
-            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao recuperar a pizza.");
         }
     }
 
@@ -52,10 +50,11 @@ public class PizzaController {
     }
 
     @GetMapping("/tamanho/{tamanhoName}")
-    public List<PizzasDTO> getPizzaByTamanho(@PathVariable String tamanhoName) {
+    public ResponseEntity<List<PizzasDTO>> getPizzaByTamanho(@PathVariable String tamanhoName) {
         try {
             Tamanho tamanho = Tamanho.valueOf(tamanhoName);
-            return pizzaService.findByTamanho(tamanho);
+            List<PizzasDTO> pizzasDTOS = pizzaService.findByTamanho(tamanho);
+            return ResponseEntity.ok(pizzasDTOS);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Tamanho Invalido: " + tamanhoName);
         }
@@ -69,38 +68,58 @@ public class PizzaController {
 
 
     @GetMapping("/disponivel")
-    private List<PizzasDTO> getByAvailable(){
-        return this.pizzaService.findByDisponivel();
+    private ResponseEntity<List<PizzasDTO>> getByAvailable(){
+        List<PizzasDTO> pizzasDTOS = pizzaService.findByDisponivel();
+        return ResponseEntity.ok(pizzasDTOS);
     }
 
+
+    /**
+     * Cria uma nova pizza.
+     *
+     * @param pizzaDTO Os dados da pizza a serem cadastrados.
+     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
+     */
     @PostMapping
-    public ResponseEntity<?> postPizza(@RequestBody @Validated PizzasDTO pizzaDTO) {
-        try{
+    public ResponseEntity<String> cadastrarPizza(@RequestBody @Validated PizzasDTO pizzaDTO) {
+        try {
             Pizzas createdPizza = pizzaService.createPizza(pizzaDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPizza);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CREATED).body("O cadastro da pizza foi realizado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
         }
     }
 
+    /**
+     * Atualiza as informações de uma pizza.
+     *
+     * @param id       O ID da pizza a ser editada.
+     * @param pizzaDTO Os dados atualizados da pizza.
+     * @return ResponseEntity indicando o sucesso ou a falha da edição.
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<?> putPizza(@PathVariable Long id, @RequestBody @Validated PizzasDTO pizzaDTO) {
+    public ResponseEntity<String> editarPizza(@PathVariable Long id, @RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
             Pizzas updatedPizza = pizzaService.updatePizza(id, pizzaDTO);
-            return ResponseEntity.ok(updatedPizza);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.ok("O cadastro da pizza foi atualizado com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());
         }
     }
 
+    /**
+     * Exclui uma pizza pelo seu ID.
+     *
+     * @param id O ID da pizza a ser excluída.
+     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePizza(@PathVariable Long id) {
+    public ResponseEntity<String> excluirPizza(@PathVariable Long id) {
         try {
             pizzaService.deletePizza(id);
-            return ResponseEntity.ok().body("Pizza excluida com sucesso!");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok().body("Pizza excluída com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro: " + e.getMessage());
         }
     }
-
 }

@@ -1,11 +1,16 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +19,10 @@ import java.util.List;
 @Table(name = "pizzas",schema = "public")
 @Getter
 @Setter
-public class Pizzas extends Produtos {
+public class Pizzas extends AbstractEntity implements Serializable {
+
+    @Serial
+    private static  final  long serialVersionUID =1L;
 
     @Column(name = "tamanho_pizza",nullable = true)
     @Enumerated(EnumType.STRING)
@@ -22,6 +30,14 @@ public class Pizzas extends Produtos {
 
     @Column(name = "observacao")
     private String observacao;
+
+    @NotNull(message = "É obrigatorio informar o preço do produto")
+    @Column(name = "preco_produto", nullable = false)
+    private Double preco;
+
+    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
+    @Column(name = "qtde_estoque", nullable = false)
+    private Integer qtdeEstoque;
 
     @ManyToMany(mappedBy = "pizzas")
     private List<Pedidos> pedidos = new ArrayList<>();
@@ -32,6 +48,19 @@ public class Pizzas extends Produtos {
             joinColumns = @JoinColumn(name = "pizza_id"),
             inverseJoinColumns = @JoinColumn(name = "sabor_id")
     )
+    @JsonIgnore
     private List<Sabores> sabor;
+
+    @Column(name = "is_disponivel", nullable = false)
+    private boolean disponivel;
+
+    @PrePersist @PreUpdate
+    public void UpdateDisponivelFlag(){
+        if (qtdeEstoque != null && qtdeEstoque > 0){
+            setDisponivel(true);
+        }
+    }
+
+
 
 }

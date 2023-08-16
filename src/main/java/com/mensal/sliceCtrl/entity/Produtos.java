@@ -1,6 +1,8 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Categorias;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +13,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +22,7 @@ import java.util.List;
 @Table(name = "produtos", schema = "public")
 @Getter
 @Setter
-public class Produtos extends AbstractEntity{
+public class Produtos extends AbstractEntity {
 
     @NotNull(message = "É obrigatorio informar o nome do produto")
     @NotBlank(message = "É obrigatorio informar o nome do produto")
@@ -35,20 +39,13 @@ public class Produtos extends AbstractEntity{
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
-    @Column(name = "qtde_pedido")
-    private Integer qtdePedido;
-
     @NotNull(message = "É obrigatorio informar o preço do produto")
     @Column(name = "preco_produto", nullable = false)
     private Double preco;
 
-    @Column(name = "descricao_sabor", nullable = true)
-    private String descricao;
-
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "produtos")
     private List<Pedidos> pedidos = new ArrayList<>();
 

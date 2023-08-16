@@ -1,6 +1,6 @@
 package com.mensal.sliceCtrl.controller;
 
-import com.mensal.sliceCtrl.DTO.EnderecosDTO;
+import com.mensal.sliceCtrl.DTO.FuncionariosDTO;
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
 import com.mensal.sliceCtrl.service.IngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Esta classe representa o controlador para lidar com operações relacionadas a ingredientes.
+ */
+
 @RestController
 @RequestMapping("/api/ingredientes")
 public class IngredienteController {
@@ -17,48 +21,98 @@ public class IngredienteController {
     @Autowired
     private IngredienteService ingredienteService;
 
-
+    /**
+     * Recupera uma lista de todos os ingredientes.
+     *
+     * @return Lista contendo todos os ingredientes.
+     */
     @GetMapping("/all")
-    private List<IngredientesDTO> getAll(){ return this.ingredienteService.getAll(); }
-
-    @GetMapping("/nome")
-    private IngredientesDTO getByNome(@RequestParam("nome") String nome){
-        return this.ingredienteService.getByNome(nome);
+    private ResponseEntity<List<IngredientesDTO>> getAllIngredientes() {
+        List<IngredientesDTO> ingredientesDTOS = ingredienteService.getAll();
+        return ResponseEntity.ok(ingredientesDTOS);
     }
+
+    /**
+     * Recupera um ingrediente pelo seu nome.
+     *
+     * @param nome O nome do ingrediente a ser recuperado.
+     * @return ResponseEntity contendo as informações do ingrediente, se encontrado, ou uma resposta de "não encontrado".
+     */
+    @GetMapping("nome/{nome}")
+    private ResponseEntity<IngredientesDTO> getIngredienteByNome(@PathVariable("nome") String nome) {
+        IngredientesDTO ingredientesDTO = ingredienteService.getByNome(nome);
+        if (ingredientesDTO != null) {
+            return ResponseEntity.ok(ingredientesDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Recupera um ingrediente pelo seu ID.
+     *
+     * @param id O ID do ingrediente a ser recuperado.
+     * @return ResponseEntity contendo as informações do ingrediente, se encontrado, ou uma resposta de "não encontrado".
+     */
     @GetMapping("/{id}")
-    private IngredientesDTO getById(@PathVariable("id") Long id){
-        return this.ingredienteService.getById(id);
+    private ResponseEntity<IngredientesDTO> getIngredienteById(@PathVariable("id") Long id) {
+        IngredientesDTO ingredientesDTO = ingredienteService.getById(id);
+        if (ingredientesDTO != null) {
+            return ResponseEntity.ok(ingredientesDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    /**
+     * Cria um novo ingrediente.
+     *
+     * @param ingredientesDTO Os dados do ingrediente a serem cadastrados.
+     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
+     */
     @PostMapping
-    private ResponseEntity<String> cadastrar(@RequestBody final IngredientesDTO ingredientesDTO){
-        try{
-        this.ingredienteService.cadastrar(ingredientesDTO);
-        return ResponseEntity.ok().body("Cadastrado com sucesso");
-    }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+    private ResponseEntity<String> cadastrarIngrediente(@RequestBody @Validated IngredientesDTO ingredientesDTO) {
+        try {
+            this.ingredienteService.cadastrar(ingredientesDTO);
+            return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi realizado com sucesso.",
+                    ingredientesDTO.getNomeIngrediente()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
         }
     }
 
-    @PutMapping
-    private ResponseEntity<String> editar( @RequestParam("id") final Long id, @RequestBody final IngredientesDTO ingredientesDTO){
-        try{
+    /**
+     * Edita as informações de um ingrediente.
+     *
+     * @param id           O ID do ingrediente a ser editado.
+     * @param ingredientesDTO Os dados atualizados do ingrediente.
+     * @return ResponseEntity indicando o sucesso ou a falha da edição.
+     */
+    @PutMapping("/{id}")
+    private ResponseEntity<String> editarIngrediente(@PathVariable("id") final Long id,
+                                                     @RequestBody @Validated IngredientesDTO ingredientesDTO) {
+        try {
             this.ingredienteService.editar(ingredientesDTO, id);
-            return ResponseEntity.ok().body("Editado com sucesso!");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi atualizado com sucesso.",
+                    ingredientesDTO.getNomeIngrediente()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());
         }
     }
 
+    /**
+     * Exclui um ingrediente pelo seu ID.
+     *
+     * @param id O ID do ingrediente a ser excluído.
+     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
+     */
     @DeleteMapping
-    private ResponseEntity<String> deletar(@RequestParam("id") final  Long id){
-
-        try{
+    private ResponseEntity<String> excluirIngrediente(@RequestParam("id") final Long id) {
+        try {
             this.ingredienteService.delete(id);
-            return ResponseEntity.ok().body("Deletado com sucesso!");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok().body("Ingrediente excluído com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro: " + e.getMessage());
         }
-
     }
 }

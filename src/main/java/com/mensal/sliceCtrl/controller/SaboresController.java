@@ -4,9 +4,14 @@ import com.mensal.sliceCtrl.DTO.SaboresDTO;
 import com.mensal.sliceCtrl.service.SaboresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+/**
+ * Esta classe representa a controller para lidar com operações relacionadas a sabores.
+ */
 
 @RestController
 @RequestMapping("/api/sabores")
@@ -15,48 +20,84 @@ public class SaboresController {
     @Autowired
     private SaboresService saboresService;
 
+    /**
+     * Recupera todos os sabores cadastrados.
+     *
+     * @return ResponseEntity contendo a lista de sabores ou uma resposta de erro.
+     */
     @GetMapping("/all")
-    private List<SaboresDTO> getAll(){
-        return this.saboresService.getAll();
+    private ResponseEntity<List<SaboresDTO>> getAllSabores() {
+        List<SaboresDTO> saboresDTOS = saboresService.getAll();
+        return ResponseEntity.ok(saboresDTOS);
     }
 
-    @GetMapping("/nome={nomeSabor}")
-    private SaboresDTO getByNome(@PathVariable("nomeSabor") String nomeSabor){
-        return this.saboresService.getByNome(nomeSabor);
-    }
-
-    @GetMapping("/{id}")
-    private SaboresDTO getById(@PathVariable("id") Long id){
-        return this.saboresService.getById(id);
-    }
-
-    @PostMapping
-    private ResponseEntity<String> cadastrar(@RequestBody SaboresDTO saboresDTO){
-        try{
-            this.saboresService.cadastrar(saboresDTO);
-            return  ResponseEntity.ok().body("Cadastrado com sucesso!");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @GetMapping("/nome/{nomeSabor}")
+    private ResponseEntity<SaboresDTO> getByNome(@PathVariable("nomeSabor") String nomeSabor){
+        SaboresDTO saboresDTO = saboresService.getByNome(nomeSabor);
+        if (saboresDTO != null) {
+            return ResponseEntity.ok(saboresDTO);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @PutMapping
-    private ResponseEntity<String> editar(@RequestBody SaboresDTO saboresDTO){
+    @GetMapping("id/{id}")
+    private ResponseEntity<SaboresDTO> getById(@PathVariable("id") Long id){
+        SaboresDTO saboresDTO = saboresService.getById(id);
+        if (saboresDTO != null) {
+            return ResponseEntity.ok(saboresDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Cria um novo sabor.
+     *
+     * @param saboresDTO Os dados do sabor a serem cadastrados.
+     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
+     */
+    @PostMapping
+    private ResponseEntity<String> cadastrarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
+        try {
+            this.saboresService.cadastrar(saboresDTO);
+            return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi realizado com sucesso.",
+                    saboresDTO.getNomeSabor()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Atualiza as informações de um sabor.
+     *
+     * @param saboresDTO Os dados atualizados do sabor.
+     * @return ResponseEntity indicando o sucesso ou a falha da edição.
+     */
+    @PutMapping("/{id}")
+    private ResponseEntity<String> editarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
         try {
             this.saboresService.editar(saboresDTO);
-            return ResponseEntity.ok().body("Editado com sucesso!");
-            }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi atualizado com sucesso.",
+                    saboresDTO.getNomeSabor()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/delete/id={id}")
-    private ResponseEntity<String> deletar(@PathVariable("id") Long id){
+    /**
+     * Exclui um sabor pelo seu ID.
+     *
+     * @param id O ID do sabor a ser excluído.
+     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
+     */
+    @DeleteMapping("/{id}")
+    private ResponseEntity<String> excluirSabor(@PathVariable("id") Long id){
         try{
             this.saboresService.deletar(id);
-            return ResponseEntity.ok().body("Deletado com sucesso!");
+            return ResponseEntity.ok().body("Sabor excluido com sucesso!");
         }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Ocorreu um erro: " + e.getMessage());
         }
 
     }

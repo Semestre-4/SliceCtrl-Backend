@@ -12,4 +12,5 @@ public class SaboresDTO extends AbstractEntityDTO {
     private String nomeSabor;
     private String descricao;
     private List<IngredientesDTO> ingredientes;
+
 }

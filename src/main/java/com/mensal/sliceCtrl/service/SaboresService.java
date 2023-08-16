@@ -14,11 +14,15 @@ import java.util.List;
 @Service
 public class SaboresService {
 
-    @Autowired
     private SaboresRepository saboresRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public SaboresService(SaboresRepository saboresRepository,
+                          ModelMapper modelMapper) {
+        this.saboresRepository = saboresRepository;
+        this.modelMapper = modelMapper;
+    }
 
     private SaboresDTO toSaboresDTO (Sabores sabores){
         return modelMapper.map(sabores, SaboresDTO.class);
@@ -29,46 +33,40 @@ public class SaboresService {
     }
 
     public List<SaboresDTO> getAll(){
-        List<SaboresDTO> saboresDTO = saboresRepository.findAll().stream().map(this::toSaboresDTO).toList();
-        return saboresDTO;
+        return saboresRepository.findAll().stream().map(this::toSaboresDTO).toList();
     }
 
     public SaboresDTO getByNome(String nomeSabor){
         Sabores sabores = this.saboresRepository.findByNome(nomeSabor);
-        SaboresDTO saboresDTO = toSaboresDTO(sabores);
-        return saboresDTO;
+        return toSaboresDTO(sabores);
     }
 
     public SaboresDTO getById(Long id){
         Sabores sabores = this.saboresRepository.findById(id).orElse(null);
-        SaboresDTO saboresDTO = toSaboresDTO(sabores);
-        return  saboresDTO;
+        return toSaboresDTO(sabores);
     }
 
-    public ResponseEntity<String> cadastrar(SaboresDTO saboresDTO){
+    public Sabores cadastrar(SaboresDTO saboresDTO){
         Assert.hasText(saboresDTO.getNomeSabor(), "O nome deve ser informado corretamente!");
         Assert.notNull(saboresDTO.getIngredientes(), "Não informado ingredientes");
 
         Sabores sabores = toSabores(saboresDTO);
-        this.saboresRepository.save(sabores);
-        return ResponseEntity.ok().body("Cadastrado com sucesso!");
+        return this.saboresRepository.save(sabores);
     }
 
-    public ResponseEntity<String> editar(SaboresDTO saboresDTO){
+    public Sabores editar(SaboresDTO saboresDTO){
         Sabores sabores = toSabores(saboresDTO);
         Assert.notNull(saboresDTO.getIngredientes(), "Não informado ingredientes");
 
-        this.saboresRepository.save(sabores);
-        return ResponseEntity.ok().body("Editado com sucesso");
+        return this.saboresRepository.save(sabores);
     }
 
-    public ResponseEntity<String> deletar(Long id){
+    public void deletar(Long id){
 
         final Sabores sabores = this.saboresRepository.findById(id).orElse(null);
         Assert.notNull(sabores, "Sabor inexistente!");
 
         this.saboresRepository.delete(sabores);
-        return ResponseEntity.ok().body("Deletado com sucesso!");
     }
 
 }
