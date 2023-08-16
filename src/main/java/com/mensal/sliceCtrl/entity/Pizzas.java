@@ -21,7 +21,8 @@ import java.util.List;
 @Setter
 public class Pizzas extends AbstractEntity{
 
-    @Column(name = "tamanho_pizza",nullable = true)
+    @Column(name = "tamanho_pizza",nullable = false)
+    @NotNull(message = "É obrigatorio informar o tamanho da pizza")
     @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
 
@@ -46,6 +47,7 @@ public class Pizzas extends AbstractEntity{
             inverseJoinColumns = @JoinColumn(name = "sabor_id")
     )
     @JsonIgnore
+    @NotNull(message = "É obrigatorio informar pelo menos 1 sabor")
     private List<Sabores> sabor;
 
     @Column(name = "is_disponivel", nullable = false)

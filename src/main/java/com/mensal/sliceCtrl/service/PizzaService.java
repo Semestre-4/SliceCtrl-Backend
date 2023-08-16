@@ -9,6 +9,7 @@ import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import com.mensal.sliceCtrl.repository.PizzaRepository;
 import com.mensal.sliceCtrl.repository.SaboresRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,32 +63,79 @@ public class PizzaService {
         return pizzaRepository.findByDisponivelTrue().stream().map(this::toPizzaDTO).toList();
     }
 
+    @Transactional
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
         List<Sabores> sabores = new ArrayList<>();
         for (SaboresDTO saboresDTO : pizzaDTO.getSabor()) {
             Sabores saboresEx = saboresRepository.findById(saboresDTO.getId())
                     .orElseThrow(() ->
-                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " nao encontrada"));
+                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " não encontrado"));
             sabores.add(saboresEx);
         }
-        Pizzas pizza = toPizza(pizzaDTO,sabores);
+
+        int numberOfSabores = sabores.size();
+        int minSabores = 1;
+        int maxSabores;
+
+        if (pizzaDTO.getTamanho() == Tamanho.P) {
+            maxSabores = 1;
+        } else if (pizzaDTO.getTamanho() == Tamanho.M) {
+            maxSabores = 2;
+        } else if (pizzaDTO.getTamanho() == Tamanho.G) {
+            maxSabores = 3;
+        } else if (pizzaDTO.getTamanho() == Tamanho.XG) {
+            maxSabores = 4;
+        } else {
+            throw new IllegalArgumentException("Tamanho de pizza inválido: " + pizzaDTO.getTamanho());
+        }
+
+        if (numberOfSabores < minSabores || numberOfSabores > maxSabores) {
+            throw new IllegalArgumentException("Quantidade de sabores inválida para o tamanho da pizza " + pizzaDTO.getTamanho());
+        }
+
+        Pizzas pizza = toPizza(pizzaDTO, sabores);
         return pizzaRepository.save(pizza);
     }
 
+
+    @Transactional
     public Pizzas updatePizza(Long id, PizzasDTO pizzaDTO) {
         Pizzas existingPizza = pizzaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Pizza com ID = " + id + " nao encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Pizza com ID = " + id + " não encontrada"));
+
         List<Sabores> sabores = new ArrayList<>();
         for (SaboresDTO saboresDTO : pizzaDTO.getSabor()) {
             Sabores saboresEx = saboresRepository.findById(saboresDTO.getId())
                     .orElseThrow(() ->
-                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " nao encontrada"));
+                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " não encontrada"));
             sabores.add(saboresEx);
         }
-        Pizzas pizza = toPizza(pizzaDTO,sabores);
-        return pizzaRepository.save(pizza);
+
+        int numberOfSabores = sabores.size();
+        int minSabores = 1;
+        int maxSabores;
+
+        if (pizzaDTO.getTamanho() == Tamanho.P) {
+            maxSabores = 1;
+        } else if (pizzaDTO.getTamanho() == Tamanho.M) {
+            maxSabores = 2;
+        } else if (pizzaDTO.getTamanho() == Tamanho.G) {
+            maxSabores = 3;
+        } else if (pizzaDTO.getTamanho() == Tamanho.XG) {
+            maxSabores = 4;
+        } else {
+            throw new IllegalArgumentException("Tamanho de pizza inválido: " + pizzaDTO.getTamanho());
+        }
+
+        if (numberOfSabores < minSabores || numberOfSabores > maxSabores) {
+            throw new IllegalArgumentException("Quantidade de sabores inválida para o tamanho da pizza " + pizzaDTO.getTamanho());
+        }
+
+        return pizzaRepository.save(toPizza(pizzaDTO,sabores));
     }
 
+
+    @Transactional
     public void deletePizza(Long id) {
         Pizzas pizzaToDelete = pizzaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pizza com ID = : " + id + "nao encontrada"));
