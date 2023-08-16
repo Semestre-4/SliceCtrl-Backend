@@ -19,6 +19,8 @@ public class PedidosDTO extends AbstractEntityDTO {
 
     private Clientes clienteId;
     private Funcionarios funcionarioId;
+
+    private String codigo;
     private List<ProdutosDTO> produtos;
     private List<PizzasDTO> pizzas;
 

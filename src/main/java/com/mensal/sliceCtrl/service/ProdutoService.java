@@ -1,6 +1,7 @@
 package com.mensal.sliceCtrl.service;
 
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
+import com.mensal.sliceCtrl.DTO.PizzasDTO;
 import com.mensal.sliceCtrl.DTO.ProdutosDTO;
 import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Produtos;
@@ -16,10 +17,15 @@ import java.util.List;
 @Service
 public class ProdutoService {
 
-    @Autowired
     private ProdutoRepository produtoRepository;
-    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    public ProdutoService(ProdutoRepository produtoRepository,
+                          ModelMapper modelMapper) {
+        this.produtoRepository = produtoRepository;
+        this.modelMapper = modelMapper;
+    }
 
 
     public Produtos toProdutos(ProdutosDTO produtosDTO) {
@@ -31,47 +37,39 @@ public class ProdutoService {
     }
 
     public List<ProdutosDTO> getAll() {
-        List<ProdutosDTO> produtosDTO = produtoRepository.findAll().stream().map(this::toProdutosDTO).toList();
-        return produtosDTO;
+        return produtoRepository.findAll().stream().map(this::toProdutosDTO).toList();
     }
 
     public ProdutosDTO getByNome(String nomeProduto) {
         Produtos produtos = this.produtoRepository.findByNome(nomeProduto);
-        ProdutosDTO produtosDTO = toProdutosDTO(produtos);
-        return produtosDTO;
+        return toProdutosDTO(produtos);
     }
 
     public ProdutosDTO getById(Long id) {
         Produtos produtos = this.produtoRepository.findById(id).orElse(null);
-        ProdutosDTO produtosDTO = toProdutosDTO(produtos);
-        return produtosDTO;
+        return toProdutosDTO(produtos);
     }
 
     public List<ProdutosDTO> findByCategoria(Categorias categoria) {
         return this.produtoRepository.findByCategoria(categoria).stream().map(this::toProdutosDTO).toList();
     }
 
-
-    public List<ProdutosDTO> getByDisponivel(Boolean disponivel) {
-        List<ProdutosDTO> produtosDTO = produtoRepository.findByDisponivel(disponivel).stream().map(this::toProdutosDTO).toList();
-        return produtosDTO;
-    }
-
-    public ResponseEntity<String> cadastrar(ProdutosDTO produtosDTO) {
+    public Produtos cadastrar(ProdutosDTO produtosDTO) {
         Produtos produtos = toProdutos(produtosDTO);
-        this.produtoRepository.save(produtos);
-        return ResponseEntity.ok().body("Cadastrado com sucesso!");
+        return this.produtoRepository.save(produtos);
     }
 
-    public ResponseEntity<String> editar(ProdutosDTO produtosDTO){
+    public Produtos editar(ProdutosDTO produtosDTO){
         Produtos produtos = toProdutos(produtosDTO);
-        this.produtoRepository.save(produtos);
-        return ResponseEntity.ok().body("Editado com sucesso!");
+        return this.produtoRepository.save(produtos);
     }
 
-    public ResponseEntity<String> deletar(Long id){
+    public void deletar(Long id){
         this.produtoRepository.deleteById(id);
-        return ResponseEntity.ok().body("Deletado com sucesso!");
+    }
+
+    public List<ProdutosDTO> findByDisponivel() {
+        return produtoRepository.findByDisponivelTrue().stream().map(this::toProdutosDTO).toList();
     }
 
 }

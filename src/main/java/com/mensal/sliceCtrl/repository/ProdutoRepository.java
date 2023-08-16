@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Arrays;
 import java.util.List;
 
 public interface ProdutoRepository  extends JpaRepository<Produtos, Long> {
@@ -16,9 +17,6 @@ public interface ProdutoRepository  extends JpaRepository<Produtos, Long> {
     @Query("FROM Produtos p WHERE p.categoria = :categoria")
     List<Produtos> findByCategoria(@Param("categoria") Categorias categoria);
 
-    @Query("from Produtos where disponivel = :disponivel")
-    public List<Produtos> findByDisponivel(@Param("disponivel") final Boolean disponivel);
-
-
-
+    @Query("SELECT p FROM Produtos p WHERE p.disponivel = true")
+    List<Produtos> findByDisponivelTrue();
 }

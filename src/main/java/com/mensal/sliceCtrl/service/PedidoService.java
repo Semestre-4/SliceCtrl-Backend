@@ -7,8 +7,6 @@ import com.mensal.sliceCtrl.entity.*;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import com.mensal.sliceCtrl.repository.*;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.Transient;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
