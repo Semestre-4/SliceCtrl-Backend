@@ -28,6 +28,9 @@ public class Sabores extends AbstractEntity{
     @Column(name = "descricao_sabor", nullable = true)
     private String descricao;
 
+    @Column(name = "valor_adicional", nullable = true)
+    private double valorAdicional;
+
     @ManyToMany
     @JoinTable(
             name = "sabor-ingrediente",
