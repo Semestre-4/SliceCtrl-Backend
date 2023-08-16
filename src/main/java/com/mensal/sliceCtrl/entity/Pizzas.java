@@ -19,10 +19,7 @@ import java.util.List;
 @Table(name = "pizzas",schema = "public")
 @Getter
 @Setter
-public class Pizzas extends AbstractEntity implements Serializable {
-
-    @Serial
-    private static  final  long serialVersionUID =1L;
+public class Pizzas extends AbstractEntity{
 
     @Column(name = "tamanho_pizza",nullable = true)
     @Enumerated(EnumType.STRING)
