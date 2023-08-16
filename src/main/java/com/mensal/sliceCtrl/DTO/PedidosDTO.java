@@ -17,12 +17,12 @@ import java.util.List;
 @Setter
 public class PedidosDTO extends AbstractEntityDTO {
 
+    @NotNull(message = "É obrigatorio informar o cliente associado")
     private Clientes clienteId;
+    @NotNull(message = "É obrigatorio informar o funcionario associado")
     private Funcionarios funcionarioId;
-    private String codigo;
     private List<ProdutosDTO> produtos;
     private List<PizzasDTO> pizzas;
-
     @NotNull(message = "O status do pedido é obrigatório")
     private Status status;
 
@@ -35,6 +35,7 @@ public class PedidosDTO extends AbstractEntityDTO {
     @DecimalMin(value = "0.0", message = "O valor total deve ser maior ou igual a 0")
     private BigDecimal valorTotal;
 
+    @NotNull(message = "A forma de pagamento do pedido é obrigatório")
     private FormasDePagamento formasDePagamento;
 
     private boolean forEntrega;

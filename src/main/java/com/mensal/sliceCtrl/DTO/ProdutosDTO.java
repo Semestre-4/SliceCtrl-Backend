@@ -24,11 +24,11 @@ public class ProdutosDTO extends AbstractEntityDTO {
     @NotNull(message = "É obrigatorio informar a quantidade de estoque")
     private Integer qtdeEstoque;
 
+    @NotNull(message = "É obrigatorio informar a qtde do produto")
     private Integer qtdePedido;
 
     @NotNull(message = "É obrigatorio informar o preço do produto")
     private BigDecimal preco;
     private String descricao;
-    private boolean disponivel;
 
 }

@@ -122,8 +122,7 @@ public class PedidoController {
     public ResponseEntity<String> efetuarPedido(@RequestBody @Validated PedidosDTO pedidosDTO) {
         try {
             Pedidos createdPedido = pedidoService.efetuarPedido(pedidosDTO);
-            return ResponseEntity.ok(String.format("O pedido com código '%s' foi efetuado com sucesso.",
-                    pedidosDTO.getCodigo()));
+            return ResponseEntity.ok("O pedido foi efetuado com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
         }
@@ -152,8 +151,7 @@ public class PedidoController {
                         body("Pagamento foi efetuado. Não é possível editar o pedido.");
             } else {
                 Pedidos updatedPedido = pedidoService.updatePedido(id, pedidosDTO);
-                return ResponseEntity.ok(String.format("O pedido com código '%s' foi atualizado com sucesso.",
-                        pedidosDTO.getCodigo()));
+                return ResponseEntity.ok("O pedido foi atualizado com sucesso.");
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());
