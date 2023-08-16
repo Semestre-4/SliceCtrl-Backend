@@ -18,6 +18,8 @@ public class SaboresDTO extends AbstractEntityDTO {
     @Size(min = 2, max = 50, message = "O nome deve ter entre 2 e 50 caracteres")
     private String nomeSabor;
     private String descricao;
+
+    private double valorAdicional;
     private List<IngredientesDTO> ingredientes;
 
 }
