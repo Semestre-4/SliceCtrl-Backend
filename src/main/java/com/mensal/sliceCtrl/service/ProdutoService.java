@@ -65,8 +65,16 @@ public class ProdutoService {
     }
 
     public void deletar(Long id){
-        this.produtoRepository.deleteById(id);
-    }
+        Produtos produtos = this.produtoRepository.findById(id).orElse(null);
+
+
+        if (produtos != null) {
+            if (!produtos.getPedidos().isEmpty()) {
+                throw new IllegalArgumentException("Não é possível excluir o produto devido à relação com pedidos existentes.");
+            } else {
+                this.produtoRepository.delete(produtos);
+            }
+    }}
 
     public List<ProdutosDTO> findByDisponivel() {
         return produtoRepository.findByDisponivelTrue().stream().map(this::toProdutosDTO).toList();
