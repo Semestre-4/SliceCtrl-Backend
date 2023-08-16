@@ -47,6 +47,10 @@ public class FuncionarioService {
     }
 
     public Funcionarios createFuncionario(FuncionariosDTO funcionariosDTO) {
+        // Check if the CPF already exists
+        if (funcionarioRepository.existsByCpf(funcionariosDTO.getCpf())) {
+            throw new IllegalArgumentException("Funcionario com CPF = " + funcionariosDTO.getCpf() + " já existe");
+        }
         Funcionarios funcionarios = toFunc(funcionariosDTO);
         return funcionarioRepository.save(funcionarios);
     }
@@ -55,13 +59,22 @@ public class FuncionarioService {
         Funcionarios existingFunc = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = " + id + " nao encontrado"));
 
+        if (!id.equals(funcionariosDTO.getId())) {
+            throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
+        }
+
+        if (funcionarioRepository.existsByCpfAndIdNot(funcionariosDTO.getCpf(), id)) {
+            throw new IllegalArgumentException("CPF já está sendo usado por outro Funcionario");
+        }
+
         Funcionarios funcionarios = toFunc(funcionariosDTO);
         return funcionarioRepository.save(funcionarios);
     }
 
+
     public void deleteFuncionario(Long id) {
         Funcionarios funcToDelete = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + "nao encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + " não foi encontrado"));
         funcionarioRepository.delete(funcToDelete);
     }
 

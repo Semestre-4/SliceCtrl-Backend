@@ -94,7 +94,7 @@ public class ClienteController {
                     clientesDTO.getNome()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: "
-                    + e.getCause().getCause().getMessage());
+                    + e.getMessage());
         }
     }
 
@@ -113,7 +113,7 @@ public class ClienteController {
                     clientesDTO.getNome()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: "
-                    + e.getCause().getCause().getMessage());
+                    + e.getMessage());
         }
     }
 

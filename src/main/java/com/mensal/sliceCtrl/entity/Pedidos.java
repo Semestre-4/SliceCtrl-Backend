@@ -30,7 +30,7 @@ public class Pedidos extends AbstractEntity{
     @JsonIgnoreProperties("pedidos")
     private Clientes cliente;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "funcionario_id", nullable = false)
     @JsonIgnoreProperties("pedidos")
     private Funcionarios funcionario;

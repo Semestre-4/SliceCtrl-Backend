@@ -60,6 +60,11 @@ public class ClienteService {
 
     @Transactional
     public Clientes createCliente(ClientesDTO clientesDTO) {
+
+        if (clienteRepository.existsByCpf(clientesDTO.getCpf())) {
+            throw new IllegalArgumentException("Cliente com CPF = " + clientesDTO.getCpf() + " já existe");
+        }
+
         List<Enderecos> enderecosList = new ArrayList<>();
 
         for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
@@ -68,14 +73,17 @@ public class ClienteService {
             enderecosList.add(existingEndereco);
         }
 
+
+        validateEnderecoIds(clientesDTO.getEnderecos());
+
         Clientes clientes = toCliente(clientesDTO, enderecosList);
 
         return clienteRepository.save(clientes);
     }
 
+
     @Transactional
     public Clientes updateCliente(Long id, ClientesDTO clientesDTO) {
-
         Clientes existingClientes = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = " + id + " nao encontrado"));
 
@@ -87,12 +95,22 @@ public class ClienteService {
 
         for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
             Enderecos existingEndereco = enderecoRepository.findById(enderecoDTO.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = "
-                            + enderecoDTO.getId() + " não encontrado"));
+                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " não encontrado"));
             existingEnderecos.add(toEnderecos(enderecoDTO));
         }
+
+        // Additional check to ensure the provided endereco ID exists
+        validateEnderecoIds(clientesDTO.getEnderecos());
+
         Clientes clientes = toCliente(clientesDTO, existingEnderecos);
         return clienteRepository.save(clientes);
+    }
+
+    private void validateEnderecoIds(List<EnderecosDTO> enderecoDTOs) {
+        for (EnderecosDTO enderecoDTO : enderecoDTOs) {
+            enderecoRepository.findById(enderecoDTO.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " nao encontrado"));
+        }
     }
 
 

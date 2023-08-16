@@ -14,4 +14,10 @@ public interface FuncionarioRepository extends JpaRepository<Funcionarios,Long> 
 
     @Query("SELECT f FROM Funcionarios f WHERE f.cpf = :cpf")
     Funcionarios findByCpf(String cpf);
+
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Funcionarios c WHERE c.cpf = ?1")
+    boolean existsByCpf(String cpf);
+
+    @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END FROM Funcionarios f WHERE f.cpf = ?1 AND f.id <> ?2")
+    boolean existsByCpfAndIdNot(String cpf, Long id);
 }

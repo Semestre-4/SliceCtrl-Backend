@@ -39,7 +39,7 @@ public class Funcionarios extends AbstractEntity{
     @NotNull(message = "O campo 'salario' não pode ser nulo")
     private BigDecimal salario;
 
-    @OneToMany(mappedBy = "funcionario")
+    @OneToMany(mappedBy = "funcionario",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Pedidos> pedidos;
 
