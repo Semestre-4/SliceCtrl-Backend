@@ -4,6 +4,7 @@ import com.mensal.sliceCtrl.DTO.FuncionariosDTO;
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
 import com.mensal.sliceCtrl.service.IngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +36,12 @@ public class IngredienteController {
     /**
      * Recupera um ingrediente pelo seu nome.
      *
-     * @param nome O nome do ingrediente a ser recuperado.
+     * @param nomeIngrediente O nome do ingrediente a ser recuperado.
      * @return ResponseEntity contendo as informações do ingrediente, se encontrado, ou uma resposta de "não encontrado".
      */
-    @GetMapping("nome/{nome}")
-    private ResponseEntity<IngredientesDTO> getIngredienteByNome(@PathVariable("nome") String nome) {
-        IngredientesDTO ingredientesDTO = ingredienteService.getByNome(nome);
+    @GetMapping("nome/{nomeIngrediente}")
+    private ResponseEntity<IngredientesDTO> getIngredienteByNome(@PathVariable("nomeIngrediente") String nomeIngrediente) {
+        IngredientesDTO ingredientesDTO = ingredienteService.getByNome(nomeIngrediente);
         if (ingredientesDTO != null) {
             return ResponseEntity.ok(ingredientesDTO);
         } else {
@@ -56,11 +57,15 @@ public class IngredienteController {
      */
     @GetMapping("/{id}")
     private ResponseEntity<IngredientesDTO> getIngredienteById(@PathVariable("id") Long id) {
-        IngredientesDTO ingredientesDTO = ingredienteService.getById(id);
-        if (ingredientesDTO != null) {
-            return ResponseEntity.ok(ingredientesDTO);
-        } else {
-            return ResponseEntity.notFound().build();
+        try {
+            IngredientesDTO ingredientesDTO = ingredienteService.getById(id);
+            if (ingredientesDTO != null) {
+                return ResponseEntity.ok(ingredientesDTO);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

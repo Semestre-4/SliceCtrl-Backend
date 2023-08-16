@@ -1,8 +1,12 @@
 package com.mensal.sliceCtrl.service;
 
+import com.mensal.sliceCtrl.DTO.IngredientesDTO;
 import com.mensal.sliceCtrl.DTO.SaboresDTO;
+import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.entity.Sabores;
+import com.mensal.sliceCtrl.repository.IngredienteRepository;
 import com.mensal.sliceCtrl.repository.SaboresRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +14,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SaboresService {
 
     private SaboresRepository saboresRepository;
+    private IngredienteRepository ingredienteRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
     public SaboresService(SaboresRepository saboresRepository,
+                          IngredienteRepository ingredienteRepository,
                           ModelMapper modelMapper) {
         this.saboresRepository = saboresRepository;
+        this.ingredienteRepository = ingredienteRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -46,27 +54,59 @@ public class SaboresService {
         return toSaboresDTO(sabores);
     }
 
-    public Sabores cadastrar(SaboresDTO saboresDTO){
-        Assert.hasText(saboresDTO.getNomeSabor(), "O nome deve ser informado corretamente!");
-        Assert.notNull(saboresDTO.getIngredientes(), "Não informado ingredientes");
+    @Transactional
+    public Sabores cadastrar(SaboresDTO saboresDTO) {
+        String nomeSabor = saboresDTO.getNomeSabor();
+
+        // Verificar se o sabor com o nome já existe no banco
+        Optional<Sabores> saborExistente = saboresRepository.findByNomeSabor(nomeSabor);
+        if (saborExistente.isPresent()) {
+            throw new IllegalArgumentException("O sabor com o nome '" + nomeSabor + "' já existe.");
+        }
 
         Sabores sabores = toSabores(saboresDTO);
+        List<Ingredientes> ingredientes = sabores.getIngredientes();
+
+        for (Ingredientes ingrediente : ingredientes) {
+            Optional<Ingredientes> ingredienteOptional = ingredienteRepository.findById(ingrediente.getId());
+            if (ingredienteOptional.isEmpty()) {
+                throw new IllegalArgumentException("Ingrediente com ID " + ingrediente.getId() + " não encontrado.");
+            }
+        }
+
         return this.saboresRepository.save(sabores);
     }
 
-    public Sabores editar(SaboresDTO saboresDTO){
-        Sabores sabores = toSabores(saboresDTO);
-        Assert.notNull(saboresDTO.getIngredientes(), "Não informado ingredientes");
 
-        return this.saboresRepository.save(sabores);
+
+    @Transactional
+    public Sabores editar(Long id, SaboresDTO saboresDTO) {
+        Optional<Sabores> existingSaboresOptional = saboresRepository.findById(id);
+
+        if (existingSaboresOptional.isEmpty()) {
+            throw new IllegalArgumentException("O objeto com o ID fornecido não existe na base de dados");
+        }
+
+        Sabores existingSabores = existingSaboresOptional.get();
+
+        if (!id.equals(saboresDTO.getId())) {
+            throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
+        }
+        Sabores updatedSabores = toSabores(saboresDTO);
+        return saboresRepository.save(updatedSabores);
     }
 
+    @Transactional
     public void deletar(Long id){
-
         final Sabores sabores = this.saboresRepository.findById(id).orElse(null);
-        Assert.notNull(sabores, "Sabor inexistente!");
 
-        this.saboresRepository.delete(sabores);
+        if (sabores != null) {
+            if (!sabores.getPizzas().isEmpty()) {
+                throw new IllegalArgumentException("Não é possível excluir o sabor devido à relação com pizzas existente.");
+            } else {
+                this.saboresRepository.delete(sabores);
+            }
+        }
     }
 
 }
