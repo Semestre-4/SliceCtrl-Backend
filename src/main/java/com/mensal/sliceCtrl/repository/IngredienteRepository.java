@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface IngredienteRepository  extends JpaRepository<Ingredientes, Long> {
 
-    @Query("from Ingredientes where nomeIngrediente Like :nomeIngrediente")
+    @Query("from Ingredientes where nomeIngrediente = :nomeIngrediente")
     public Ingredientes findByNome(@Param("nomeIngrediente") final String nomeIngrediente);
 
 }
