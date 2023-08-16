@@ -53,4 +53,9 @@ public class Clientes extends AbstractEntity {
     @JsonIgnore
     private List<Pedidos> pedidos;
 
+    public void removeEndereco(Enderecos endereco) {
+        enderecos.remove(endereco);
+        endereco.getClientes().remove(this);
+    }
+
 }

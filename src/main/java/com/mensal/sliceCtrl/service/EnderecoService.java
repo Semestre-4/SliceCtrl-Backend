@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.service;
 
 import com.mensal.sliceCtrl.DTO.EnderecosDTO;
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
+import com.mensal.sliceCtrl.entity.Clientes;
 import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.repository.ClienteRepository;
@@ -65,6 +66,14 @@ public class EnderecoService {
     public void delete(final Long id) {
         final Enderecos enderecos = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecos, "Endereco inexistente!");
-        this.enderecoRepository.delete(enderecos);;
+
+        if (!enderecos.getClientes().isEmpty()) {
+            for (Clientes cliente : enderecos.getClientes()) {
+                cliente.removeEndereco(enderecos);
+            }
+        }else{
+            enderecoRepository.delete(enderecos);
+        }
     }
+
     }

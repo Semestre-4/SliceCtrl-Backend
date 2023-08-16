@@ -32,7 +32,7 @@ public class EnderecoController {
         if (enderecosDTO != null) {
             return ResponseEntity.ok(enderecosDTO);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -99,8 +99,8 @@ public class EnderecoController {
      * @param id O ID do endereço a ser excluído.
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
-    @DeleteMapping
-    private ResponseEntity<String> excluirEndereco(@RequestParam("id") Long id) {
+    @DeleteMapping("/{id}")
+    private ResponseEntity<String> excluirEndereco(@PathVariable("id") Long id) {
         try {
             this.enderecoService.delete(id);
             return ResponseEntity.ok().body("Endereço excluído com sucesso!");
