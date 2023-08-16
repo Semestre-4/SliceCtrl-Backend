@@ -35,14 +35,11 @@ public class Pedidos extends AbstractEntity{
     @JsonIgnoreProperties("pedidos")
     private Funcionarios funcionario;
 
-    @Column(name = "codigo_pedido", nullable = false, unique = true)
-    private String codigo;
-
     @ManyToMany
     @JoinTable(
             name = "pedido_produto",
-            joinColumns = @JoinColumn(name = "pedido_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id")
+            joinColumns = @JoinColumn(name = "pedido_id",nullable = true),
+            inverseJoinColumns = @JoinColumn(name = "produto_id",nullable = true)
     )
     @JsonIgnoreProperties("pedidos")
     private List<Produtos> produtos = new ArrayList<>();
@@ -90,28 +87,4 @@ public class Pedidos extends AbstractEntity{
     @Column(name = "is_pago")
     private boolean isPago;
 
-    @PrePersist
-    public void generateCodigoPedido() {
-        this.codigo = generateCodigoPedidoLogic();
-    }
-
-    private String generateCodigoPedidoLogic() {
-        Long sequenceNumber = getId();
-        String sequencePart = sequenceNumber != null ? sequenceNumber.toString() : "UNKNOWN"; // Provide a default value
-
-        String randomPart = generateRandomPart();
-
-        return String.format("PEDIDO-%s-%s", sequencePart, randomPart);
-    }
-
-
-    private String generateRandomPart() {
-        // Generate a random part using a random number generator
-        StringBuilder randomPart = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 4; i++) {
-            randomPart.append(random.nextInt(10));
-        }
-        return randomPart.toString();
-    }
 }

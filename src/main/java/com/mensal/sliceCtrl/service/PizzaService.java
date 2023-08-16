@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PizzaService {
@@ -137,9 +138,15 @@ public class PizzaService {
 
     @Transactional
     public void deletePizza(Long id) {
-        Pizzas pizzaToDelete = pizzaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Pizza com ID = : " + id + "nao encontrada"));
-        pizzaRepository.delete(pizzaToDelete);
+        Pizzas pizzaToDelete = pizzaRepository.findById(id).orElse(null);
+        if (pizzaToDelete != null) {
+            if (!pizzaToDelete.getPedidos().isEmpty()) {
+                throw new IllegalArgumentException("Não é possível excluir a pizza devido à relação com pedidos existentes.");
+            } else {
+                pizzaRepository.delete(pizzaToDelete);
+            }
+        }
+
     }
 
     public PizzasDTO toPizzaDTO(Pizzas pizza) {
