@@ -72,6 +72,9 @@ public class PizzaService {
                     .orElseThrow(() ->
                             new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " não encontrado"));
             sabores.add(saboresEx);
+            if (saboresEx.getValorAdicional() != 0) {
+               pizzaDTO.setPreco(pizzaDTO.getPreco()+saboresEx.getValorAdicional());
+            }
         }
 
         int numberOfSabores = sabores.size();

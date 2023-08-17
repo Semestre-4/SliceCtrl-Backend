@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -102,6 +103,7 @@ public class PedidoService {
         if (clientes == null && funcionarios == null) {
             throw new IllegalArgumentException("Registro do Cliente ou Funcionario não encontrados");
         }
+
         pedido.setCliente(clientes);
         pedido.setFuncionario(funcionarios);
         pedido.setStatus(Status.PENDENTE);
@@ -115,8 +117,13 @@ public class PedidoService {
         if (pedido == null) {
             throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
         }
-
+        if (pedido.getStatus() == Status.PAGO){
+            throw new IllegalArgumentException("Pedido fechado , cria um novo pedido");
+        }
         PedidoProduto pedidoProduto = toPedidoProduto(pedidoProdutoDTO);
+        if (pedidoProduto.getProduto().getQtdeEstoque() <= 0){
+            throw new IllegalArgumentException("O item selecionado encontra-se atualmente indisponível em nosso estoque.");
+        }
         pedidoProduto.setPedido(pedido);
         pedidoProdutoRepository.save(pedidoProduto);
 
@@ -130,8 +137,14 @@ public class PedidoService {
         if (pedido == null) {
             throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
         }
-
+        if (pedido.getStatus() == Status.PAGO){
+            throw new IllegalArgumentException("Pedido fechado , cria um novo pedido");
+        }
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
+        if (pedidoPizza.getPizza().getQtdeEstoque() <= 0){
+            throw new IllegalArgumentException("O item selecionado encontra-se atualmente indisponível em nosso estoque.");
+        }
+
         pedidoPizza.setPedido(pedido);
         pedidoPizzaRepository.save(pedidoPizza);
 
@@ -152,16 +165,33 @@ public class PedidoService {
             pagamentoRepository.save(pagamento);
             pedido.setPagamento(pagamento);
 
-            // Calculate the total amount
             Double totalPedidoAmount = calculateTotalPedidoAmount(pedido);
             pedido.setValorTotal(totalPedidoAmount);
 
             pedido.setStatus(Status.PAGO);
+            displayRecibo(pedido,pedido.getProdutos(),pedido.getPizzas(),totalPedidoAmount);
             return pedidoRepository.save(pedido);
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed to finalize pedido.");
         }
     }
+
+    private void displayRecibo(Pedidos pedido, List<PedidoProduto> produtos, List<PedidoPizza> pizzas, Double totalPedidoAmount) {
+    }
+
+
+    private String getPizzaFlavorsAsString(Pizzas pizza) {
+        List<Sabores> sabores = pizza.getSabor();
+        List<String> flavorNames = new ArrayList<>();
+
+        for (Sabores sabor : sabores) {
+            flavorNames.add(sabor.getNomeSabor());
+        }
+
+        return String.join(", ", flavorNames);
+    }
+
+
 
     private double calculateTotalPedidoAmount(Pedidos pedido) {
         double productsTotal = calculateProductsTotal(pedido);
