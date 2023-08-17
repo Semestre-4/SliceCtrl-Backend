@@ -6,6 +6,7 @@ import com.mensal.sliceCtrl.entity.Funcionarios;
 import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.repository.FuncionarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class FuncionarioService {
         return funcionarioRepository.findAll().stream().map(this::toFuncDTO).toList();
     }
 
+    @Transactional
     public Funcionarios createFuncionario(FuncionariosDTO funcionariosDTO) {
         // Check if the CPF already exists
         if (funcionarioRepository.existsByCpf(funcionariosDTO.getCpf())) {
@@ -55,6 +57,7 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionarios);
     }
 
+    @Transactional
     public Funcionarios updateFuncionario(Long id, FuncionariosDTO funcionariosDTO) {
         Funcionarios existingFunc = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = " + id + " nao encontrado"));
@@ -72,6 +75,7 @@ public class FuncionarioService {
     }
 
 
+    @Transactional
     public void deleteFuncionario(Long id) {
         Funcionarios funcToDelete = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + " não foi encontrado"));

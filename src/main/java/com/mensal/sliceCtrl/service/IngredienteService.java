@@ -3,6 +3,7 @@ package com.mensal.sliceCtrl.service;
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
 import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.repository.IngredienteRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class IngredienteService {
         return toIngredientesDTO(ingredientes);
     }
 
-
+    @Transactional
     public Ingredientes cadastrar(IngredientesDTO ingredientesDTO) {
         Ingredientes ingredientesBanco = this.ingredienteRepository.findByNome(ingredientesDTO.getNomeIngrediente());
         Assert.isTrue(ingredientesBanco == null, "Já possui um ingrediente com esse nome!");
@@ -55,6 +56,7 @@ public class IngredienteService {
         return this.ingredienteRepository.save(ingredientes);
     }
 
+    @Transactional
     public Ingredientes editar(IngredientesDTO ingredientesDTO, Long id) {
 
         Ingredientes ingredientesBanco = this.ingredienteRepository.findByNome(ingredientesDTO.getNomeIngrediente());
@@ -75,6 +77,7 @@ public class IngredienteService {
         return this.ingredienteRepository.save(ingredientes);
     }
 
+    @Transactional
     public void delete(final Long id) {
         final Ingredientes ingredientes = this.ingredienteRepository.findById(id).orElse(null);
         Assert.notNull(ingredientes, "Ingrediente inexiste!");
