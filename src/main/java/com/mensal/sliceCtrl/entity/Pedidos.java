@@ -1,8 +1,11 @@
 package com.mensal.sliceCtrl.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -33,27 +36,28 @@ public class Pedidos extends AbstractEntity{
     @JsonIgnoreProperties("pedidos")
     private Funcionarios funcionario;
 
-    @OneToMany(mappedBy = "pedido",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("pedido")
     private List<PedidoProduto> produtos = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "pedido",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("pedido")
     private List<PedidoPizza> pizzas = new ArrayList<>();
 
+
     @OneToOne
     @JoinColumn(name = "pagamento_id")
+    @JsonIgnore
     private Pagamento pagamento;
 
     @Column(name = "valor_pedido")
-    private BigDecimal valorPedido;
+    private Double valorPedido;
 
     @Column(name = "valor_entrega")
-    private BigDecimal valorEntrega;
+    private Double valorEntrega;
 
     @Column(name = "valor_total")
-    private BigDecimal valorTotal;
+    private Double valorTotal;
 
     @Column(name = "status_enum", nullable = false)
     @Enumerated(EnumType.STRING)

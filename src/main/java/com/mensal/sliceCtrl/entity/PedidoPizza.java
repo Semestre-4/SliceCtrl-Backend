@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +20,11 @@ public class PedidoPizza extends AbstractEntity{
     private Pizzas pizza;
     @ManyToOne
     @JoinColumn(name = "pedido_id")
+    @JsonIgnoreProperties("pizzas")
     private Pedidos pedido;
+
     @Column(name = "qtde_pedida",nullable = false)
-    private int qtdePedida;
+    private Integer qtdePedida;
+
 
 }

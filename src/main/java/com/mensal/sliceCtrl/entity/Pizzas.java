@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
@@ -35,6 +36,7 @@ public class Pizzas extends AbstractEntity{
     private Integer qtdeEstoque;
 
     @OneToMany(mappedBy = "pizza",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnoreProperties("pizza")
     private List<PedidoPizza> pedidos = new ArrayList<>();
 
     @ManyToMany

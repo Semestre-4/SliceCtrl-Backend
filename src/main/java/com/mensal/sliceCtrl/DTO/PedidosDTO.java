@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.DTO;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mensal.sliceCtrl.entity.enums.Status;
 
 import jakarta.validation.constraints.NotNull;

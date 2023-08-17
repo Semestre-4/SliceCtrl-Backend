@@ -6,6 +6,7 @@ import com.mensal.sliceCtrl.DTO.PedidosDTO;
 import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
+import com.mensal.sliceCtrl.repository.PedidoRepository;
 import com.mensal.sliceCtrl.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class PedidoController {
 
     @Autowired
     public PedidoService pedidoService;
+
 
     /**
      * Recupera um pedido pelo seu ID.
@@ -89,18 +91,56 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findOrdersWithPendingPayments());
     }
 
-    @PostMapping("/cliente/{clienteId}/pagamento/{formDePagamento}")
-    public ResponseEntity<Pedidos> efetuarPedido(@PathVariable Long clienteId,
-                                                    @PathVariable FormasDePagamento formDePagamento) {
-        Pedidos pedido = pedidoService.efetuarPedido(clienteId, formDePagamento);
-        return new ResponseEntity<Pedidos>(pedido, HttpStatus.CREATED);
+    @PostMapping("/abrir/{clienteId}/{funcId}")
+    public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
+                                               @PathVariable("funcId") Long funcId) {
+        try {
+            Pedidos pedido = new Pedidos();
+            PedidosDTO savedPedido = pedidoService.iniciarPedido(clienteId, pedido,funcId);
+            return ResponseEntity.ok(savedPedido);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @PutMapping("/cliente/{clienteId}/pedido/{pedidoId}/status/{status}")
-    public ResponseEntity<Pedidos> updateOrderByUser(@PathVariable Long clienteId,
-                                                        @PathVariable Long pedidoId,
-                                                        @PathVariable Status status) {
-        Pedidos pedido = pedidoService.updateOrder(clienteId, pedidoId, status);
+    @PutMapping("/adicionar/produto/{pedidoId}")
+    public ResponseEntity<?> addProdutoToPedido(
+            @PathVariable Long pedidoId,
+            @RequestBody PedidoProdutoDTO pedidoProdutoDTO) {
+        try {
+            Pedidos updatedPedido = pedidoService.addProdutoToPedido(pedidoId, pedidoProdutoDTO);
+            return ResponseEntity.ok(updatedPedido);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/adicionar/pizza/{pedidoId}")
+    public ResponseEntity<Pedidos> addPizzaToPedido(
+            @PathVariable Long pedidoId,
+            @RequestBody PedidoPizzaDTO pedidoPizzaDTO) {
+        try {
+            Pedidos updatedPedido = pedidoService.addPizzaToPedido(pedidoId, pedidoPizzaDTO);
+            return ResponseEntity.ok(updatedPedido);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/{pedidoId}/pagamento/{formDePagamento}")
+    public ResponseEntity<Pedidos> finalizarPedido(@PathVariable Long pedidoId,
+                                                   @PathVariable FormasDePagamento formDePagamento) {
+        try {
+            Pedidos pedido = pedidoService.efetuarPedido(pedidoId, formDePagamento);
+            return new ResponseEntity<Pedidos>(pedido, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/{pedidoId}")
+    public ResponseEntity<Pedidos> updateOrderByUser(@PathVariable Long pedidoId) {
+        Pedidos pedido = pedidoService.updateOrder(pedidoId);
         return new ResponseEntity<Pedidos>(pedido, HttpStatus.OK);
     }
 
