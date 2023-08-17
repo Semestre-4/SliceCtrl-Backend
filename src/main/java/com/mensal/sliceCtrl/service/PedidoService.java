@@ -1,8 +1,6 @@
 package com.mensal.sliceCtrl.service;
 
-import com.mensal.sliceCtrl.DTO.PedidosDTO;
-import com.mensal.sliceCtrl.DTO.PizzasDTO;
-import com.mensal.sliceCtrl.DTO.ProdutosDTO;
+import com.mensal.sliceCtrl.DTO.*;
 import com.mensal.sliceCtrl.entity.*;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import com.mensal.sliceCtrl.repository.*;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
@@ -84,16 +83,49 @@ public class PedidoService {
     }
 
 
-    public Pedidos toPedidos(PedidosDTO pedidosDTO, List<Produtos> produtosList,
-                             List<Pizzas> pizzasList,Clientes clientes,Funcionarios funcionarios) {
+    public Pedidos toPedidos(PedidosDTO pedidosDTO,Clientes clientes,Funcionarios funcionarios,List<PedidoProduto> produtos,List<PedidoPizza> pizzas) {
         Pedidos pedido = modelMapper.map(pedidosDTO, Pedidos.class);
+        System.out.println(pedido);
         pedido.setCliente(clientes);
         pedido.setFuncionario(funcionarios);
+        pedido.setProdutos(produtos);
+        pedido.setPizzas(pizzas);
         return pedido;
     }
 
     public PedidosDTO toPedidosDTO(Pedidos pedidos) {
         return modelMapper.map(pedidos, PedidosDTO.class);
     }
+    public void deletePedido(Long id) {
+        return;
+    }
 
+    public Pedidos updatePedido(Long id, PedidosDTO pedidosDTO) {
+        return null;
+    }
+
+    public Pedidos efetuarPedido(PedidosDTO pedidoDTO) {
+
+        Pedidos pedidoEntity = modelMapper.map(pedidoDTO,Pedidos.class);
+
+        List<PedidoProdutoDTO> produtosDTO = pedidoDTO.getProdutos();
+        if (produtosDTO != null) {
+            List<PedidoProduto> produtos = produtosDTO.stream()
+                    .map(ppDTO -> modelMapper.map(ppDTO, PedidoProduto.class))
+                    .collect(Collectors.toList());
+            pedidoEntity.setProdutos(produtos);
+        }
+
+        List<PedidoPizzaDTO> pizzasDTO = pedidoDTO.getPizzas();
+        if (pizzasDTO != null) {
+            List<PedidoPizza> pizzas = pizzasDTO.stream()
+                    .map(ppDTO -> modelMapper.map(ppDTO, PedidoPizza.class))
+                    .collect(Collectors.toList());
+            pedidoEntity.setPizzas(pizzas);
+        }
+
+
+        return pedidoRepository.save(pedidoEntity);
+
+    }
 }

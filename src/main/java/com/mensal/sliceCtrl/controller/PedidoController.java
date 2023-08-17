@@ -1,8 +1,8 @@
 package com.mensal.sliceCtrl.controller;
 
+import com.mensal.sliceCtrl.DTO.PedidoPizzaDTO;
+import com.mensal.sliceCtrl.DTO.PedidoProdutoDTO;
 import com.mensal.sliceCtrl.DTO.PedidosDTO;
-import com.mensal.sliceCtrl.DTO.PizzasDTO;
-import com.mensal.sliceCtrl.DTO.ProdutosDTO;
 import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import com.mensal.sliceCtrl.service.PedidoService;
@@ -60,7 +60,7 @@ public class PedidoController {
      * @return ResponseEntity contendo a lista de produtos do pedido, ou uma resposta de erro.
      */
     @GetMapping("/produtos/{pedidoId}")
-    public ResponseEntity<List<ProdutosDTO>> getPedidoByProdutos(@PathVariable Long pedidoId) {
+    public ResponseEntity<List<PedidoProdutoDTO>> getPedidoByProdutos(@PathVariable Long pedidoId) {
         PedidosDTO pedidosDTO = pedidoService.findById(pedidoId);
         if (pedidosDTO != null) {
             return ResponseEntity.ok(pedidosDTO.getProdutos());
@@ -69,7 +69,7 @@ public class PedidoController {
     }
 
     @GetMapping("pizzas/{pedidoId}")
-    public ResponseEntity<List<PizzasDTO>> getPedidoByPizzas(@PathVariable Long pedidoId) {
+    public ResponseEntity<List<PedidoPizzaDTO>> getPedidoByPizzas(@PathVariable Long pedidoId) {
         PedidosDTO pedidosDTO = pedidoService.findById(pedidoId);
         if (pedidosDTO != null) {
             return ResponseEntity.ok(pedidosDTO.getPizzas());
