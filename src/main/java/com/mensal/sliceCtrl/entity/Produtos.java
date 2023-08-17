@@ -46,7 +46,7 @@ public class Produtos extends AbstractEntity {
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
 
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "produto",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<PedidoProduto> pedidos = new ArrayList<>();
 
 }

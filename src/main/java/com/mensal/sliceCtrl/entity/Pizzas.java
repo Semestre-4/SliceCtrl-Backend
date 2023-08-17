@@ -37,7 +37,7 @@ public class Pizzas extends AbstractEntity{
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
-    @OneToMany(mappedBy = "pizza")
+    @OneToMany(mappedBy = "pizza",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<PedidoPizza> pedidos = new ArrayList<>();
 
     @ManyToMany

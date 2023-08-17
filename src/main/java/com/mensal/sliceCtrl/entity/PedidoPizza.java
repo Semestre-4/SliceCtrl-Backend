@@ -1,14 +1,17 @@
 package com.mensal.sliceCtrl.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
 @Table(name = "pedido_pizza",schema = "public")
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PedidoPizza extends AbstractEntity{
 
     @ManyToOne

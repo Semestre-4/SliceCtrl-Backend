@@ -35,19 +35,18 @@ public class Pedidos extends AbstractEntity{
     @JsonIgnoreProperties("pedidos")
     private Funcionarios funcionario;
 
-    @OneToMany(mappedBy = "pedido",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pedido",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonIgnoreProperties("pedido")
     private List<PedidoProduto> produtos = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "pedido",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pedido",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonIgnoreProperties("pedido")
     private List<PedidoPizza> pizzas = new ArrayList<>();
 
-    @NotNull(message = "O status do pedido é obrigatório")
-    @Column(name = "status_enum", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @OneToOne
+    @JoinColumn(name = "pagamento_id")
+    private Pagamento pagamento;
 
     @DecimalMin(value = "0.0", message = "O valor do pedido deve ser maior ou igual a 0")
     @Column(name = "valor_pedido")
@@ -61,10 +60,11 @@ public class Pedidos extends AbstractEntity{
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
 
-    @Column(name = "forma_pagemento",nullable = false)
-    @NotNull(message = "A forma de pagamento do pedido é obrigatório")
+
+    @NotNull(message = "O status do pedido é obrigatório")
+    @Column(name = "status_enum", nullable = false)
     @Enumerated(EnumType.STRING)
-    private FormasDePagamento formasDePagamento;
+    private Status status;
 
     @Column(name = "for_entrega")
     private boolean forEntrega;
@@ -74,8 +74,5 @@ public class Pedidos extends AbstractEntity{
 
     @Column(name = "for_dineIn")
     private boolean forDineIn;
-
-    @Column(name = "is_pago")
-    private boolean isPago;
 
 }
