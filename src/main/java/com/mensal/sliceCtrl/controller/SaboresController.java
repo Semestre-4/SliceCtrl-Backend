@@ -75,9 +75,10 @@ public class SaboresController {
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
     @PutMapping("/{id}")
-    private ResponseEntity<String> editarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
+    private ResponseEntity<String> editarSabor(@PathVariable Long id,
+                                               @RequestBody @Validated SaboresDTO saboresDTO) {
         try {
-            this.saboresService.editar(saboresDTO);
+            this.saboresService.editar(id,saboresDTO);
             return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi atualizado com sucesso.",
                     saboresDTO.getNomeSabor()));
         } catch (Exception e) {

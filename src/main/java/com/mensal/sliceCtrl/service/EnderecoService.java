@@ -2,10 +2,12 @@ package com.mensal.sliceCtrl.service;
 
 import com.mensal.sliceCtrl.DTO.EnderecosDTO;
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
+import com.mensal.sliceCtrl.entity.Clientes;
 import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.repository.ClienteRepository;
 import com.mensal.sliceCtrl.repository.EnderecoRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,11 +49,13 @@ public class EnderecoService {
         return enderecoRepository.findByCep(cep).stream().map(this::toEnderecosDTO).toList();
     }
 
+    @Transactional
     public Enderecos cadastrar(EnderecosDTO enderecosDTO){
         Enderecos enderecos = toEnderecos(enderecosDTO);
         return this.enderecoRepository.save(enderecos);
     }
 
+    @Transactional
     public Enderecos editar(EnderecosDTO enderecosDTO, Long id){
         final Enderecos enderecosBanco = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecosBanco, "Endereco inexistente!");
@@ -62,9 +66,16 @@ public class EnderecoService {
         return this.enderecoRepository.save(enderecos);
     }
 
+    @Transactional
     public void delete(final Long id) {
         final Enderecos enderecos = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecos, "Endereco inexistente!");
-        this.enderecoRepository.delete(enderecos);;
+
+        if (!enderecos.getClientes().isEmpty()) {
+            throw new IllegalArgumentException("Não é possível excluir o endereco devido à relação com clientes existente.");
+        }else{
+            enderecoRepository.delete(enderecos);
+        }
     }
+
     }

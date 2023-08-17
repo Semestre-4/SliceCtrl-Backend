@@ -93,7 +93,8 @@ public class ClienteController {
             return ResponseEntity.ok(String.format("O cadastro de '%s' foi realizado com sucesso.",
                     clientesDTO.getNome()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: "
+                    + e.getMessage());
         }
     }
 
@@ -111,7 +112,8 @@ public class ClienteController {
             return ResponseEntity.ok(String.format("O cadastro de '%s' foi atualizado com sucesso.",
                     clientesDTO.getNome()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: "
+                    + e.getMessage());
         }
     }
 

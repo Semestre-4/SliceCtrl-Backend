@@ -7,6 +7,7 @@ import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Produtos;
 import com.mensal.sliceCtrl.entity.enums.Categorias;
 import com.mensal.sliceCtrl.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,19 +55,30 @@ public class ProdutoService {
         return this.produtoRepository.findByCategoria(categoria).stream().map(this::toProdutosDTO).toList();
     }
 
+    @Transactional
     public Produtos cadastrar(ProdutosDTO produtosDTO) {
         Produtos produtos = toProdutos(produtosDTO);
         return this.produtoRepository.save(produtos);
     }
 
+    @Transactional
     public Produtos editar(ProdutosDTO produtosDTO){
         Produtos produtos = toProdutos(produtosDTO);
         return this.produtoRepository.save(produtos);
     }
 
+    @Transactional
     public void deletar(Long id){
-        this.produtoRepository.deleteById(id);
-    }
+        Produtos produtos = this.produtoRepository.findById(id).orElse(null);
+
+
+        if (produtos != null) {
+            if (!produtos.getPedidos().isEmpty()) {
+                throw new IllegalArgumentException("Não é possível excluir o produto devido à relação com pedidos existentes.");
+            } else {
+                this.produtoRepository.delete(produtos);
+            }
+    }}
 
     public List<ProdutosDTO> findByDisponivel() {
         return produtoRepository.findByDisponivelTrue().stream().map(this::toProdutosDTO).toList();

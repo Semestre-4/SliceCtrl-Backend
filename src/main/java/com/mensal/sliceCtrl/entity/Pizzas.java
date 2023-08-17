@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
@@ -19,28 +20,24 @@ import java.util.List;
 @Table(name = "pizzas",schema = "public")
 @Getter
 @Setter
-public class Pizzas extends AbstractEntity implements Serializable {
+public class Pizzas extends AbstractEntity{
 
-    @Serial
-    private static  final  long serialVersionUID =1L;
-
-    @Column(name = "tamanho_pizza",nullable = true)
+    @Column(name = "tamanho_pizza",nullable = false)
     @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
 
     @Column(name = "observacao")
     private String observacao;
 
-    @NotNull(message = "É obrigatorio informar o preço do produto")
     @Column(name = "preco_produto", nullable = false)
     private Double preco;
 
-    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
-    @ManyToMany(mappedBy = "pizzas")
-    private List<Pedidos> pedidos = new ArrayList<>();
+    @OneToMany(mappedBy = "pizza",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnoreProperties("pizza")
+    private List<PedidoPizza> pedidos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

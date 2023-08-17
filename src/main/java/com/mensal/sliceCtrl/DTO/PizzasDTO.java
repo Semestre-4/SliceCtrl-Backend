@@ -20,6 +20,7 @@ import java.util.List;
 public class PizzasDTO extends AbstractEntityDTO{
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "É obrigatorio informar o tamanho da pizza")
     private Tamanho tamanho;
 
     private String observacao;
@@ -31,6 +32,7 @@ public class PizzasDTO extends AbstractEntityDTO{
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
+    @NotNull(message = "É obrigatorio informar pelo menos 1 sabor")
     private List<SaboresDTO> sabor;
 
 }

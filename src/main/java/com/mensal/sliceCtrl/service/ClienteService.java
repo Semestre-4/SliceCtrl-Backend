@@ -10,9 +10,11 @@ import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.repository.ClienteRepository;
 import com.mensal.sliceCtrl.repository.EnderecoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,13 @@ public class ClienteService {
         return clienteRepository.findAll().stream().map(this::toClienteDTO).toList();
     }
 
+    @Transactional
     public Clientes createCliente(ClientesDTO clientesDTO) {
+
+        if (clienteRepository.existsByCpf(clientesDTO.getCpf())) {
+            throw new IllegalArgumentException("Cliente com CPF = " + clientesDTO.getCpf() + " já existe");
+        }
+
         List<Enderecos> enderecosList = new ArrayList<>();
 
         for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
@@ -65,33 +73,65 @@ public class ClienteService {
             enderecosList.add(existingEndereco);
         }
 
+
+        validateEnderecoIds(clientesDTO.getEnderecos());
+
         Clientes clientes = toCliente(clientesDTO, enderecosList);
 
         return clienteRepository.save(clientes);
     }
 
+
+    @Transactional
     public Clientes updateCliente(Long id, ClientesDTO clientesDTO) {
         Clientes existingClientes = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = " + id + " nao encontrado"));
 
-        List<Enderecos> existingEnderecos = new ArrayList<>();
-        for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
-            Enderecos existingEndereco = enderecoRepository.findById(enderecoDTO.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " nao encontrado"));
-            existingEnderecos.add(existingEndereco);
+        if (!id.equals(clientesDTO.getId())) {
+            throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
         }
 
-        Clientes clientes = toCliente(clientesDTO, existingEnderecos);
+        List<Enderecos> existingEnderecos = new ArrayList<>();
 
+        for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
+            Enderecos existingEndereco = enderecoRepository.findById(enderecoDTO.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " não encontrado"));
+            existingEnderecos.add(toEnderecos(enderecoDTO));
+        }
+
+        // Additional check to ensure the provided endereco ID exists
+        validateEnderecoIds(clientesDTO.getEnderecos());
+
+        Clientes clientes = toCliente(clientesDTO, existingEnderecos);
         return clienteRepository.save(clientes);
     }
 
-    public void deleteCliente(Long id) {
-        Clientes clientesToDelete = clienteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = : " + id + "nao encontrado"));
-
-        clienteRepository.delete(clientesToDelete);
+    private void validateEnderecoIds(List<EnderecosDTO> enderecoDTOs) {
+        for (EnderecosDTO enderecoDTO : enderecoDTOs) {
+            enderecoRepository.findById(enderecoDTO.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " nao encontrado"));
+        }
     }
+
+
+    @Transactional
+    public void deleteCliente(Long id) {
+
+        Clientes clientesToDelete = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = " + id + " não encontrado"));
+
+        if (clientesToDelete.getPedidos().isEmpty() && clientesToDelete.getEnderecos().isEmpty()) {
+            clienteRepository.delete(clientesToDelete);
+        } else {
+            desativarCliente(clientesToDelete);
+        }
+    }
+
+    private void desativarCliente(Clientes cliente) {
+        cliente.setAtivo(false);
+        clienteRepository.save(cliente);
+    }
+
 
     private Enderecos toEnderecos(EnderecosDTO enderecoDTO) {
         return modelMapper.map(enderecoDTO, Enderecos.class);

@@ -6,6 +6,7 @@ import com.mensal.sliceCtrl.entity.Funcionarios;
 import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.repository.FuncionarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,22 +47,38 @@ public class FuncionarioService {
         return funcionarioRepository.findAll().stream().map(this::toFuncDTO).toList();
     }
 
+    @Transactional
     public Funcionarios createFuncionario(FuncionariosDTO funcionariosDTO) {
+        // Check if the CPF already exists
+        if (funcionarioRepository.existsByCpf(funcionariosDTO.getCpf())) {
+            throw new IllegalArgumentException("Funcionario com CPF = " + funcionariosDTO.getCpf() + " já existe");
+        }
         Funcionarios funcionarios = toFunc(funcionariosDTO);
         return funcionarioRepository.save(funcionarios);
     }
 
+    @Transactional
     public Funcionarios updateFuncionario(Long id, FuncionariosDTO funcionariosDTO) {
         Funcionarios existingFunc = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = " + id + " nao encontrado"));
 
+        if (!id.equals(funcionariosDTO.getId())) {
+            throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
+        }
+
+        if (funcionarioRepository.existsByCpfAndIdNot(funcionariosDTO.getCpf(), id)) {
+            throw new IllegalArgumentException("CPF já está sendo usado por outro Funcionario");
+        }
+
         Funcionarios funcionarios = toFunc(funcionariosDTO);
         return funcionarioRepository.save(funcionarios);
     }
 
+
+    @Transactional
     public void deleteFuncionario(Long id) {
         Funcionarios funcToDelete = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + "nao encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + " não foi encontrado"));
         funcionarioRepository.delete(funcToDelete);
     }
 

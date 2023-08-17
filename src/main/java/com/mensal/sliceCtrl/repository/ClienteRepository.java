@@ -13,4 +13,7 @@ public interface ClienteRepository extends JpaRepository<Clientes, Long> {
 
     @Query("SELECT c FROM Clientes c WHERE c.cpf = :cpf")
     Clientes findByCpf(@Param("cpf") String cpf);
+
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Clientes c WHERE c.cpf = ?1")
+    boolean existsByCpf(String cpf);
 }

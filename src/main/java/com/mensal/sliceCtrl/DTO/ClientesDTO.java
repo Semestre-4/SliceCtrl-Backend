@@ -31,6 +31,7 @@ public class ClientesDTO extends AbstractEntityDTO{
     @Email(message = "O email é inválido")
     private String email;
 
+    @NotNull(message = "O cliente deve ter pelo menos um endereço vinculado.")
     private List<EnderecosDTO> enderecos;
 
 }
