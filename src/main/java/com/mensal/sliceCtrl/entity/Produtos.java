@@ -46,7 +46,7 @@ public class Produtos extends AbstractEntity {
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
 
-    @ManyToMany(mappedBy = "produtos")
-    private List<Pedidos> pedidos = new ArrayList<>();
+    @OneToMany(mappedBy = "produto")
+    private List<PedidoProduto> pedidos = new ArrayList<>();
 
 }

@@ -37,8 +37,8 @@ public class Pizzas extends AbstractEntity{
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
-    @ManyToMany(mappedBy = "pizzas")
-    private List<Pedidos> pedidos = new ArrayList<>();
+    @OneToMany(mappedBy = "pizza")
+    private List<PedidoPizza> pedidos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

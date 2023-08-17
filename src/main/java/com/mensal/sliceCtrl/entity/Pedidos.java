@@ -30,28 +30,19 @@ public class Pedidos extends AbstractEntity{
     @JsonIgnoreProperties("pedidos")
     private Clientes cliente;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "funcionario_id", nullable = false)
     @JsonIgnoreProperties("pedidos")
     private Funcionarios funcionario;
 
-    @ManyToMany
-    @JoinTable(
-            name = "pedido_produto",
-            joinColumns = @JoinColumn(name = "pedido_id",nullable = true),
-            inverseJoinColumns = @JoinColumn(name = "produto_id",nullable = true)
-    )
-    @JsonIgnoreProperties("pedidos")
-    private List<Produtos> produtos = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido",fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("pedido")
+    private List<PedidoProduto> produtos = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "pedido_pizza",
-            joinColumns = @JoinColumn(name = "pedido_id"),
-            inverseJoinColumns = @JoinColumn(name = "pizza_id")
-    )
-    @JsonIgnoreProperties("pedidos")
-    private List<Pizzas> pizzas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pedido",fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("pedido")
+    private List<PedidoPizza> pizzas = new ArrayList<>();
 
     @NotNull(message = "O status do pedido é obrigatório")
     @Column(name = "status_enum", nullable = false)
