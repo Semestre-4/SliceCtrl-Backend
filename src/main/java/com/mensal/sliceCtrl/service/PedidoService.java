@@ -11,10 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
@@ -97,11 +95,11 @@ public class PedidoService {
         return modelMapper.map(pedidos, PedidosDTO.class);
     }
 
-    
-    public PedidosDTO iniciarPedido(Long clienteId, Pedidos pedido,Long funcId) {
+    @Transactional
+    public PedidosDTO iniciarPedido(Long clienteId, Pedidos pedido, Long funcId) {
         Clientes clientes = clienteRepository.findById(clienteId).orElse(null);
         Funcionarios funcionarios = funcionarioRepository.findById(funcId).orElse(null);
-        if (clientes == null && funcionarios == null){
+        if (clientes == null && funcionarios == null) {
             throw new IllegalArgumentException("Registro do Cliente ou Funcionario não encontrados");
         }
         pedido.setCliente(clientes);
@@ -145,7 +143,7 @@ public class PedidoService {
     public Pedidos efetuarPedido(Long pedidoId, FormasDePagamento formDePagamento) {
         try {
             Pedidos pedido = pedidoRepository.findById(pedidoId).orElse(null);
-            if (pedido == null){
+            if (pedido == null) {
                 throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
             }
             Pagamento pagamento = new Pagamento();
@@ -159,7 +157,7 @@ public class PedidoService {
             pedido.setValorTotal(totalPedidoAmount);
 
             pedido.setStatus(Status.PAGO);
-             return pedidoRepository.save(pedido);
+            return pedidoRepository.save(pedido);
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed to finalize pedido.");
         }
@@ -191,7 +189,6 @@ public class PedidoService {
     private double calculatePedidoPizzaTotal(PedidoPizza pedidoPizza) {
         return pedidoPizza.getQtdePedida() * pedidoPizza.getPizza().getPreco();
     }
-
 
 
     private PedidoProduto toPedidoProduto(PedidoProdutoDTO pedidoProdutoDTO) {
@@ -232,6 +229,18 @@ public class PedidoService {
     }
 
     public Pedidos updateOrder(Long pedidoId) {
-        return null;
+
+        Pedidos existingPedido = pedidoRepository.findById(pedidoId).orElse(null);
+
+        if (existingPedido == null) {
+            throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
+        }
+
+        if (existingPedido.getStatus() != Status.PENDENTE) {
+            throw new IllegalArgumentException(("Pedido nao pode ser alterado"));
+        } else {
+            return pedidoRepository.save(existingPedido);
+        }
+
     }
 }
