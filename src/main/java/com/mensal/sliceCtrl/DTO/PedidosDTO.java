@@ -18,11 +18,11 @@ import java.util.List;
 public class PedidosDTO extends AbstractEntityDTO {
 
     @NotNull(message = "É obrigatorio informar o cliente associado")
-    private Clientes clienteId;
+    private ClientesDTO clienteId;
     @NotNull(message = "É obrigatorio informar o funcionario associado")
-    private Funcionarios funcionarioId;
-    private List<ProdutosDTO> produtos;
-    private List<PizzasDTO> pizzas;
+    private FuncionariosDTO funcionarioId;
+    private List<PedidoProdutoDTO> produtos;
+    private List<PedidoPizzaDTO> pizzas;
     @NotNull(message = "O status do pedido é obrigatório")
     private Status status;
 
