@@ -4,8 +4,6 @@ public class PedidoPizzaDTO extends AbstractEntityDTO{
 
     private PizzasDTO pizza;
 
-    private PedidosDTO pedido;
-
     private int qtdePedida;
 
 }
