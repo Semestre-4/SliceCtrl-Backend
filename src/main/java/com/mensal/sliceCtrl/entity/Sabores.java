@@ -19,9 +19,6 @@ import java.util.List;
 @Table(name = "sabores", schema = "public")
 public class Sabores extends AbstractEntity{
 
-    @NotBlank(message = "É obrigatorio informar o nome do sabor")
-    @NotNull(message = "É obrigatorio informar o nome do sabor")
-    @Size(min = 2, max = 50, message = "O nome deve ter entre 2 e 50 caracteres")
     @Column(name = "nome_sabor", nullable = false, unique = true)
     private String nomeSabor;
 
