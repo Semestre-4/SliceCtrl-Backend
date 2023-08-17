@@ -17,6 +17,7 @@ public class PedidoPizza extends AbstractEntity{
 
     @ManyToOne
     @JoinColumn(name = "pizza_id",nullable = false)
+    @JsonIgnoreProperties("pedidos")
     private Pizzas pizza;
     @ManyToOne
     @JoinColumn(name = "pedido_id")

@@ -126,12 +126,17 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
+    @Transactional
     public Pedidos addPizzaToPedido(Long pedidoId, PedidoPizzaDTO pedidoPizzaDTO) {
         Pedidos pedido = pedidoRepository.findById(pedidoId).orElse(null);
         if (pedido == null) {
             throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
         }
+
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
+        pedidoPizza.setPedido(pedido);
+        pedidoPizzaRepository.save(pedidoPizza);
+
         pedido.getPizzas().add(pedidoPizza);
         return pedidoRepository.save(pedido);
     }
@@ -209,9 +214,20 @@ public class PedidoService {
 
 
     private PedidoPizza toPedidoPizza(PedidoPizzaDTO pedidoPizzaDTO) {
-        PedidoPizza pedidoPizza = modelMapper.map(pedidoPizzaDTO,PedidoPizza.class);
-        Pizzas pizzas = modelMapper.map(pedidoPizzaDTO.getPizza(),Pizzas.class);
+        PedidoPizza pedidoPizza = modelMapper.map(pedidoPizzaDTO, PedidoPizza.class);
+
+        Pizzas pizzas = pizzaRepository.findById(pedidoPizzaDTO.getPizza().getId()).orElse(null);
+        if (pizzas == null) {
+            throw new IllegalArgumentException("Pizza não encontrada com o ID: " + pedidoPizzaDTO.getPizza().getId());
+        }
+        Pedidos pedidos = pedidoRepository.findById(pedidoPizza.getPedido().getId()).orElse(null);
+        if (pedidos == null) {
+            throw new IllegalArgumentException("Pedido não encontrado");
+        }
+
+        pedidoPizza.setPedido(pedidos);
         pedidoPizza.setPizza(pizzas);
+
         return pedidoPizza;
     }
 

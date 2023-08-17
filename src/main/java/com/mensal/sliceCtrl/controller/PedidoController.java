@@ -116,14 +116,14 @@ public class PedidoController {
     }
 
     @PutMapping("/adicionar/pizza/{pedidoId}")
-    public ResponseEntity<Pedidos> addPizzaToPedido(
+    public ResponseEntity<?> addPizzaPedido(
             @PathVariable Long pedidoId,
             @RequestBody PedidoPizzaDTO pedidoPizzaDTO) {
         try {
             Pedidos updatedPedido = pedidoService.addPizzaToPedido(pedidoId, pedidoPizzaDTO);
             return ResponseEntity.ok(updatedPedido);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getCause().getMessage());
         }
     }
 
