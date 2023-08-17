@@ -123,7 +123,7 @@ public class PedidoController {
             Pedidos updatedPedido = pedidoService.addPizzaToPedido(pedidoId, pedidoPizzaDTO);
             return ResponseEntity.ok(updatedPedido);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getCause().getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

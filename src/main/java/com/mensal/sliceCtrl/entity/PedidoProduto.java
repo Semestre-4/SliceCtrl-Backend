@@ -17,7 +17,7 @@ public class PedidoProduto extends AbstractEntity{
 
     @ManyToOne
     @JoinColumn(name = "produto_id",nullable = false)
-    @JsonIgnoreProperties("produtos")
+    @JsonIgnoreProperties("pedidos")
     private Produtos produto;
 
     @ManyToOne
