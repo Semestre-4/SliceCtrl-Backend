@@ -4,6 +4,7 @@ import com.mensal.sliceCtrl.DTO.PedidoPizzaDTO;
 import com.mensal.sliceCtrl.DTO.PedidoProdutoDTO;
 import com.mensal.sliceCtrl.DTO.PedidosDTO;
 import com.mensal.sliceCtrl.entity.Pedidos;
+import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import com.mensal.sliceCtrl.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,30 +54,6 @@ public class PedidoController {
         return ResponseEntity.ok(pedidosDTOS);
     }
 
-    /**
-     * Recupera a lista de produtos de um pedido pelo ID do pedido.
-     *
-     * @param pedidoId O ID do pedido.
-     * @return ResponseEntity contendo a lista de produtos do pedido, ou uma resposta de erro.
-     */
-    @GetMapping("/produtos/{pedidoId}")
-    public ResponseEntity<List<PedidoProdutoDTO>> getPedidoByProdutos(@PathVariable Long pedidoId) {
-        PedidosDTO pedidosDTO = pedidoService.findById(pedidoId);
-        if (pedidosDTO != null) {
-            return ResponseEntity.ok(pedidosDTO.getProdutos());
-        }
-        return ResponseEntity.badRequest().body(Collections.emptyList());
-    }
-
-    @GetMapping("pizzas/{pedidoId}")
-    public ResponseEntity<List<PedidoPizzaDTO>> getPedidoByPizzas(@PathVariable Long pedidoId) {
-        PedidosDTO pedidosDTO = pedidoService.findById(pedidoId);
-        if (pedidosDTO != null) {
-            return ResponseEntity.ok(pedidosDTO.getPizzas());
-        }
-        return ResponseEntity.badRequest().body(Collections.emptyList());
-    }
-
     @GetMapping("/status/{status}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByStatus(@PathVariable Status status) {
         return ResponseEntity.ok(pedidoService.findByStatus(status));
@@ -112,65 +89,19 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findOrdersWithPendingPayments());
     }
 
-    /**
-     * Efetua um novo pedido.
-     *
-     * @param pedidosDTO Os dados do pedido a serem cadastrados.
-     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
-     */
-    @PostMapping
-    public ResponseEntity<String> efetuarPedido(@RequestBody @Validated PedidosDTO pedidosDTO) {
-        try {
-            Pedidos createdPedido = pedidoService.efetuarPedido(pedidosDTO);
-            return ResponseEntity.ok("O pedido foi efetuado com sucesso.");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
-        }
+    @PostMapping("/cliente/{clienteId}/pagamento/{formDePagamento}")
+    public ResponseEntity<Pedidos> efetuarPedido(@PathVariable Long clienteId,
+                                                    @PathVariable FormasDePagamento formDePagamento) {
+        Pedidos pedido = pedidoService.efetuarPedido(clienteId, formDePagamento);
+        return new ResponseEntity<Pedidos>(pedido, HttpStatus.CREATED);
     }
 
-    /**
-     * Atualiza as informações de um pedido.
-     *
-     * @param id          O ID do pedido a ser editado.
-     * @param pedidosDTO  Os dados atualizados do pedido.
-     * @return ResponseEntity indicando o sucesso ou a falha da edição.
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<String> editarPedido(@PathVariable Long id,
-                                               @RequestBody @Validated PedidosDTO pedidosDTO) {
-        try {
-            // Verifica se o pedido existe
-            PedidosDTO existingPedidoDTO = pedidoService.findById(id);
-            if (existingPedidoDTO == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            // Verifica se o pedido já foi pago
-            if (existingPedidoDTO.getStatus() == Status.PAGO) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).
-                        body("Pagamento foi efetuado. Não é possível editar o pedido.");
-            } else {
-                Pedidos updatedPedido = pedidoService.updatePedido(id, pedidosDTO);
-                return ResponseEntity.ok("O pedido foi atualizado com sucesso.");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());
-        }
+    @PutMapping("/cliente/{clienteId}/pedido/{pedidoId}/status/{status}")
+    public ResponseEntity<Pedidos> updateOrderByUser(@PathVariable Long clienteId,
+                                                        @PathVariable Long pedidoId,
+                                                        @PathVariable Status status) {
+        Pedidos pedido = pedidoService.updateOrder(clienteId, pedidoId, status);
+        return new ResponseEntity<Pedidos>(pedido, HttpStatus.OK);
     }
 
-    /**
-     * Exclui um pedido pelo seu ID.
-     *
-     * @param id O ID do pedido a ser excluído.
-     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluirPedido(@PathVariable Long id) {
-        try {
-            pedidoService.deletePedido(id);
-            return ResponseEntity.ok().body("Pedido excluído com sucesso!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Ocorreu um erro: " + e.getMessage());
-        }
-    }
 }

@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.service;
 
 import com.mensal.sliceCtrl.DTO.*;
 import com.mensal.sliceCtrl.entity.*;
+import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import com.mensal.sliceCtrl.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +23,9 @@ public class PedidoService {
     private final PizzaRepository pizzaRepository;
     private final ClienteRepository clienteRepository;
     private final FuncionarioRepository funcionarioRepository;
+    private final PedidoProdutoRepository pedidoProdutoRepository;
+    private final PedidoPizzaRepository pedidoPizzaRepository;
+    private final PagamentoRepository pagamentoRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -30,12 +34,18 @@ public class PedidoService {
                          PizzaRepository pizzaRepository,
                          ClienteRepository clienteRepository,
                          FuncionarioRepository funcionarioRepository,
+                         PedidoProdutoRepository pedidoProdutoRepository,
+                         PedidoPizzaRepository pedidoPizzaRepository,
+                         PagamentoRepository pagamentoRepository,
                          ModelMapper modelMapper) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
         this.pizzaRepository = pizzaRepository;
         this.clienteRepository = clienteRepository;
         this.funcionarioRepository = funcionarioRepository;
+        this.pedidoProdutoRepository = pedidoProdutoRepository;
+        this.pedidoPizzaRepository = pedidoPizzaRepository;
+        this.pagamentoRepository = pagamentoRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -82,50 +92,15 @@ public class PedidoService {
         return pedidoRepository.findOrdersWithPendingPayments().stream().map(this::toPedidosDTO).toList();
     }
 
-
-    public Pedidos toPedidos(PedidosDTO pedidosDTO,Clientes clientes,Funcionarios funcionarios,List<PedidoProduto> produtos,List<PedidoPizza> pizzas) {
-        Pedidos pedido = modelMapper.map(pedidosDTO, Pedidos.class);
-        System.out.println(pedido);
-        pedido.setCliente(clientes);
-        pedido.setFuncionario(funcionarios);
-        pedido.setProdutos(produtos);
-        pedido.setPizzas(pizzas);
-        return pedido;
-    }
-
     public PedidosDTO toPedidosDTO(Pedidos pedidos) {
         return modelMapper.map(pedidos, PedidosDTO.class);
     }
-    public void deletePedido(Long id) {
-        return;
-    }
 
-    public Pedidos updatePedido(Long id, PedidosDTO pedidosDTO) {
+    public Pedidos efetuarPedido(Long clienteId, FormasDePagamento formDePagamento) {
         return null;
     }
 
-    public Pedidos efetuarPedido(PedidosDTO pedidoDTO) {
-
-        Pedidos pedidoEntity = modelMapper.map(pedidoDTO,Pedidos.class);
-
-        List<PedidoProdutoDTO> produtosDTO = pedidoDTO.getProdutos();
-        if (produtosDTO != null) {
-            List<PedidoProduto> produtos = produtosDTO.stream()
-                    .map(ppDTO -> modelMapper.map(ppDTO, PedidoProduto.class))
-                    .collect(Collectors.toList());
-            pedidoEntity.setProdutos(produtos);
-        }
-
-        List<PedidoPizzaDTO> pizzasDTO = pedidoDTO.getPizzas();
-        if (pizzasDTO != null) {
-            List<PedidoPizza> pizzas = pizzasDTO.stream()
-                    .map(ppDTO -> modelMapper.map(ppDTO, PedidoPizza.class))
-                    .collect(Collectors.toList());
-            pedidoEntity.setPizzas(pizzas);
-        }
-
-
-        return pedidoRepository.save(pedidoEntity);
-
+    public Pedidos updateOrder(Long clienteId, Long pedidoId, Status status) {
+        return  null;
     }
 }
