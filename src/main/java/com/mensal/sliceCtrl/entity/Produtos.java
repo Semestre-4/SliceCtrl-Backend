@@ -24,22 +24,16 @@ import java.util.List;
 @Setter
 public class Produtos extends AbstractEntity {
 
-    @NotNull(message = "É obrigatorio informar o nome do produto")
-    @NotBlank(message = "É obrigatorio informar o nome do produto")
     @Column(name = "nome_produto", nullable = false, unique = true)
-    @Size(min = 2, max = 100, message = "o produto pode ter entre 2 e 100 caracteres")
     String nomeProduto;
 
-    @NotNull(message = "É obrigatorio informar a categoria")
     @Column(name = "categoria", nullable = false)
     @Enumerated(EnumType.STRING)
     private Categorias categoria;
 
-    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
-    @NotNull(message = "É obrigatorio informar o preço do produto")
     @Column(name = "preco_produto", nullable = false)
     private Double preco;
 

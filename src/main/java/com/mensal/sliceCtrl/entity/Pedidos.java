@@ -1,10 +1,8 @@
 package com.mensal.sliceCtrl.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
+
 import com.mensal.sliceCtrl.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -48,20 +46,15 @@ public class Pedidos extends AbstractEntity{
     @JoinColumn(name = "pagamento_id")
     private Pagamento pagamento;
 
-    @DecimalMin(value = "0.0", message = "O valor do pedido deve ser maior ou igual a 0")
     @Column(name = "valor_pedido")
     private BigDecimal valorPedido;
 
-    @DecimalMin(value = "0.0", message = "O valor da entrega deve ser maior ou igual a 0")
     @Column(name = "valor_entrega")
     private BigDecimal valorEntrega;
 
-    @DecimalMin(value = "0.0", message = "O valor total deve ser maior ou igual a 0")
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
 
-
-    @NotNull(message = "O status do pedido é obrigatório")
     @Column(name = "status_enum", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
