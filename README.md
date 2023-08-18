@@ -8,7 +8,7 @@
 
 <p></p>
 
-<p>Bem-vindo ao SliceCtrl Backend & API! Este repositório contém a parte essencial do sistema de gestão projetado especialmente para pizzarias, oferecendo uma solução completa e eficiente para gerenciar todas as operações do seu negócio.</p>
+<p>Bem-vindo ao SliceCtrl Backend & API! Neste repositório, você encontrará a parte fundamental do sistema de gerenciamento desenvolvido especialmente para estabelecimentos de alimentação, com foco em pizzarias. Oferecemos uma solução abrangente e eficaz para administrar todas as atividades do seu negócio.</p>
 
 - [Visão Geral](#visão-geral)
 - [Principais Recursos](#principais-recursos)
