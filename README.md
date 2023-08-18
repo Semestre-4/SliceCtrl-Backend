@@ -1,4 +1,4 @@
-﻿# SliceCtrl Backend & API 🍕🔌
+﻿# SliceCtrl Backend & API : Sistema de Gestão para Pizzarias 🍕🔌
  
 <div>
   <img src="https://img.shields.io/github/stars/Semestre-4/SliceCtrl-Backend?color=232323&label=SliceCtrl-Backend&logo=github&labelColor=232323">
@@ -25,15 +25,19 @@ O SliceCtrl Backend & API é uma solução robusta que capacita pizzarias a gere
 
 ## Principais Recursos
 
-- **Gestão de Pedidos:** Acompanhe os pedidos de forma dinâmica e atualize os status em tempo real. Otimize o fluxo de trabalho para entregas e retiradas.
+- **Gestão de Pedidos Eficiente:** Acompanhe cada pedido de forma precisa e atualize seus status com facilidade. Otimização do fluxo de trabalho para entregas e retiradas, garantindo agilidade e satisfação do cliente.
 
-- **Gestão de Cardápio:** Adicione, edite e remova itens do cardápio com facilidade. Defina preços, descrições e personalize opções para atender às preferências dos clientes.
+- **Administração do Cardápio:**
+Simplifique a adição, edição e remoção de itens do cardápio. Personalize descrições, preços e opções para atender perfeitamente aos desejos dos seus clientes, criando uma experiência gastronômica única.
 
-- **Gestão de Clientes:** Mantenha um registro completo dos seus clientes, incluindo histórico de pedidos e preferências. Ofereça um atendimento personalizado e excepcional.
+- **Atendimento Personalizado ao Cliente:**
+Mantenha registros detalhados dos clientes, incluindo histórico de pedidos.
 
-- **Integração de Pagamentos:** Integre diversos métodos de pagamento para proporcionar aos clientes uma experiência conveniente e segura.
+- **Análises Estratégicas e Relatórios Abrangentes:**
+Acesse insights valiosos sobre vendas, tendências de pedidos e desempenho geral. Utilize dados sólidos para tomar decisões informadas e direcionadas ao crescimento do seu negócio.
 
-- **Relatórios e Análises:** Tenha acesso a insights valiosos sobre vendas, padrões de pedidos e desempenho geral. Tome decisões informadas para impulsionar o crescimento do seu negócio.
+- **Gestão Eficiente de Estoque:**
+Mantenha o controle detalhado do seu estoque de ingredientes e suprimentos. Receba alertas automáticos de reabastecimento e evite interrupções indesejadas nas operações.
 
 ## Tecnologias Utilizadas
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
@@ -44,6 +48,8 @@ O SliceCtrl Backend & API é uma solução robusta que capacita pizzarias a gere
 
 ## Pré-requisitos
 
+Antes de começar, certifique-se de atender aos seguintes pré-requisitos:
+
 - Java Development Kit (JDK) 11 ou superior
 - IntelliJ IDEA (ou qualquer outra IDE Java de sua escolha)
 - PostgreSQL (instalação local ou conexão remota)
@@ -51,7 +57,7 @@ O SliceCtrl Backend & API é uma solução robusta que capacita pizzarias a gere
 
 ## Primeiros Passos
 
-Siga as instruções abaixo para colocar o sistema em funcionamento na sua máquina local.
+Siga as instruções abaixo para configurar e executar o sistema em sua máquina local:
 
 ### Instalação
 
@@ -62,10 +68,10 @@ Siga as instruções abaixo para colocar o sistema em funcionamento na sua máqu
    
 ### Configuração
 
-- Configure as propriedades de conexão do banco de dados no arquivo application.properties. Forneça os detalhes necessários, como URL do banco de dados, nome de usuário e senha.
+Abra o arquivo `application.properties` e configure as propriedades de conexão do banco de dados. Forneça os detalhes necessários, como URL do banco de dados, nome de usuário e senha.
 
 ### Executando a Aplicação
 
 - Compile o projeto para baixar as dependências e compilar o código.
 - Execute a aplicação usando a configuração de execução ou depuração da sua IDE.
-- Depois que a aplicação estiver em execução, você pode testar os endpoints da API usando o Postman ou qualquer outra ferramenta de teste de API.
+- Uma vez que a aplicação esteja em execução, você pode testar os endpoints da API usando o Postman ou qualquer outra ferramenta de teste de API.
