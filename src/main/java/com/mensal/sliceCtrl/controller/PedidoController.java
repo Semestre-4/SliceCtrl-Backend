@@ -56,6 +56,8 @@ public class PedidoController {
         return ResponseEntity.ok(pedidosDTOS);
     }
 
+    // Métodos semelhantes para recuperar pedidos por status, cliente, funcionário e tipo de entrega
+
     @GetMapping("/status/{status}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByStatus(@PathVariable Status status) {
         return ResponseEntity.ok(pedidoService.findByStatus(status));
@@ -91,6 +93,13 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findOrdersWithPendingPayments());
     }
 
+    /**
+     * Abre um novo pedido para um cliente específico.
+     *
+     * @param clienteId O ID do cliente para o qual o pedido será aberto.
+     * @param funcId    O ID do funcionário responsável pelo pedido.
+     * @return ResponseEntity contendo as informações do pedido aberto ou uma resposta de erro.
+     */
     @PostMapping("/abrir/{clienteId}/{funcId}")
     public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                @PathVariable("funcId") Long funcId) {
@@ -103,6 +112,13 @@ public class PedidoController {
         }
     }
 
+    /**
+     * Adiciona um produto a um pedido existente.
+     *
+     * @param pedidoId         O ID do pedido ao qual o produto será adicionado.
+     * @param pedidoProdutoDTO O DTO contendo as informações do produto a ser adicionado.
+     * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
+     */
     @PutMapping("/adicionar/produto/{pedidoId}")
     public ResponseEntity<?> addProdutoToPedido(
             @PathVariable Long pedidoId,
@@ -115,6 +131,13 @@ public class PedidoController {
         }
     }
 
+    /**
+     * Adiciona uma pizza a um pedido existente.
+     *
+     * @param pedidoId       O ID do pedido ao qual a pizza será adicionada.
+     * @param pedidoPizzaDTO O DTO contendo as informações da pizza a ser adicionada.
+     * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
+     */
     @PutMapping("/adicionar/pizza/{pedidoId}")
     public ResponseEntity<?> addPizzaPedido(
             @PathVariable Long pedidoId,
@@ -127,6 +150,13 @@ public class PedidoController {
         }
     }
 
+    /**
+     * Finaliza um pedido realizando o pagamento.
+     *
+     * @param pedidoId         O ID do pedido a ser finalizado.
+     * @param formDePagamento  O tipo de forma de pagamento a ser usado.
+     * @return ResponseEntity contendo as informações do pedido finalizado ou uma resposta de erro.
+     */
     @PutMapping("/{pedidoId}/pagamento/{formDePagamento}")
     public ResponseEntity<Pedidos> finalizarPedido(@PathVariable Long pedidoId,
                                                    @PathVariable FormasDePagamento formDePagamento) {
@@ -138,10 +168,17 @@ public class PedidoController {
         }
     }
 
+    /**
+     * Atualiza um pedido existente.
+     *
+     * @param pedidoId O ID do pedido a ser atualizado.
+     * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
+     */
     @PutMapping("/{pedidoId}")
     public ResponseEntity<Pedidos> updateOrderByUser(@PathVariable Long pedidoId) {
         Pedidos pedido = pedidoService.updateOrder(pedidoId);
         return new ResponseEntity<Pedidos>(pedido, HttpStatus.OK);
     }
+
 
 }

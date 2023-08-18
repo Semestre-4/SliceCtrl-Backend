@@ -13,9 +13,7 @@ public class PedidoProdutoDTO extends AbstractEntityDTO {
 
     @NotNull(message = "O produto é obrigatório")
     private ProdutosDTO produto;
-
     private Pedidos pedido;
-
     @Min(value = 1, message = "A quantidade pedida deve ser pelo menos 1")
     private int qtdePedida;
 

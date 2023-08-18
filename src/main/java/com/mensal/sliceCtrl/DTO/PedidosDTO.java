@@ -28,4 +28,5 @@ public class PedidosDTO extends AbstractEntityDTO {
     private boolean forTakeaway;
     private boolean forDineIn;
     private boolean isPago;
+
 }
