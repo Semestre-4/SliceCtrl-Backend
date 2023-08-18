@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
@@ -22,23 +23,21 @@ import java.util.List;
 public class Pizzas extends AbstractEntity{
 
     @Column(name = "tamanho_pizza",nullable = false)
-    @NotNull(message = "É obrigatorio informar o tamanho da pizza")
     @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
 
     @Column(name = "observacao")
     private String observacao;
 
-    @NotNull(message = "É obrigatorio informar o preço do produto")
     @Column(name = "preco_produto", nullable = false)
     private Double preco;
 
-    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
     @Column(name = "qtde_estoque", nullable = false)
     private Integer qtdeEstoque;
 
-    @ManyToMany(mappedBy = "pizzas")
-    private List<Pedidos> pedidos = new ArrayList<>();
+    @OneToMany(mappedBy = "pizza",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnoreProperties("pizza")
+    private List<PedidoPizza> pedidos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -47,7 +46,6 @@ public class Pizzas extends AbstractEntity{
             inverseJoinColumns = @JoinColumn(name = "sabor_id")
     )
     @JsonIgnore
-    @NotNull(message = "É obrigatorio informar pelo menos 1 sabor")
     private List<Sabores> sabor;
 
     @Column(name = "is_disponivel", nullable = false)
