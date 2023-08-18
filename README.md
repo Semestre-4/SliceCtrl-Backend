@@ -18,7 +18,8 @@
   - [Instalação](#instalação)
   - [Configuração](#configuração)
   - [Executando a Aplicação](#executando-a-aplicação)
- - [Principais Contribuidores](#principais-contribuidores)
+- [Documentação da API](#documentação-da-api)
+- [Principais Contribuidores](#principais-contribuidores)
 
 
 ## Visão Geral
@@ -76,6 +77,10 @@ Abra o arquivo `application.properties` e configure as propriedades de conexão 
 - Compile o projeto para baixar as dependências e compilar o código.
 - Execute a aplicação usando a configuração de execução ou depuração da sua IDE.
 - Uma vez que a aplicação esteja em execução, você pode testar os endpoints da API usando o Postman ou qualquer outra ferramenta de teste de API.
+
+## Documentação da API
+
+Para obter detalhes completos sobre os endpoints disponíveis e seus formatos de requisição e resposta, consulte a [Documentação da API SliceCtrl](https://documenter.getpostman.com/view/26107948/2s9Y5SW5db).
 
 ## Principais Contribuidores
 
