@@ -18,6 +18,7 @@
   - [Instalação](#instalação)
   - [Configuração](#configuração)
   - [Executando a Aplicação](#executando-a-aplicação)
+ - [Principais Contribuidores](#principais-contribuidores)
 
 
 ## Visão Geral
@@ -75,3 +76,18 @@ Abra o arquivo `application.properties` e configure as propriedades de conexão 
 - Compile o projeto para baixar as dependências e compilar o código.
 - Execute a aplicação usando a configuração de execução ou depuração da sua IDE.
 - Uma vez que a aplicação esteja em execução, você pode testar os endpoints da API usando o Postman ou qualquer outra ferramenta de teste de API.
+
+## Principais Contribuidores
+
+👩‍💻 **DEV:** Bouchra Akl [(@bouchraakl)](https://github.com/bouchraakl)
+
+[![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/bouchraakl)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bouchra-akl/)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:bushraakl1234@gmail.com)
+
+
+👨‍💻 **DEV:** Gustavo Piegat [(@piegat)](https://github.com/Piegat)
+
+[![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Piegat)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/gustavopiegat/)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:gustavopiegat2004@gmail.com)
