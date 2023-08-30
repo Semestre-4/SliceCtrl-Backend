@@ -11,11 +11,10 @@ import lombok.Setter;
 @Setter
 public class PedidoProdutoDTO extends AbstractEntityDTO {
 
-    @NotNull(message = "O produto é obrigatório")
+    @NotNull(message = "O produto não pode ser nulo")
     private ProdutosDTO produto;
-    private Pedidos pedido;
+    private PedidosDTO pedido;
     @Min(value = 1, message = "A quantidade pedida deve ser pelo menos 1")
     private int qtdePedida;
-
 
 }

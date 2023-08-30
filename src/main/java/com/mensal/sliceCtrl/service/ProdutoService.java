@@ -1,16 +1,12 @@
 package com.mensal.sliceCtrl.service;
 
-import com.mensal.sliceCtrl.DTO.IngredientesDTO;
-import com.mensal.sliceCtrl.DTO.PizzasDTO;
 import com.mensal.sliceCtrl.DTO.ProdutosDTO;
-import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Produtos;
-import com.mensal.sliceCtrl.entity.enums.Categorias;
+import com.mensal.sliceCtrl.entity.enums.Categoria;
 import com.mensal.sliceCtrl.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,7 +47,7 @@ public class ProdutoService {
         return toProdutosDTO(produtos);
     }
 
-    public List<ProdutosDTO> findByCategoria(Categorias categoria) {
+    public List<ProdutosDTO> findByCategoria(Categoria categoria) {
         return this.produtoRepository.findByCategoria(categoria).stream().map(this::toProdutosDTO).toList();
     }
 
