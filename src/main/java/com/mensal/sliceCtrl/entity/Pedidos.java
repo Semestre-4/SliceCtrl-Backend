@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mensal.sliceCtrl.entity.enums.FormaDeEntrega;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -62,13 +63,8 @@ public class Pedidos extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "for_entrega")
-    private boolean forEntrega;
-
-    @Column(name = "for_takeaway")
-    private boolean forTakeaway;
-
-    @Column(name = "for_dineIn")
-    private boolean forDineIn;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "forma_de_entrega",nullable = false)
+    private FormaDeEntrega formaDeEntrega;
 
 }
