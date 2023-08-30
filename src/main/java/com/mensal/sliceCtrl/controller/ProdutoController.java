@@ -1,7 +1,7 @@
 package com.mensal.sliceCtrl.controller;
 
 import com.mensal.sliceCtrl.DTO.ProdutosDTO;
-import com.mensal.sliceCtrl.entity.enums.Categorias;
+import com.mensal.sliceCtrl.entity.enums.Categoria;
 import com.mensal.sliceCtrl.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +55,7 @@ public class ProdutoController {
     @GetMapping("/categoria/{categoriaName}")
     public ResponseEntity<List<ProdutosDTO>> getProductsByCategoria(@PathVariable String categoriaName) {
         try {
-            Categorias categoria = Categorias.valueOf(categoriaName);
+            Categoria categoria = Categoria.valueOf(categoriaName);
             List<ProdutosDTO> produtosDTOS = produtoService.findByCategoria(categoria);
             return ResponseEntity.ok(produtosDTOS);
         } catch (IllegalArgumentException e) {

@@ -19,6 +19,12 @@ public class PedidoPizza extends AbstractEntity{
     @JoinColumn(name = "pizza_id",nullable = false)
     @JsonIgnoreProperties("pedidos")
     private Pizzas pizza;
+
+    @ManyToOne
+    @JoinColumn(name = "sabor_id", nullable = false)
+    @JsonIgnoreProperties("pedidosPizza")
+    private Sabores sabor;
+
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     @JsonIgnoreProperties("pizzas")
@@ -26,6 +32,9 @@ public class PedidoPizza extends AbstractEntity{
 
     @Column(name = "qtde_pedida",nullable = false)
     private Integer qtdePedida;
+
+    @Column(name = "observacao")
+    private String observacao;
 
 
 }
