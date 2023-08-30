@@ -2,9 +2,6 @@ package com.mensal.sliceCtrl.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "sabores", schema = "public")
-public class Sabores extends AbstractEntity{
+public class Sabores extends AbstractEntity {
 
     @Column(name = "nome_sabor", nullable = false, unique = true)
     private String nomeSabor;

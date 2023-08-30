@@ -1,10 +1,8 @@
 package com.mensal.sliceCtrl.DTO;
 
-import com.mensal.sliceCtrl.entity.enums.Categorias;
+import com.mensal.sliceCtrl.entity.enums.Categoria;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,17 +10,17 @@ import java.math.BigDecimal;
 
 @Getter @Setter
 public class ProdutosDTO extends AbstractEntityDTO {
-    @NotNull(message = "É obrigatorio informar o nome do produto")
-    @NotBlank(message = "É obrigatorio informar o nome do produto")
-    @Column(name = "nome_produto", nullable = false, unique = true)
-    @Size(min = 2, max = 100, message = "o produto pode ter entre 2 e 100 caracteres")
+
+    @NotBlank(message = "O nome do produto não pode estar em branco")
     private String nomeProduto;
-    @NotNull(message = "É obrigatorio informar a categoria")
-    private Categorias categoria;
-    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
+
+    @NotNull(message = "A categoria do produto não pode ser nula")
+    private Categoria categoria;
+
+    @Min(value = 0, message = "A quantidade em estoque deve ser no mínimo 0")
     private Integer qtdeEstoque;
-    @NotNull(message = "É obrigatorio informar o preço do produto")
-    private BigDecimal preco;
-    private String descricao;
+
+    @Positive(message = "O preço do produto deve ser um valor positivo")
+    private Double preco;
 
 }
