@@ -26,38 +26,17 @@ public class Pizzas extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
 
-    @Column(name = "observacao")
-    private String observacao;
-
     @Column(name = "preco_produto", nullable = false)
     private Double preco;
 
-    @Column(name = "qtde_estoque", nullable = false)
-    private Integer qtdeEstoque;
+    @Column(name = "discricao")
+    private String discricao;
 
     @OneToMany(mappedBy = "pizza",cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonIgnoreProperties("pizza")
     private List<PedidoPizza> pedidos = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "pizza_sabor",
-            joinColumns = @JoinColumn(name = "pizza_id"),
-            inverseJoinColumns = @JoinColumn(name = "sabor_id")
-    )
-    @JsonIgnore
-    private List<Sabores> sabor;
-
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
-
-    @PrePersist @PreUpdate
-    public void UpdateDisponivelFlag(){
-        if (qtdeEstoque != null && qtdeEstoque > 0){
-            setDisponivel(true);
-        }
-    }
-
-
 
 }

@@ -19,6 +19,7 @@ public class SaboresDTO extends AbstractEntityDTO {
     private String nomeSabor;
     private String descricao;
     private double valorAdicional;
+    @NotNull(message = "É obrigatorio informar os ingredientes")
     private List<IngredientesDTO> ingredientes;
 
 }

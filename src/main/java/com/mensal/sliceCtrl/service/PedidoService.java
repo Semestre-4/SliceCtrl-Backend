@@ -25,6 +25,7 @@ public class PedidoService {
     private final PedidoProdutoRepository pedidoProdutoRepository;
     private final PedidoPizzaRepository pedidoPizzaRepository;
     private final PagamentoRepository pagamentoRepository;
+    private final SaboresRepository saboresRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -36,6 +37,7 @@ public class PedidoService {
                          PedidoProdutoRepository pedidoProdutoRepository,
                          PedidoPizzaRepository pedidoPizzaRepository,
                          PagamentoRepository pagamentoRepository,
+                         SaboresRepository saboresRepository,
                          ModelMapper modelMapper) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
@@ -45,6 +47,7 @@ public class PedidoService {
         this.pedidoProdutoRepository = pedidoProdutoRepository;
         this.pedidoPizzaRepository = pedidoPizzaRepository;
         this.pagamentoRepository = pagamentoRepository;
+        this.saboresRepository = saboresRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -169,11 +172,11 @@ public class PedidoService {
         // Converter DTO para entidade PedidoPizza
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
 
-        // Verificar disponibilidade da pizza em estoque
-        if (pedidoPizza.getPizza().getQtdeEstoque() <= 0) {
-            throw new IllegalArgumentException("O item selecionado encontra-se" +
-                    " atualmente indisponível em nosso estoque.");
-        }
+//        // Verificar disponibilidade da pizza em estoque
+//        if (pedidoPizza.getPizza().getQtdeEstoque() <= 0) {
+//            throw new IllegalArgumentException("O item selecionado encontra-se" +
+//                    " atualmente indisponível em nosso estoque.");
+//        }
 
         // Associar o pedido à pizza
         pedidoPizza.setPedido(pedido);
@@ -312,9 +315,13 @@ public class PedidoService {
             throw new IllegalArgumentException("Pedido não encontrado");
         }
 
+        Sabores sabores = saboresRepository.findById(pedidoPizza.getSabor().getId()).orElse(null);
+
+
         // Definir o pedido e a pizza no objeto PedidoPizza
         pedidoPizza.setPedido(pedidos);
         pedidoPizza.setPizza(pizzas);
+        pedidoPizza.setSabor(sabores);
 
         return pedidoPizza;
     }

@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,8 +38,8 @@ public class Sabores extends AbstractEntity{
     )
     private List<Ingredientes> ingredientes = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "sabor")
-    private List<Pizzas> pizzas = new ArrayList<>();
-
+    @OneToMany(mappedBy = "sabor", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("sabor")
+    private List<PedidoPizza> pedidosPizza;
 
 }

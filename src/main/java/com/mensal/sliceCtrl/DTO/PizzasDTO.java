@@ -22,13 +22,9 @@ public class PizzasDTO extends AbstractEntityDTO{
     @Enumerated(EnumType.STRING)
     @NotNull(message = "É obrigatorio informar o tamanho da pizza")
     private Tamanho tamanho;
-    private String observacao;
+
     @NotNull(message = "É obrigatorio informar o preço do produto")
     private Double preco;
-    @NotNull(message = "É obrigatorio informar a quantidade de estoque")
-    @Column(name = "qtde_estoque", nullable = false)
-    private Integer qtdeEstoque;
-    @NotNull(message = "É obrigatorio informar pelo menos 1 sabor")
-    private List<SaboresDTO> sabor;
+
 
 }

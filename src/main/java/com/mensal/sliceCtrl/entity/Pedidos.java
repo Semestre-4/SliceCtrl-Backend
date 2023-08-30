@@ -44,7 +44,6 @@ public class Pedidos extends AbstractEntity{
     @JsonIgnoreProperties("pedido")
     private List<PedidoPizza> pizzas = new ArrayList<>();
 
-
     @OneToOne
     @JoinColumn(name = "pagamento_id")
     @JsonIgnore
