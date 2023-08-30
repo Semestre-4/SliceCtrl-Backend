@@ -26,7 +26,7 @@ public class Pizzas extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private Tamanho tamanho;
 
-    @Column(name = "preco_produto", nullable = false)
+    @Column(name = "preco_pizza", nullable = false)
     private Double preco;
 
     @Column(name = "discricao")
