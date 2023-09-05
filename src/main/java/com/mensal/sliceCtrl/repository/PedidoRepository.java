@@ -19,15 +19,6 @@ public interface PedidoRepository extends JpaRepository<Pedidos, Long> {
     @Query("SELECT p FROM Pedidos p WHERE p.funcionario.id = :id")
     List<Pedidos> findByFunc(@Param("id") Long id);
 
-    @Query("SELECT p FROM Pedidos p WHERE p.forEntrega = true")
-    List<Pedidos> findByForEntrega();
-
-    @Query("SELECT p FROM Pedidos p WHERE p.forTakeaway = true")
-    List<Pedidos> findByForTakeaway();
-
-    @Query("SELECT p FROM Pedidos p WHERE p.forDineIn = true")
-    List<Pedidos> findByForDineIn();
-
     @Query("SELECT p FROM Pedidos p WHERE p.status = :PENDENTE")
     List<Pedidos> findOrdersWithPendingPayments();
 }
