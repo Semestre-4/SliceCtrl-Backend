@@ -99,14 +99,9 @@ public class SaboresService {
     @Transactional
     public void deletar(Long id){
         final Sabores sabores = this.saboresRepository.findById(id).orElse(null);
-
-        if (sabores != null) {
-            if (!sabores.getPizzas().isEmpty()) {
-                throw new IllegalArgumentException("Não é possível excluir o sabor devido à relação com pizzas existente.");
-            } else {
                 this.saboresRepository.delete(sabores);
-            }
+
         }
     }
 
-}
+

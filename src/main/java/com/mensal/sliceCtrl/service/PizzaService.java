@@ -43,15 +43,6 @@ public class PizzaService {
         }
     }
 
-    public PizzasDTO findByNomeSabor(String nomeSabor) {
-        try {
-            Pizzas pizzaEncontrado = pizzaRepository.findByNomeSabor(nomeSabor);
-            return toPizzaDTO(pizzaEncontrado);
-        } catch (EntityNotFoundException ex) {
-            throw new RuntimeException("Ocorreu um erro ao tentar recuperar a pizza.", ex);
-        }
-    }
-
     public List<PizzasDTO> findByTamanho(Tamanho tamanho) {
         return pizzaRepository.findByTamanho(tamanho).stream().map(this::toPizzaDTO).toList();
     }
@@ -67,37 +58,7 @@ public class PizzaService {
     @Transactional
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
         List<Sabores> sabores = new ArrayList<>();
-        for (SaboresDTO saboresDTO : pizzaDTO.getSabor()) {
-            Sabores saboresEx = saboresRepository.findById(saboresDTO.getId())
-                    .orElseThrow(() ->
-                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " não encontrado"));
-            sabores.add(saboresEx);
-            if (saboresEx.getValorAdicional() != 0) {
-               pizzaDTO.setPreco(pizzaDTO.getPreco()+saboresEx.getValorAdicional());
-            }
-        }
-
-        int numberOfSabores = sabores.size();
-        int minSabores = 1;
-        int maxSabores;
-
-        if (pizzaDTO.getTamanho() == Tamanho.P) {
-            maxSabores = 1;
-        } else if (pizzaDTO.getTamanho() == Tamanho.M) {
-            maxSabores = 2;
-        } else if (pizzaDTO.getTamanho() == Tamanho.G) {
-            maxSabores = 3;
-        } else if (pizzaDTO.getTamanho() == Tamanho.XG) {
-            maxSabores = 4;
-        } else {
-            throw new IllegalArgumentException("Tamanho de pizza inválido: " + pizzaDTO.getTamanho());
-        }
-
-        if (numberOfSabores < minSabores || numberOfSabores > maxSabores) {
-            throw new IllegalArgumentException("Quantidade de sabores inválida para o tamanho da pizza " + pizzaDTO.getTamanho());
-        }
-
-        Pizzas pizza = toPizza(pizzaDTO, sabores);
+        Pizzas pizza = toPizza(pizzaDTO);
         return pizzaRepository.save(pizza);
     }
 
@@ -108,34 +69,7 @@ public class PizzaService {
                 .orElseThrow(() -> new EntityNotFoundException("Pizza com ID = " + id + " não encontrada"));
 
         List<Sabores> sabores = new ArrayList<>();
-        for (SaboresDTO saboresDTO : pizzaDTO.getSabor()) {
-            Sabores saboresEx = saboresRepository.findById(saboresDTO.getId())
-                    .orElseThrow(() ->
-                            new EntityNotFoundException("Sabor com ID = " + saboresDTO.getId() + " não encontrada"));
-            sabores.add(saboresEx);
-        }
-
-        int numberOfSabores = sabores.size();
-        int minSabores = 1;
-        int maxSabores;
-
-        if (pizzaDTO.getTamanho() == Tamanho.P) {
-            maxSabores = 1;
-        } else if (pizzaDTO.getTamanho() == Tamanho.M) {
-            maxSabores = 2;
-        } else if (pizzaDTO.getTamanho() == Tamanho.G) {
-            maxSabores = 3;
-        } else if (pizzaDTO.getTamanho() == Tamanho.XG) {
-            maxSabores = 4;
-        } else {
-            throw new IllegalArgumentException("Tamanho de pizza inválido: " + pizzaDTO.getTamanho());
-        }
-
-        if (numberOfSabores < minSabores || numberOfSabores > maxSabores) {
-            throw new IllegalArgumentException("Quantidade de sabores inválida para o tamanho da pizza " + pizzaDTO.getTamanho());
-        }
-
-        return pizzaRepository.save(toPizza(pizzaDTO,sabores));
+        return pizzaRepository.save(toPizza(pizzaDTO));
     }
 
 
@@ -156,9 +90,8 @@ public class PizzaService {
         return modelMapper.map(pizza, PizzasDTO.class);
     }
 
-    public Pizzas toPizza(PizzasDTO pizzaDTO,List<Sabores> sabores) {
+    public Pizzas toPizza(PizzasDTO pizzaDTO) {
         Pizzas pizzas = modelMapper.map(pizzaDTO, Pizzas.class);
-        pizzas.setSabor(sabores);
         return pizzas;
     }
 
