@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.service;
 
 import com.mensal.sliceCtrl.DTO.*;
 import com.mensal.sliceCtrl.entity.*;
+import com.mensal.sliceCtrl.entity.enums.FormaDeEntrega;
 import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import com.mensal.sliceCtrl.repository.*;
@@ -80,17 +81,6 @@ public class PedidoService {
         return pedidoRepository.findByFunc(funcionarioId).stream().map(this::toPedidosDTO).toList();
     }
 
-    public List<PedidosDTO> findByForEntrega() {
-        return pedidoRepository.findByForEntrega().stream().map(this::toPedidosDTO).toList();
-    }
-
-    public List<PedidosDTO> findByForTakeaway() {
-        return pedidoRepository.findByForTakeaway().stream().map(this::toPedidosDTO).toList();
-    }
-
-    public List<PedidosDTO> findByForDineIn() {
-        return pedidoRepository.findByForDineIn().stream().map(this::toPedidosDTO).toList();
-    }
 
     // Método para encontrar pedidos com pagamentos pendentes
     public List<PedidosDTO> findOrdersWithPendingPayments() {
@@ -99,7 +89,7 @@ public class PedidoService {
 
     // Método para iniciar um novo pedido
     @Transactional
-    public PedidosDTO iniciarPedido(Long clienteId, Pedidos pedido, Long funcId) {
+    public PedidosDTO iniciarPedido(Long clienteId, Pedidos pedido, Long funcId, FormaDeEntrega formaDeEntrega) {
         // Encontrar o cliente pelo ID
         Clientes clientes = clienteRepository.findById(clienteId).orElse(null);
 
@@ -115,6 +105,7 @@ public class PedidoService {
         pedido.setCliente(clientes);
         pedido.setFuncionario(funcionarios);
         pedido.setStatus(Status.PENDENTE);
+        pedido.setFormaDeEntrega(formaDeEntrega);
         pedidoRepository.save(pedido);
 
         return toPedidosDTO(pedido);
@@ -241,7 +232,7 @@ public class PedidoService {
     private double calculateTotalPedidoAmount(Pedidos pedido) {
         double productsTotal = calculateProductsTotal(pedido);
         double pizzasTotal = calculatePizzasTotal(pedido);
-        double deliveryTotal = pedido.isForEntrega() ? 10.0 : 0.0;
+        double deliveryTotal = 0.0;
         return productsTotal + pizzasTotal + deliveryTotal;
     }
 
