@@ -15,6 +15,4 @@ public class PizzasDTO extends AbstractEntityDTO{
     @Positive(message = "O preço da pizza deve ser um valor positivo")
     private Double preco;
 
-    private String descricao;
-
 }
