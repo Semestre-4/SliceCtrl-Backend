@@ -64,6 +64,11 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findByStatus(status));
     }
 
+    @GetMapping("/formaDeEntrega/{formaDeEntrega}")
+    public ResponseEntity<List<PedidosDTO>> getPedidosByformaDeEntrega(@PathVariable FormaDeEntrega formaDeEntrega) {
+        return ResponseEntity.ok(pedidoService.findByformaDeEntrega(formaDeEntrega));
+    }
+
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(pedidoService.findByCliente_Id(clienteId));
@@ -73,8 +78,6 @@ public class PedidoController {
     public ResponseEntity<List<PedidosDTO>> getPedidosByFuncionario(@PathVariable Long funcionarioId) {
         return ResponseEntity.ok(pedidoService.findByFuncionario_Id(funcionarioId));
     }
-
-    //TODO : HTTP method to get by forma de entrega
 
     @GetMapping("/pagamento-pending")
     public ResponseEntity<List<PedidosDTO>> getPedidosWithPagamentoPending() {
