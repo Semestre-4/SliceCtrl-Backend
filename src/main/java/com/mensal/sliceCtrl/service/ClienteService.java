@@ -64,7 +64,6 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente com CPF = " + clientesDTO.getCpf() + " já existe");
         }
 
-        // Map the EnderecosDTO objects to Enderecos entities
         List<Enderecos> enderecosList = new ArrayList<>();
 
         for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
@@ -72,7 +71,6 @@ public class ClienteService {
             enderecosList.add(endereco);
         }
 
-        // Create the client entity and associate the addresses
         Clientes clientes = modelMapper.map(clientesDTO, Clientes.class);
         clientes.setEnderecos(enderecosList);
 
