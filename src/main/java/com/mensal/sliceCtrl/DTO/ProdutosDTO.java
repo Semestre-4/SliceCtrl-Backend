@@ -20,6 +20,9 @@ public class ProdutosDTO extends AbstractEntityDTO {
     @Min(value = 0, message = "A quantidade em estoque deve ser no mínimo 0")
     private Integer qtdeEstoque;
 
+    @NotNull(message = "O campo disponivel no produto não pode ser nula")
+    private boolean disponivel;
+
     @Positive(message = "O preço do produto deve ser um valor positivo")
     private Double preco;
 
