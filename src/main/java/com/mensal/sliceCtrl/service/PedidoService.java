@@ -73,6 +73,10 @@ public class PedidoService {
         return pedidoRepository.findByStatus(status).stream().map(this::toPedidosDTO).toList();
     }
 
+    public List<PedidosDTO> findByformaDeEntrega(FormaDeEntrega formaDeEntrega) {
+        return pedidoRepository.findByformaDeEntrega(formaDeEntrega).stream().map(this::toPedidosDTO).toList();
+    }
+
     public List<PedidosDTO> findByCliente_Id(Long clienteId) {
         return pedidoRepository.findByCliente(clienteId).stream().map(this::toPedidosDTO).toList();
     }
@@ -163,11 +167,7 @@ public class PedidoService {
         // Converter DTO para entidade PedidoPizza
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
 
-//        // Verificar disponibilidade da pizza em estoque
-//        if (pedidoPizza.getPizza().getQtdeEstoque() <= 0) {
-//            throw new IllegalArgumentException("O item selecionado encontra-se" +
-//                    " atualmente indisponível em nosso estoque.");
-//        }
+        //TODO : VERIFICAR QTDE. DE SABORES
 
         // Associar o pedido à pizza
         pedidoPizza.setPedido(pedido);
@@ -230,6 +230,7 @@ public class PedidoService {
 
     // Método para calcular o valor total do pedido
     private double calculateTotalPedidoAmount(Pedidos pedido) {
+        //TODO : DELIVEY FEE
         double productsTotal = calculateProductsTotal(pedido);
         double pizzasTotal = calculatePizzasTotal(pedido);
         double deliveryTotal = 0.0;
@@ -316,6 +317,5 @@ public class PedidoService {
 
         return pedidoPizza;
     }
-
 
 }
