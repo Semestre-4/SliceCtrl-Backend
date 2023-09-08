@@ -92,15 +92,15 @@ public class PedidoController {
      * @return ResponseEntity contendo as informações do pedido aberto ou uma resposta de erro.
      */
     @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
-    public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
+    public ResponseEntity<String> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                   @PathVariable("funcId") Long funcId,
                                                   @PathVariable("formaDeEntrega") FormaDeEntrega formaDeEntrega){
         try {
             Pedidos pedido = new Pedidos();
             PedidosDTO savedPedido = pedidoService.iniciarPedido(clienteId, pedido,funcId,formaDeEntrega);
-            return ResponseEntity.ok(savedPedido);
+            return ResponseEntity.ok(String.format("%s",savedPedido));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

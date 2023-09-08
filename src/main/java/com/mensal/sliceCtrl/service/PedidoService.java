@@ -94,15 +94,25 @@ public class PedidoService {
     // Método para iniciar um novo pedido
     @Transactional
     public PedidosDTO iniciarPedido(Long clienteId, Pedidos pedido, Long funcId, FormaDeEntrega formaDeEntrega) {
+
         // Encontrar o cliente pelo ID
         Clientes clientes = clienteRepository.findById(clienteId).orElse(null);
+
 
         // Encontrar o funcionário pelo ID
         Funcionarios funcionarios = funcionarioRepository.findById(funcId).orElse(null);
 
+
         // Verificar se o cliente e o funcionário foram encontrados
         if (clientes == null && funcionarios == null) {
             throw new IllegalArgumentException("Registro do Cliente ou Funcionario não encontrados");
+        }
+
+        List<Pedidos> pendingOrders = pedidoRepository.findByClienteAndStatus(clientes, Status.PENDENTE);
+
+        if (!pendingOrders.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Já existe um pedido iniciado com o cliente %s de CPF = %s",
+                    clientes.getNome(), clientes.getCpf()));
         }
 
         // Definir informações do pedido

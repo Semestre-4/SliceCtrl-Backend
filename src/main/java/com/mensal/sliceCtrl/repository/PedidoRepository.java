@@ -1,5 +1,6 @@
 package com.mensal.sliceCtrl.repository;
 
+import com.mensal.sliceCtrl.entity.Clientes;
 import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.entity.enums.FormaDeEntrega;
 import com.mensal.sliceCtrl.entity.enums.Status;
@@ -27,4 +28,5 @@ public interface PedidoRepository extends JpaRepository<Pedidos, Long> {
     @Query("SELECT p FROM Pedidos p WHERE p.status = :PENDENTE")
     List<Pedidos> findOrdersWithPendingPayments();
 
-}
+    @Query("SELECT p FROM Pedidos p WHERE p.cliente = :cliente AND p.status = :status")
+    List<Pedidos> findByClienteAndStatus(@Param("cliente") Clientes cliente, @Param("status") Status status);}
