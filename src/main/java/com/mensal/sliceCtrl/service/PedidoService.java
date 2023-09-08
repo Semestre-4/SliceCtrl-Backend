@@ -5,6 +5,7 @@ import com.mensal.sliceCtrl.entity.*;
 import com.mensal.sliceCtrl.entity.enums.FormaDeEntrega;
 import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
+import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import com.mensal.sliceCtrl.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -54,9 +55,9 @@ public class PedidoService {
 
     // Método para encontrar um pedido pelo ID
     public PedidosDTO findById(Long id) {
-            Pedidos pedidos = pedidoRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
-            return toPedidosDTO(pedidos);
+        Pedidos pedidos = pedidoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
+        return toPedidosDTO(pedidos);
     }
 
     // Método para encontrar todos os pedidos
@@ -173,7 +174,22 @@ public class PedidoService {
         // Converter DTO para entidade PedidoPizza
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
 
-        //TODO : VERIFICAR QTDE. DE SABORES
+        int maxFlavors = 0;
+
+        switch (pedidoPizza.getPizza().getTamanho()) {
+            case P -> maxFlavors = 1;
+            case M -> maxFlavors = 2;
+            case G -> maxFlavors = 3;
+            case XG -> maxFlavors = 4;
+            default -> {
+                throw new IllegalArgumentException("Tamanho Invalído!");
+            }
+        }
+
+        if (pedido.getPizzas().size() + 1 > maxFlavors) {
+            throw new IllegalArgumentException("Número máximo de sabores excedido para o tamanho da pizza.");
+        }
+
 
         // Associar o pedido à pizza
         pedidoPizza.setPedido(pedido);
@@ -199,6 +215,7 @@ public class PedidoService {
             Pagamento pagamento = new Pagamento();
             pagamento.setFormasDePagamento(formDePagamento);
             pagamento.setPedido(pedido);
+            pagamento.setPago(true);
             pagamentoRepository.save(pagamento);
             pedido.setPagamento(pagamento);
 
@@ -236,10 +253,14 @@ public class PedidoService {
 
     // Método para calcular o valor total do pedido
     private double calculateTotalPedidoAmount(Pedidos pedido) {
-        //TODO : DELIVEY FEE
         double productsTotal = calculateProductsTotal(pedido);
         double pizzasTotal = calculatePizzasTotal(pedido);
         double deliveryTotal = 0.0;
+        if (pedido.getFormaDeEntrega() == FormaDeEntrega.ENTREGA){
+            deliveryTotal = 8.0;
+        }
+        pedido.setValorPedido(productsTotal + pizzasTotal);
+        pedido.setValorEntrega(deliveryTotal);
         return productsTotal + pizzasTotal + deliveryTotal;
     }
 
