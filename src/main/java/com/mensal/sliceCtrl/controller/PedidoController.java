@@ -42,7 +42,7 @@ public class PedidoController {
             PedidosDTO pedidosDTO = pedidoService.findById(id);
             return ResponseEntity.ok(pedidosDTO);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
