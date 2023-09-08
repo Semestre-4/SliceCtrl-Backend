@@ -60,7 +60,6 @@ public class ClienteService {
 
     @Transactional
     public Clientes createCliente(ClientesDTO clientesDTO) {
-
         if (clienteRepository.existsByCpf(clientesDTO.getCpf())) {
             throw new IllegalArgumentException("Cliente com CPF = " + clientesDTO.getCpf() + " já existe");
         }
@@ -68,15 +67,12 @@ public class ClienteService {
         List<Enderecos> enderecosList = new ArrayList<>();
 
         for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
-            Enderecos existingEndereco = enderecoRepository.findById(enderecoDTO.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " nao encontrado"));
-            enderecosList.add(existingEndereco);
+            Enderecos endereco = modelMapper.map(enderecoDTO, Enderecos.class);
+            enderecosList.add(endereco);
         }
 
-
-        validateEnderecoIds(clientesDTO.getEnderecos());
-
-        Clientes clientes = toCliente(clientesDTO, enderecosList);
+        Clientes clientes = modelMapper.map(clientesDTO, Clientes.class);
+        clientes.setEnderecos(enderecosList);
 
         return clienteRepository.save(clientes);
     }

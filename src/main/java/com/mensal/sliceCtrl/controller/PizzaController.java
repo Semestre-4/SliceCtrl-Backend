@@ -39,15 +39,12 @@ public class PizzaController {
         }
     }
 
-    @GetMapping("/sabor/{nomeSabor}")
-    public ResponseEntity<PizzasDTO> getPizzaByNomeSabor(@PathVariable("nomeSabor") String nomeSabor) {
-        PizzasDTO pizzaDTOS = pizzaService.findByNomeSabor(nomeSabor);
-        if (pizzaDTOS != null) {
-            return ResponseEntity.ok(pizzaDTOS);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/all")
+    public ResponseEntity<List<PizzasDTO>> getAllPizzas() {
+        List<PizzasDTO> pizzaDTOS = pizzaService.findAll();
+        return ResponseEntity.ok(pizzaDTOS);
     }
+
 
     @GetMapping("/tamanho/{tamanhoName}")
     public ResponseEntity<List<PizzasDTO>> getPizzaByTamanho(@PathVariable String tamanhoName) {
@@ -59,20 +56,6 @@ public class PizzaController {
             throw new RuntimeException("Tamanho Invalido: " + tamanhoName);
         }
     }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<PizzasDTO>> getAllPizzas() {
-        List<PizzasDTO> pizzaDTOS = pizzaService.findAll();
-        return ResponseEntity.ok(pizzaDTOS);
-    }
-
-
-    @GetMapping("/disponivel")
-    private ResponseEntity<List<PizzasDTO>> getByAvailable(){
-        List<PizzasDTO> pizzasDTOS = pizzaService.findByDisponivel();
-        return ResponseEntity.ok(pizzasDTOS);
-    }
-
 
     /**
      * Cria uma nova pizza.

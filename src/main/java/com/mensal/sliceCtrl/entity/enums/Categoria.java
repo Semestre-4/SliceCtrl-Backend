@@ -1,9 +1,8 @@
 package com.mensal.sliceCtrl.entity.enums;
 
-public enum Categorias {
+public enum Categoria {
     BEBIDAS,
     ACOMPANHAMENTOS,
-    COMBOS,
     SOBREMESAS,
-    OUTROS_PRATOS
+    OUTROS
 }

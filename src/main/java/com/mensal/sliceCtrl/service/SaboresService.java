@@ -1,7 +1,11 @@
 package com.mensal.sliceCtrl.service;
 
+import com.mensal.sliceCtrl.DTO.ClientesDTO;
+import com.mensal.sliceCtrl.DTO.EnderecosDTO;
 import com.mensal.sliceCtrl.DTO.IngredientesDTO;
 import com.mensal.sliceCtrl.DTO.SaboresDTO;
+import com.mensal.sliceCtrl.entity.Clientes;
+import com.mensal.sliceCtrl.entity.Enderecos;
 import com.mensal.sliceCtrl.entity.Ingredientes;
 import com.mensal.sliceCtrl.entity.Sabores;
 import com.mensal.sliceCtrl.repository.IngredienteRepository;
@@ -13,14 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SaboresService {
 
-    private SaboresRepository saboresRepository;
-    private IngredienteRepository ingredienteRepository;
+    private final SaboresRepository saboresRepository;
+    private final IngredienteRepository ingredienteRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -32,9 +37,20 @@ public class SaboresService {
         this.modelMapper = modelMapper;
     }
 
-    private SaboresDTO toSaboresDTO (Sabores sabores){
-        return modelMapper.map(sabores, SaboresDTO.class);
+    private SaboresDTO toSaboresDTO(Sabores sabores) {
+        SaboresDTO saboresDTO = modelMapper.map(sabores, SaboresDTO.class);
+
+        List<IngredientesDTO> ingredientesDTOS = new ArrayList<>();
+        for (Ingredientes ingredientes : sabores.getIngredientes()) {
+            IngredientesDTO ingredientesDTO = modelMapper.map(ingredientes, IngredientesDTO.class);
+            ingredientesDTOS.add(ingredientesDTO);
+        }
+
+        saboresDTO.setIngredientesDTOS(ingredientesDTOS);
+
+        return saboresDTO;
     }
+
 
     private Sabores toSabores (SaboresDTO saboresDTO){
         return modelMapper.map(saboresDTO, Sabores.class);
@@ -58,25 +74,23 @@ public class SaboresService {
     public Sabores cadastrar(SaboresDTO saboresDTO) {
         String nomeSabor = saboresDTO.getNomeSabor();
 
-        // Verificar se o sabor com o nome já existe no banco
         Optional<Sabores> saborExistente = saboresRepository.findByNomeSabor(nomeSabor);
         if (saborExistente.isPresent()) {
             throw new IllegalArgumentException("O sabor com o nome '" + nomeSabor + "' já existe.");
         }
 
-        Sabores sabores = toSabores(saboresDTO);
-        List<Ingredientes> ingredientes = sabores.getIngredientes();
+        List<Ingredientes> ingredientes = new ArrayList<>();
 
-        for (Ingredientes ingrediente : ingredientes) {
-            Optional<Ingredientes> ingredienteOptional = ingredienteRepository.findById(ingrediente.getId());
-            if (ingredienteOptional.isEmpty()) {
-                throw new IllegalArgumentException("Ingrediente com ID " + ingrediente.getId() + " não encontrado.");
-            }
+        for (IngredientesDTO ingredientesDTO : saboresDTO.getIngredientesDTOS()) {
+            Ingredientes ingredientes1 = modelMapper.map(ingredientesDTO, Ingredientes.class);
+            ingredientes.add(ingredientes1);
         }
 
-        return this.saboresRepository.save(sabores);
-    }
+        Sabores sabores = toSabores(saboresDTO);
+        sabores.setIngredientes(ingredientes);
 
+        return saboresRepository.save(sabores);
+    }
 
 
     @Transactional
@@ -99,14 +113,9 @@ public class SaboresService {
     @Transactional
     public void deletar(Long id){
         final Sabores sabores = this.saboresRepository.findById(id).orElse(null);
-
-        if (sabores != null) {
-            if (!sabores.getPizzas().isEmpty()) {
-                throw new IllegalArgumentException("Não é possível excluir o sabor devido à relação com pizzas existente.");
-            } else {
                 this.saboresRepository.delete(sabores);
-            }
+
         }
     }
 
-}
+

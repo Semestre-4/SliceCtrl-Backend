@@ -2,8 +2,10 @@ package com.mensal.sliceCtrl.service;
 
 import com.mensal.sliceCtrl.DTO.*;
 import com.mensal.sliceCtrl.entity.*;
+import com.mensal.sliceCtrl.entity.enums.FormaDeEntrega;
 import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
+import com.mensal.sliceCtrl.entity.enums.Tamanho;
 import com.mensal.sliceCtrl.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ public class PedidoService {
     private final PedidoProdutoRepository pedidoProdutoRepository;
     private final PedidoPizzaRepository pedidoPizzaRepository;
     private final PagamentoRepository pagamentoRepository;
+    private final SaboresRepository saboresRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -36,6 +39,7 @@ public class PedidoService {
                          PedidoProdutoRepository pedidoProdutoRepository,
                          PedidoPizzaRepository pedidoPizzaRepository,
                          PagamentoRepository pagamentoRepository,
+                         SaboresRepository saboresRepository,
                          ModelMapper modelMapper) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
@@ -45,18 +49,15 @@ public class PedidoService {
         this.pedidoProdutoRepository = pedidoProdutoRepository;
         this.pedidoPizzaRepository = pedidoPizzaRepository;
         this.pagamentoRepository = pagamentoRepository;
+        this.saboresRepository = saboresRepository;
         this.modelMapper = modelMapper;
     }
 
     // Método para encontrar um pedido pelo ID
     public PedidosDTO findById(Long id) {
-        try {
-            Pedidos pedidos = pedidoRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
-            return toPedidosDTO(pedidos);
-        } catch (EntityNotFoundException ex) {
-            throw new RuntimeException("Ocorreu um erro ao tentar recuperar o pedido.", ex);
-        }
+        Pedidos pedidos = pedidoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
+        return toPedidosDTO(pedidos);
     }
 
     // Método para encontrar todos os pedidos
@@ -69,6 +70,10 @@ public class PedidoService {
         return pedidoRepository.findByStatus(status).stream().map(this::toPedidosDTO).toList();
     }
 
+    public List<PedidosDTO> findByformaDeEntrega(FormaDeEntrega formaDeEntrega) {
+        return pedidoRepository.findByformaDeEntrega(formaDeEntrega).stream().map(this::toPedidosDTO).toList();
+    }
+
     public List<PedidosDTO> findByCliente_Id(Long clienteId) {
         return pedidoRepository.findByCliente(clienteId).stream().map(this::toPedidosDTO).toList();
     }
@@ -77,17 +82,6 @@ public class PedidoService {
         return pedidoRepository.findByFunc(funcionarioId).stream().map(this::toPedidosDTO).toList();
     }
 
-    public List<PedidosDTO> findByForEntrega() {
-        return pedidoRepository.findByForEntrega().stream().map(this::toPedidosDTO).toList();
-    }
-
-    public List<PedidosDTO> findByForTakeaway() {
-        return pedidoRepository.findByForTakeaway().stream().map(this::toPedidosDTO).toList();
-    }
-
-    public List<PedidosDTO> findByForDineIn() {
-        return pedidoRepository.findByForDineIn().stream().map(this::toPedidosDTO).toList();
-    }
 
     // Método para encontrar pedidos com pagamentos pendentes
     public List<PedidosDTO> findOrdersWithPendingPayments() {
@@ -96,22 +90,33 @@ public class PedidoService {
 
     // Método para iniciar um novo pedido
     @Transactional
-    public PedidosDTO iniciarPedido(Long clienteId, Pedidos pedido, Long funcId) {
+    public PedidosDTO iniciarPedido(Long clienteId, Pedidos pedido, Long funcId, FormaDeEntrega formaDeEntrega) {
+
         // Encontrar o cliente pelo ID
         Clientes clientes = clienteRepository.findById(clienteId).orElse(null);
 
+
         // Encontrar o funcionário pelo ID
         Funcionarios funcionarios = funcionarioRepository.findById(funcId).orElse(null);
+
 
         // Verificar se o cliente e o funcionário foram encontrados
         if (clientes == null && funcionarios == null) {
             throw new IllegalArgumentException("Registro do Cliente ou Funcionario não encontrados");
         }
 
+        List<Pedidos> pendingOrders = pedidoRepository.findByClienteAndStatus(clientes, Status.PENDENTE);
+
+        if (!pendingOrders.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Já existe um pedido iniciado com o cliente %s de CPF = %s",
+                    clientes.getNome(), clientes.getCpf()));
+        }
+
         // Definir informações do pedido
         pedido.setCliente(clientes);
         pedido.setFuncionario(funcionarios);
         pedido.setStatus(Status.PENDENTE);
+        pedido.setFormaDeEntrega(formaDeEntrega);
         pedidoRepository.save(pedido);
 
         return toPedidosDTO(pedido);
@@ -169,11 +174,22 @@ public class PedidoService {
         // Converter DTO para entidade PedidoPizza
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
 
-        // Verificar disponibilidade da pizza em estoque
-        if (pedidoPizza.getPizza().getQtdeEstoque() <= 0) {
-            throw new IllegalArgumentException("O item selecionado encontra-se" +
-                    " atualmente indisponível em nosso estoque.");
+        int maxFlavors = 0;
+
+        switch (pedidoPizza.getPizza().getTamanho()) {
+            case P -> maxFlavors = 1;
+            case M -> maxFlavors = 2;
+            case G -> maxFlavors = 3;
+            case XG -> maxFlavors = 4;
+            default -> {
+                throw new IllegalArgumentException("Tamanho Invalído!");
+            }
         }
+
+        if (pedido.getPizzas().size() + 1 > maxFlavors) {
+            throw new IllegalArgumentException("Número máximo de sabores excedido para o tamanho da pizza.");
+        }
+
 
         // Associar o pedido à pizza
         pedidoPizza.setPedido(pedido);
@@ -199,6 +215,7 @@ public class PedidoService {
             Pagamento pagamento = new Pagamento();
             pagamento.setFormasDePagamento(formDePagamento);
             pagamento.setPedido(pedido);
+            pagamento.setPago(true);
             pagamentoRepository.save(pagamento);
             pedido.setPagamento(pagamento);
 
@@ -238,7 +255,12 @@ public class PedidoService {
     private double calculateTotalPedidoAmount(Pedidos pedido) {
         double productsTotal = calculateProductsTotal(pedido);
         double pizzasTotal = calculatePizzasTotal(pedido);
-        double deliveryTotal = pedido.isForEntrega() ? 10.0 : 0.0;
+        double deliveryTotal = 0.0;
+        if (pedido.getFormaDeEntrega() == FormaDeEntrega.ENTREGA){
+            deliveryTotal = 8.0;
+        }
+        pedido.setValorPedido(productsTotal + pizzasTotal);
+        pedido.setValorEntrega(deliveryTotal);
         return productsTotal + pizzasTotal + deliveryTotal;
     }
 
@@ -293,11 +315,32 @@ public class PedidoService {
 
     // Método para converter um objeto Pedidos em um DTO
     public PedidosDTO toPedidosDTO(Pedidos pedidos) {
-        return modelMapper.map(pedidos, PedidosDTO.class);
+        PedidosDTO pedidosDTO = modelMapper.map(pedidos, PedidosDTO.class);
+
+        if (pedidos.getPagamento() != null) {
+            PagamentoDTO pagamentoDTO = modelMapper.map(pedidos.getPagamento(), PagamentoDTO.class);
+            pedidosDTO.setPagamentoDTO(pagamentoDTO);
+        }
+
+        return pedidosDTO;
     }
+
+
+    private Pedidos toPedido(PedidosDTO pedidosDTO) {
+        Pedidos pedidos = modelMapper.map(pedidosDTO, Pedidos.class);
+
+        if (pedidosDTO.getPagamentoDTO() != null) {
+            Pagamento pagamento = pagamentoRepository.findById(pedidosDTO.getPagamentoDTO().getId()).orElse(null);
+            pedidos.setPagamento(pagamento);
+        }
+
+        return pedidos;
+    }
+
 
     // Método para converter um DTO em um objeto PedidoPizza
     private PedidoPizza toPedidoPizza(PedidoPizzaDTO pedidoPizzaDTO) {
+
         PedidoPizza pedidoPizza = modelMapper.map(pedidoPizzaDTO, PedidoPizza.class);
 
         // Encontrar a pizza pelo ID
@@ -312,12 +355,14 @@ public class PedidoService {
             throw new IllegalArgumentException("Pedido não encontrado");
         }
 
+        Sabores sabores = saboresRepository.findById(pedidoPizza.getSabor().getId()).orElse(null);
+
         // Definir o pedido e a pizza no objeto PedidoPizza
         pedidoPizza.setPedido(pedidos);
         pedidoPizza.setPizza(pizzas);
+        pedidoPizza.setSabor(sabores);
 
         return pedidoPizza;
     }
-
 
 }
