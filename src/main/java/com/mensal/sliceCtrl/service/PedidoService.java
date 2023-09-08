@@ -54,13 +54,9 @@ public class PedidoService {
 
     // Método para encontrar um pedido pelo ID
     public PedidosDTO findById(Long id) {
-        try {
             Pedidos pedidos = pedidoRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
             return toPedidosDTO(pedidos);
-        } catch (EntityNotFoundException ex) {
-            throw new RuntimeException("Ocorreu um erro ao tentar recuperar o pedido.", ex);
-        }
     }
 
     // Método para encontrar todos os pedidos
@@ -298,11 +294,32 @@ public class PedidoService {
 
     // Método para converter um objeto Pedidos em um DTO
     public PedidosDTO toPedidosDTO(Pedidos pedidos) {
-        return modelMapper.map(pedidos, PedidosDTO.class);
+        PedidosDTO pedidosDTO = modelMapper.map(pedidos, PedidosDTO.class);
+
+        if (pedidos.getPagamento() != null) {
+            PagamentoDTO pagamentoDTO = modelMapper.map(pedidos.getPagamento(), PagamentoDTO.class);
+            pedidosDTO.setPagamentoDTO(pagamentoDTO);
+        }
+
+        return pedidosDTO;
     }
+
+
+    private Pedidos toPedido(PedidosDTO pedidosDTO) {
+        Pedidos pedidos = modelMapper.map(pedidosDTO, Pedidos.class);
+
+        if (pedidosDTO.getPagamentoDTO() != null) {
+            Pagamento pagamento = pagamentoRepository.findById(pedidosDTO.getPagamentoDTO().getId()).orElse(null);
+            pedidos.setPagamento(pagamento);
+        }
+
+        return pedidos;
+    }
+
 
     // Método para converter um DTO em um objeto PedidoPizza
     private PedidoPizza toPedidoPizza(PedidoPizzaDTO pedidoPizzaDTO) {
+
         PedidoPizza pedidoPizza = modelMapper.map(pedidoPizzaDTO, PedidoPizza.class);
 
         // Encontrar a pizza pelo ID
@@ -318,7 +335,6 @@ public class PedidoService {
         }
 
         Sabores sabores = saboresRepository.findById(pedidoPizza.getSabor().getId()).orElse(null);
-
 
         // Definir o pedido e a pizza no objeto PedidoPizza
         pedidoPizza.setPedido(pedidos);

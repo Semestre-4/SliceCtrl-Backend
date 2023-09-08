@@ -47,7 +47,6 @@ public class Pedidos extends AbstractEntity{
 
     @OneToOne
     @JoinColumn(name = "pagamento_id")
-    @JsonIgnore
     private Pagamento pagamento;
 
     @Column(name = "valor_pedido")
