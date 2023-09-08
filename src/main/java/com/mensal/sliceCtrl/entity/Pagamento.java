@@ -19,6 +19,7 @@ public class Pagamento extends AbstractEntity {
 
     @NotNull(message = "A forma de pagamento não pode ser nula")
     @Column(name = "formasDePagamento", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private FormasDePagamento formasDePagamento;
 
     @Column(name = "is_pago", nullable = false)
