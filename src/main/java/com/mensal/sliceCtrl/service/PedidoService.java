@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PedidoService {
@@ -174,22 +177,22 @@ public class PedidoService {
         // Converter DTO para entidade PedidoPizza
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
 
-        int maxFlavors = 0;
-
-        switch (pedidoPizza.getPizza().getTamanho()) {
-            case P -> maxFlavors = 1;
-            case M -> maxFlavors = 2;
-            case G -> maxFlavors = 3;
-            case XG -> maxFlavors = 4;
-            default -> {
-                throw new IllegalArgumentException("Tamanho Invalído!");
-            }
-        }
-
-        if (pedido.getPizzas().size() + 1 > maxFlavors) {
-            throw new IllegalArgumentException("Número máximo de sabores excedido para o tamanho da pizza.");
-        }
-
+//        int maxFlavors = 0;
+//
+//        switch (pedidoPizza.getPizza().getTamanho()) {
+//            case P -> maxFlavors = 1;
+//            case M -> maxFlavors = 2;
+//            case G -> maxFlavors = 3;
+//            case XG -> maxFlavors = 4;
+//            default -> {
+//                throw new IllegalArgumentException("Tamanho Inválido!");
+//            }
+//        }
+//
+//        // Verificar se o número máximo de sabores foi excedido para o tamanho da pizza.
+//        if (pedido.getPizzas().size() + pedidoPizza.getSabores().size() > maxFlavors) {
+//            throw new IllegalArgumentException("Número máximo de sabores excedido para o tamanho da pizza.");
+//        }
 
         // Associar o pedido à pizza
         pedidoPizza.setPedido(pedido);
@@ -198,6 +201,7 @@ public class PedidoService {
         pedido.getPizzas().add(pedidoPizza);
         return pedidoRepository.save(pedido);
     }
+
 
     // Método para efetuar um pedido com um método de pagamento
     @Transactional
@@ -355,14 +359,24 @@ public class PedidoService {
             throw new IllegalArgumentException("Pedido não encontrado");
         }
 
-        Sabores sabores = saboresRepository.findById(pedidoPizza.getSabor().getId()).orElse(null);
+        // Mapear os sabores
+        List<Sabores> sabores = new ArrayList<>();
+        for (SaboresDTO saborDTO : pedidoPizzaDTO.getSabores()) {
+            Sabores sabor = saboresRepository.findById(saborDTO.getId()).orElse(null);
+            if (sabor == null) {
+                throw new IllegalArgumentException("Sabor não encontrado com o ID: " + saborDTO.getId());
+            }
+            System.out.println(sabor);
+            sabores.add(sabor);
+        }
 
-        // Definir o pedido e a pizza no objeto PedidoPizza
+        // Definir o pedido, a pizza e os sabores no objeto PedidoPizza
         pedidoPizza.setPedido(pedidos);
         pedidoPizza.setPizza(pizzas);
-        pedidoPizza.setSabor(sabores);
+        pedidoPizza.setSabores(sabores);
 
         return pedidoPizza;
     }
+
 
 }

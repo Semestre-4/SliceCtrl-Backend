@@ -35,8 +35,8 @@ public class Sabores extends AbstractEntity {
     )
     private List<Ingredientes> ingredientes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sabor", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("sabor")
+    @ManyToMany(mappedBy = "sabores", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties("sabor")
     private List<PedidoPizza> pedidosPizza;
 
 }
