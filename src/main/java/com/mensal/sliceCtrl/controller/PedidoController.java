@@ -4,6 +4,7 @@ import com.mensal.sliceCtrl.DTO.PedidoPizzaDTO;
 import com.mensal.sliceCtrl.DTO.PedidoProdutoDTO;
 import com.mensal.sliceCtrl.DTO.PedidosDTO;
 import com.mensal.sliceCtrl.entity.Pedidos;
+import com.mensal.sliceCtrl.entity.enums.FormaDeEntrega;
 import com.mensal.sliceCtrl.entity.enums.FormasDePagamento;
 import com.mensal.sliceCtrl.entity.enums.Status;
 import com.mensal.sliceCtrl.repository.PedidoRepository;
@@ -73,20 +74,7 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findByFuncionario_Id(funcionarioId));
     }
 
-    @GetMapping("/delivery")
-    public ResponseEntity<List<PedidosDTO>> getPedidosForDelivery() {
-        return ResponseEntity.ok(pedidoService.findByForEntrega());
-    }
-
-    @GetMapping("/takeaway")
-    public ResponseEntity<List<PedidosDTO>> getPedidosForTakeaway() {
-        return ResponseEntity.ok(pedidoService.findByForTakeaway());
-    }
-
-    @GetMapping("/dine-in")
-    public ResponseEntity<List<PedidosDTO>> getPedidosForDineIn() {
-        return ResponseEntity.ok(pedidoService.findByForDineIn());
-    }
+    //TODO : HTTP method to get by forma de entrega
 
     @GetMapping("/pagamento-pending")
     public ResponseEntity<List<PedidosDTO>> getPedidosWithPagamentoPending() {
@@ -100,12 +88,13 @@ public class PedidoController {
      * @param funcId    O ID do funcionário responsável pelo pedido.
      * @return ResponseEntity contendo as informações do pedido aberto ou uma resposta de erro.
      */
-    @PostMapping("/abrir/{clienteId}/{funcId}")
+    @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
     public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
-                                               @PathVariable("funcId") Long funcId) {
+                                                  @PathVariable("funcId") Long funcId,
+                                                  @PathVariable("formaDeEntrega") FormaDeEntrega formaDeEntrega){
         try {
             Pedidos pedido = new Pedidos();
-            PedidosDTO savedPedido = pedidoService.iniciarPedido(clienteId, pedido,funcId);
+            PedidosDTO savedPedido = pedidoService.iniciarPedido(clienteId, pedido,funcId,formaDeEntrega);
             return ResponseEntity.ok(savedPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
