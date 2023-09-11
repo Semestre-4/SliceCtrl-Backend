@@ -1,5 +1,7 @@
 package com.mensal.sliceCtrl.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mensal.sliceCtrl.entity.enums.FormaDeEntrega;
 import com.mensal.sliceCtrl.entity.enums.Status;
@@ -30,12 +32,13 @@ public class PedidosDTO extends AbstractEntityDTO {
     private FuncionariosDTO funcionario;
 
     @NotEmpty(message = "A lista de produtos não pode estar vazia")
+    @JsonIgnoreProperties("pedido")
     private List<@Valid PedidoProdutoDTO> produtos = new ArrayList<>();
 
     @NotEmpty(message = "A lista de pizzas não pode estar vazia")
+    @JsonIgnoreProperties("pedido")
     private List<@Valid PedidoPizzaDTO> pizzas = new ArrayList<>();
 
-    @Valid
     private PagamentoDTO pagamentoDTO;
 
     @NotNull(message = "O status não pode ser nulo")

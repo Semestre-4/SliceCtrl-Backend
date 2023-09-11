@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 
@@ -17,7 +16,7 @@ public class FuncionariosDTO extends AbstractEntityDTO {
     @NotNull(message = "O campo 'nome' não pode ser nulo")
     private String nome;
 
-    @CPF(message = "O CPF é inválido")
+//    @CPF(message = "O CPF é inválido")
     @NotBlank(message = "O CPF do funcionario é obrigatório")
     @NotNull(message = "O campo 'CPF' não pode ser nulo")
     private String cpf;

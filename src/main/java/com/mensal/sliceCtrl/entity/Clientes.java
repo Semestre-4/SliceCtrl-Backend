@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,11 +29,11 @@ public class Clientes extends AbstractEntity {
     @Column(name = "email-cliente")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST})
     @JoinTable(name = "cliente_endereco",
             joinColumns = @JoinColumn(name = "cliente_id"),
             inverseJoinColumns = @JoinColumn(name = "endereco_id"))
-    private List<Enderecos> enderecos;
+    private List<Enderecos> enderecos = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore

@@ -26,7 +26,7 @@ public class Sabores extends AbstractEntity {
     @Column(name = "valor_adicional", nullable = true)
     private double valorAdicional;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST})
     @JoinTable(
             name = "sabor-ingrediente",
             joinColumns = @JoinColumn(name = "sabor_id"),
@@ -35,8 +35,8 @@ public class Sabores extends AbstractEntity {
     )
     private List<Ingredientes> ingredientes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sabor", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("sabor")
+    @ManyToMany(mappedBy = "sabores", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties("sabor")
     private List<PedidoPizza> pedidosPizza;
 
 }

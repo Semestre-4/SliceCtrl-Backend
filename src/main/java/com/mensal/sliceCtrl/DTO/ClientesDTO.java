@@ -1,13 +1,11 @@
 package com.mensal.sliceCtrl.DTO;
 
-import com.mensal.sliceCtrl.entity.Enderecos;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ public class ClientesDTO extends AbstractEntityDTO{
     @NotNull(message = "O campo 'nome' não pode ser nulo")
     private String nome;
 
-    @CPF(message = "O CPF é inválido")
+//    @CPF(message = "O CPF é inválido")
     @NotBlank(message = "O CPF do cliente é obrigatório")
     @NotNull(message = "O campo 'CPF' não pode ser nulo")
     private String cpf;

@@ -1,12 +1,9 @@
 package com.mensal.sliceCtrl.service;
 
-
 import com.mensal.sliceCtrl.DTO.EnderecosDTO;
-import com.mensal.sliceCtrl.DTO.PedidosDTO;
 import com.mensal.sliceCtrl.DTO.ClientesDTO;
 import com.mensal.sliceCtrl.entity.Clientes;
 import com.mensal.sliceCtrl.entity.Enderecos;
-import com.mensal.sliceCtrl.entity.Pedidos;
 import com.mensal.sliceCtrl.repository.ClienteRepository;
 import com.mensal.sliceCtrl.repository.EnderecoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,7 +11,6 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +31,13 @@ public class ClienteService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * Encontra um cliente pelo seu ID.
+     *
+     * @param id O ID do cliente a ser encontrado.
+     * @return O DTO do cliente se encontrado.
+     * @throws RuntimeException se o cliente não for encontrado.
+     */
     public ClientesDTO findById(Long id) {
         try {
             Clientes clientesEncontrado = clienteRepository.findById(id)
@@ -44,7 +47,6 @@ public class ClienteService {
             throw new RuntimeException("Ocorreu um erro ao tentar recuperar o cliente.", ex);
         }
     }
-
 
     public List<ClientesDTO> findByNome(String nome) {
         return clienteRepository.findByNome(nome).stream().map(this::toClienteDTO).toList();
@@ -60,32 +62,29 @@ public class ClienteService {
 
     @Transactional
     public Clientes createCliente(ClientesDTO clientesDTO) {
-
         if (clienteRepository.existsByCpf(clientesDTO.getCpf())) {
-            throw new IllegalArgumentException("Cliente com CPF = " + clientesDTO.getCpf() + " já existe");
+            throw new IllegalArgumentException("Cliente with CPF " + clientesDTO.getCpf() + " already exists.");
         }
 
         List<Enderecos> enderecosList = new ArrayList<>();
 
         for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
-            Enderecos existingEndereco = enderecoRepository.findById(enderecoDTO.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " nao encontrado"));
-            enderecosList.add(existingEndereco);
+            Enderecos endereco = modelMapper.map(enderecoDTO, Enderecos.class);
+            enderecosList.add(endereco);
         }
 
+        Clientes clientes = modelMapper.map(clientesDTO, Clientes.class);
+        clientes.setEnderecos(enderecosList);
 
-        validateEnderecoIds(clientesDTO.getEnderecos());
-
-        Clientes clientes = toCliente(clientesDTO, enderecosList);
-
-        return clienteRepository.save(clientes);
+        try {
+            return clienteRepository.save(clientes);
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to create the client.", ex);
+        }
     }
-
 
     @Transactional
     public Clientes updateCliente(Long id, ClientesDTO clientesDTO) {
-        Clientes existingClientes = clienteRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = " + id + " nao encontrado"));
 
         if (!id.equals(clientesDTO.getId())) {
             throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
@@ -94,12 +93,9 @@ public class ClienteService {
         List<Enderecos> existingEnderecos = new ArrayList<>();
 
         for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
-            Enderecos existingEndereco = enderecoRepository.findById(enderecoDTO.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " não encontrado"));
             existingEnderecos.add(toEnderecos(enderecoDTO));
         }
 
-        // Additional check to ensure the provided endereco ID exists
         validateEnderecoIds(clientesDTO.getEnderecos());
 
         Clientes clientes = toCliente(clientesDTO, existingEnderecos);
@@ -108,15 +104,18 @@ public class ClienteService {
 
     private void validateEnderecoIds(List<EnderecosDTO> enderecoDTOs) {
         for (EnderecosDTO enderecoDTO : enderecoDTOs) {
-            enderecoRepository.findById(enderecoDTO.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " nao encontrado"));
+            try {
+                enderecoRepository.findById(enderecoDTO.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Endereco com ID = " + enderecoDTO.getId() + " nao encontrado"));
+            } catch (EntityNotFoundException ex) {
+                throw new EntityNotFoundException(ex);
+            }
         }
     }
 
 
     @Transactional
     public void deleteCliente(Long id) {
-
         Clientes clientesToDelete = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente com ID = " + id + " não encontrado"));
 
@@ -132,13 +131,8 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
-
     private Enderecos toEnderecos(EnderecosDTO enderecoDTO) {
         return modelMapper.map(enderecoDTO, Enderecos.class);
-    }
-
-    private Pedidos toPedido(PedidosDTO pedidosDTO) {
-        return modelMapper.map(pedidosDTO, Pedidos.class);
     }
 
     public ClientesDTO toClienteDTO(Clientes clientes) {
@@ -150,5 +144,4 @@ public class ClienteService {
         clientes.setEnderecos(enderecosList);
         return clientes;
     }
-
 }

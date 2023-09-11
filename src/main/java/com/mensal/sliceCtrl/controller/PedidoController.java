@@ -42,7 +42,7 @@ public class PedidoController {
             PedidosDTO pedidosDTO = pedidoService.findById(id);
             return ResponseEntity.ok(pedidosDTO);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -64,6 +64,11 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findByStatus(status));
     }
 
+    @GetMapping("/formaDeEntrega/{formaDeEntrega}")
+    public ResponseEntity<List<PedidosDTO>> getPedidosByformaDeEntrega(@PathVariable FormaDeEntrega formaDeEntrega) {
+        return ResponseEntity.ok(pedidoService.findByformaDeEntrega(formaDeEntrega));
+    }
+
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(pedidoService.findByCliente_Id(clienteId));
@@ -73,8 +78,6 @@ public class PedidoController {
     public ResponseEntity<List<PedidosDTO>> getPedidosByFuncionario(@PathVariable Long funcionarioId) {
         return ResponseEntity.ok(pedidoService.findByFuncionario_Id(funcionarioId));
     }
-
-    //TODO : HTTP method to get by forma de entrega
 
     @GetMapping("/pagamento-pending")
     public ResponseEntity<List<PedidosDTO>> getPedidosWithPagamentoPending() {
@@ -89,15 +92,15 @@ public class PedidoController {
      * @return ResponseEntity contendo as informações do pedido aberto ou uma resposta de erro.
      */
     @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
-    public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
+    public ResponseEntity<String> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                   @PathVariable("funcId") Long funcId,
                                                   @PathVariable("formaDeEntrega") FormaDeEntrega formaDeEntrega){
         try {
             Pedidos pedido = new Pedidos();
             PedidosDTO savedPedido = pedidoService.iniciarPedido(clienteId, pedido,funcId,formaDeEntrega);
-            return ResponseEntity.ok(savedPedido);
+            return ResponseEntity.ok(String.format("%s",savedPedido));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

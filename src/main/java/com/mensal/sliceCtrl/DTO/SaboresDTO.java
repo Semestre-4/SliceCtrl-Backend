@@ -2,6 +2,7 @@ package com.mensal.sliceCtrl.DTO;
 
 
 import com.mensal.sliceCtrl.entity.Ingredientes;
+import com.mensal.sliceCtrl.entity.PedidoPizza;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter @Setter
 public class SaboresDTO extends AbstractEntityDTO {
@@ -24,5 +26,7 @@ public class SaboresDTO extends AbstractEntityDTO {
 
     @NotNull(message = "A lista de ingredientes não pode ser nula")
     private List<IngredientesDTO> ingredientesDTOS;
+
+    private List<PedidoPizzaDTO> pedidosPizza;
 
 }

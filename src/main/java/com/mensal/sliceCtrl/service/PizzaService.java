@@ -51,10 +51,6 @@ public class PizzaService {
         return pizzaRepository.findAll().stream().map(this::toPizzaDTO).toList();
     }
 
-    public List<PizzasDTO> findByDisponivel() {
-        return pizzaRepository.findByDisponivelTrue().stream().map(this::toPizzaDTO).toList();
-    }
-
     @Transactional
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
         List<Sabores> sabores = new ArrayList<>();
@@ -91,8 +87,7 @@ public class PizzaService {
     }
 
     public Pizzas toPizza(PizzasDTO pizzaDTO) {
-        Pizzas pizzas = modelMapper.map(pizzaDTO, Pizzas.class);
-        return pizzas;
+        return modelMapper.map(pizzaDTO, Pizzas.class);
     }
 
 }
