@@ -7,6 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "pedido_pizza",schema = "public")
@@ -20,10 +25,14 @@ public class PedidoPizza extends AbstractEntity{
     @JsonIgnoreProperties("pedidos")
     private Pizzas pizza;
 
-    @ManyToOne
-    @JoinColumn(name = "sabor_id", nullable = false)
+    @ManyToMany
+    @JoinTable(
+            name = "pedido_pizza_sabor",
+            joinColumns = @JoinColumn(name = "pedido_pizza_id"),
+            inverseJoinColumns = @JoinColumn(name = "sabor_id")
+    )
     @JsonIgnoreProperties("pedidosPizza")
-    private Sabores sabor;
+    private List<Sabores> sabores = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
