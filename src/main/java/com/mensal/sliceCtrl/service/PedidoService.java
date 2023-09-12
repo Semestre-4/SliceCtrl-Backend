@@ -177,22 +177,23 @@ public class PedidoService {
         // Converter DTO para entidade PedidoPizza
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
 
-//        int maxFlavors = 0;
-//
-//        switch (pedidoPizza.getPizza().getTamanho()) {
-//            case P -> maxFlavors = 1;
-//            case M -> maxFlavors = 2;
-//            case G -> maxFlavors = 3;
-//            case XG -> maxFlavors = 4;
-//            default -> {
-//                throw new IllegalArgumentException("Tamanho Inválido!");
-//            }
-//        }
-//
-//        // Verificar se o número máximo de sabores foi excedido para o tamanho da pizza.
-//        if (pedido.getPizzas().size() + pedidoPizza.getSabores().size() > maxFlavors) {
-//            throw new IllegalArgumentException("Número máximo de sabores excedido para o tamanho da pizza.");
-//        }
+        int maxFlavors = 0;
+        System.out.println(pedidoPizza.getPizza().getTamanho());
+        switch (pedidoPizza.getPizza().getTamanho()) {
+            case P -> maxFlavors = 1;
+            case M -> maxFlavors = 2;
+            case G -> maxFlavors = 3;
+            case XG -> maxFlavors = 4;
+            default -> {
+                throw new IllegalArgumentException("Tamanho Inválido!");
+            }
+        }
+
+        // Verificar se o número máximo de sabores foi excedido para o tamanho da pizza.
+        System.out.println(pedidoPizza.getSabores().size());
+        if (pedidoPizza.getSabores().size() > maxFlavors) {
+            throw new IllegalArgumentException("Número máximo de sabores excedido para o tamanho da pizza.");
+        }
 
         // Associar o pedido à pizza
         pedidoPizza.setPedido(pedido);
@@ -368,6 +369,7 @@ public class PedidoService {
             }
             System.out.println(sabor);
             sabores.add(sabor);
+
         }
 
         // Definir o pedido, a pizza e os sabores no objeto PedidoPizza

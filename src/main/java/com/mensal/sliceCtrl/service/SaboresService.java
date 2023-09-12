@@ -101,8 +101,6 @@ public class SaboresService {
             throw new IllegalArgumentException("O objeto com o ID fornecido não existe na base de dados");
         }
 
-        Sabores existingSabores = existingSaboresOptional.get();
-
         if (!id.equals(saboresDTO.getId())) {
             throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
         }
