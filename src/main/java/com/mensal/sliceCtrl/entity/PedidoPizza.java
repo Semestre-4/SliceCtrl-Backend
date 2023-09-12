@@ -31,7 +31,7 @@ public class PedidoPizza extends AbstractEntity{
             joinColumns = @JoinColumn(name = "pedido_pizza_id"),
             inverseJoinColumns = @JoinColumn(name = "sabor_id")
     )
-//    @JsonIgnoreProperties("pedidosPizza")
+    @JsonIgnoreProperties("pedidosPizza")
     private List<Sabores> sabores = new ArrayList<>();
 
     @ManyToOne

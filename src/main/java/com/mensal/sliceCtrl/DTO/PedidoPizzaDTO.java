@@ -21,7 +21,7 @@ public class PedidoPizzaDTO extends AbstractEntityDTO {
     @JsonIgnoreProperties("pizzas")
     private PedidosDTO pedido;
     @NotNull(message = "O sabor não pode ser nulo")
-//    @JsonIgnoreProperties("pedidosPizza")
+    @JsonIgnoreProperties("pedidosPizza")
     private Set<SaboresDTO> sabores = new HashSet<>();
     @Min(value = 1, message = "A quantidade pedida deve ser pelo menos 1")
     private int qtdePedida;
