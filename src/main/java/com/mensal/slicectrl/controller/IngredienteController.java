@@ -27,7 +27,7 @@ public class IngredienteController {
      * @return Lista contendo todos os ingredientes.
      */
     @GetMapping("/all")
-    private ResponseEntity<List<IngredientesDTO>> getAllIngredientes() {
+    public ResponseEntity<List<IngredientesDTO>> getAllIngredientes() {
         List<IngredientesDTO> ingredientesDTOS = ingredienteService.getAll();
         return ResponseEntity.ok(ingredientesDTOS);
     }
@@ -39,7 +39,7 @@ public class IngredienteController {
      * @return ResponseEntity contendo as informações do ingrediente, se encontrado, ou uma resposta de "não encontrado".
      */
     @GetMapping("nome/{nomeIngrediente}")
-    private ResponseEntity<IngredientesDTO> getIngredienteByNome(@PathVariable("nomeIngrediente") String nomeIngrediente) {
+    public ResponseEntity<IngredientesDTO> getIngredienteByNome(@PathVariable("nomeIngrediente") String nomeIngrediente) {
         IngredientesDTO ingredientesDTO = ingredienteService.getByNome(nomeIngrediente);
         if (ingredientesDTO != null) {
             return ResponseEntity.ok(ingredientesDTO);
@@ -55,7 +55,7 @@ public class IngredienteController {
      * @return ResponseEntity contendo as informações do ingrediente, se encontrado, ou uma resposta de "não encontrado".
      */
     @GetMapping("/{id}")
-    private ResponseEntity<IngredientesDTO> getIngredienteById(@PathVariable("id") Long id) {
+    public ResponseEntity<IngredientesDTO> getIngredienteById(@PathVariable("id") Long id) {
         try {
             IngredientesDTO ingredientesDTO = ingredienteService.getById(id);
             if (ingredientesDTO != null) {
@@ -75,7 +75,7 @@ public class IngredienteController {
      * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
      */
     @PostMapping
-    private ResponseEntity<String> cadastrarIngrediente(@RequestBody @Validated IngredientesDTO ingredientesDTO) {
+    public ResponseEntity<String> cadastrarIngrediente(@RequestBody @Validated IngredientesDTO ingredientesDTO) {
         try {
             this.ingredienteService.cadastrar(ingredientesDTO);
             return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi realizado com sucesso.",
@@ -93,7 +93,7 @@ public class IngredienteController {
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
     @PutMapping("/{id}")
-    private ResponseEntity<String> editarIngrediente(@PathVariable("id") final Long id,
+    public ResponseEntity<String> editarIngrediente(@PathVariable("id") final Long id,
                                                      @RequestBody @Validated IngredientesDTO ingredientesDTO) {
         try {
             this.ingredienteService.editar(ingredientesDTO, id);
@@ -111,7 +111,7 @@ public class IngredienteController {
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
     @DeleteMapping
-    private ResponseEntity<String> excluirIngrediente(@RequestParam("id") final Long id) {
+    public ResponseEntity<String> excluirIngrediente(@RequestParam("id") final Long id) {
         try {
             this.ingredienteService.delete(id);
             return ResponseEntity.ok().body("Ingrediente excluído com sucesso!");

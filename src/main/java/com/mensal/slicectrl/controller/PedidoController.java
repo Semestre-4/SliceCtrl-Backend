@@ -109,12 +109,13 @@ public class PedidoController {
      * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
      */
     @PutMapping("/adicionar/produto/{pedidoId}")
-    public ResponseEntity<?> addProdutoToPedido(
+    public ResponseEntity<String> addProdutoToPedido(
             @PathVariable Long pedidoId,
             @RequestBody PedidoProdutoDTO pedidoProdutoDTO) {
         try {
             Pedidos updatedPedido = pedidoService.addProdutoToPedido(pedidoId, pedidoProdutoDTO);
-            return ResponseEntity.ok(updatedPedido);
+            return ResponseEntity.ok(String.format("Produto [%s] adicionado com sucesso",
+                    pedidoProdutoDTO.getProduto().getNomeProduto()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -128,12 +129,12 @@ public class PedidoController {
      * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
      */
     @PutMapping("/adicionar/pizza/{pedidoId}")
-    public ResponseEntity<?> addPizzaPedido(
+    public ResponseEntity<String> addPizzaPedido(
             @PathVariable Long pedidoId,
             @RequestBody PedidoPizzaDTO pedidoPizzaDTO) {
         try {
             Pedidos updatedPedido = pedidoService.addPizzaToPedido(pedidoId, pedidoPizzaDTO);
-            return ResponseEntity.ok(updatedPedido);
+            return ResponseEntity.ok("Pizza adicionada com sucesso");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -151,7 +152,7 @@ public class PedidoController {
                                                    @PathVariable FormasDePagamento formDePagamento) {
         try {
             Pedidos pedido = pedidoService.efetuarPedido(pedidoId, formDePagamento);
-            return new ResponseEntity<Pedidos>(pedido, HttpStatus.CREATED);
+            return new ResponseEntity<>(pedido, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

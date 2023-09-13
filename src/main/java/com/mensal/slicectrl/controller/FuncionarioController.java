@@ -89,7 +89,7 @@ public class FuncionarioController {
     @PostMapping
     public ResponseEntity<String> cadastrarFuncionario(@RequestBody @Validated FuncionariosDTO funcionariosDTO) {
         try {
-            Funcionarios funcionarios = funcionarioService.createFuncionario(funcionariosDTO);
+            funcionarioService.createFuncionario(funcionariosDTO);
             return ResponseEntity.ok(String.format("O cadastro de '%s' foi realizado com sucesso.",
                     funcionariosDTO.getNome()));
         } catch (Exception e) {
@@ -108,7 +108,7 @@ public class FuncionarioController {
     public ResponseEntity<String> editarFuncionario(@PathVariable Long id,
                                                     @RequestBody @Validated FuncionariosDTO funcionariosDTO) {
         try {
-            Funcionarios updatedFuncionarios = funcionarioService.updateFuncionario(id, funcionariosDTO);
+            funcionarioService.updateFuncionario(id, funcionariosDTO);
             return ResponseEntity.ok(String.format("O cadastro de '%s' foi atualizado com sucesso.",
                     funcionariosDTO.getNome()));
         } catch (Exception e) {

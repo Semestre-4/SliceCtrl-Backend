@@ -18,7 +18,7 @@ import java.util.List;
 public class EnderecoController {
 
     @Autowired
-    private EnderecoService enderecoService;
+    public EnderecoService enderecoService;
 
     /**
      * Recupera um endereço pelo seu ID.
@@ -27,7 +27,7 @@ public class EnderecoController {
      * @return ResponseEntity contendo as informações do endereço, se encontrado, ou uma resposta de "não encontrado".
      */
     @GetMapping("id/{id}")
-    private ResponseEntity<EnderecosDTO> getEnderecoById(@PathVariable("id") Long id) {
+    public ResponseEntity<EnderecosDTO> getEnderecoById(@PathVariable("id") Long id) {
         EnderecosDTO enderecosDTO = enderecoService.getById(id);
         if (enderecosDTO != null) {
             return ResponseEntity.ok(enderecosDTO);
@@ -42,7 +42,7 @@ public class EnderecoController {
      * @return ResponseEntity contendo a lista de todos os endereços.
      */
     @GetMapping("/all")
-    private ResponseEntity<List<EnderecosDTO>> getAllEnderecos() {
+    public ResponseEntity<List<EnderecosDTO>> getAllEnderecos() {
         List<EnderecosDTO> enderecosDTOS = enderecoService.getAll();
         return ResponseEntity.ok(enderecosDTOS);
     }
@@ -54,7 +54,7 @@ public class EnderecoController {
      * @return ResponseEntity contendo a lista de endereços, se encontrados.
      */
     @GetMapping("cep/{cep}")
-    private ResponseEntity<List<EnderecosDTO>> getByCep(@PathVariable("cep") String cep) {
+    public ResponseEntity<List<EnderecosDTO>> getByCep(@PathVariable("cep") String cep) {
         List<EnderecosDTO> enderecosDTOS = enderecoService.getByCep(cep);
         return ResponseEntity.ok(enderecosDTOS);
     }
@@ -66,7 +66,7 @@ public class EnderecoController {
      * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
      */
     @PostMapping
-    private ResponseEntity<String> cadastrarEndereco(@RequestBody @Validated EnderecosDTO enderecosDTO) {
+    public ResponseEntity<String> cadastrarEndereco(@RequestBody @Validated EnderecosDTO enderecosDTO) {
         try {
             this.enderecoService.cadastrar(enderecosDTO);
             return ResponseEntity.ok().body("O cadastro do endereço foi realizado com sucesso.");
@@ -83,7 +83,7 @@ public class EnderecoController {
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
     @PutMapping("/{id}")
-    private ResponseEntity<String> editarEndereco(@PathVariable("id") Long id,
+    public ResponseEntity<String> editarEndereco(@PathVariable("id") Long id,
                                                   @RequestBody @Validated EnderecosDTO enderecosDTO) {
         try {
             this.enderecoService.editar(enderecosDTO, id);
@@ -100,7 +100,7 @@ public class EnderecoController {
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
     @DeleteMapping("/{id}")
-    private ResponseEntity<String> excluirEndereco(@PathVariable("id") Long id) {
+    public ResponseEntity<String> excluirEndereco(@PathVariable("id") Long id) {
         try {
             this.enderecoService.delete(id);
             return ResponseEntity.ok().body("Endereço excluído com sucesso!");
