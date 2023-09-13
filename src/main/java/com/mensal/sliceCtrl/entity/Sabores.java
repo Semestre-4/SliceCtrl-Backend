@@ -26,7 +26,7 @@ public class Sabores extends AbstractEntity {
     @Column(name = "valor_adicional", nullable = true)
     private double valorAdicional;
 
-    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST})
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "sabor-ingrediente",
             joinColumns = @JoinColumn(name = "sabor_id"),

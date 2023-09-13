@@ -83,7 +83,14 @@ public class SaboresService {
 
         for (IngredientesDTO ingredientesDTO : saboresDTO.getIngredientesDTOS()) {
             Ingredientes ingredientes1 = modelMapper.map(ingredientesDTO, Ingredientes.class);
-            ingredientes.add(ingredientes1);
+
+            Ingredientes ingredientesfiltrado = ingredienteRepository.findByNome(ingredientes1.getNomeIngrediente());
+
+            if (ingredientesfiltrado == null){
+                ingredientes.add(ingredientes1);
+            }else {
+                ingredientes.add(ingredientesfiltrado);
+            }
         }
 
         Sabores sabores = toSabores(saboresDTO);
