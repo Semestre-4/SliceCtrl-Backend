@@ -56,7 +56,10 @@ public class ProdutoService {
         Produtos produtos = toProdutos(produtosDTO);
         if (produtos.getQtdeEstoque() == 0) {
             produtos.setDisponivel(false);
+        }else {
+            produtos.setDisponivel(true);
         }
+
         return this.produtoRepository.save(produtos);
     }
 
