@@ -110,11 +110,11 @@ public class SaboresService {
     }
 
     @Transactional
-    public void deletar(Long id){
-        final Sabores sabores = this.saboresRepository.findById(id).orElse(null);
-                this.saboresRepository.delete(sabores);
+    public void deletar(Long id) {
+        this.saboresRepository.findById(id).ifPresent(this.saboresRepository::delete);
+    }
 
-        }
+
     }
 
 

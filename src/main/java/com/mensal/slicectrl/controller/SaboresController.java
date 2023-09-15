@@ -26,13 +26,13 @@ public class SaboresController {
      * @return ResponseEntity contendo a lista de sabores ou uma resposta de erro.
      */
     @GetMapping("/all")
-    private ResponseEntity<List<SaboresDTO>> getAllSabores() {
+    public ResponseEntity<List<SaboresDTO>> getAllSabores() {
         List<SaboresDTO> saboresDTOS = saboresService.getAll();
         return ResponseEntity.ok(saboresDTOS);
     }
 
     @GetMapping("/nome/{nomeSabor}")
-    private ResponseEntity<SaboresDTO> getByNome(@PathVariable("nomeSabor") String nomeSabor){
+    public ResponseEntity<SaboresDTO> getByNome(@PathVariable("nomeSabor") String nomeSabor){
         SaboresDTO saboresDTO = saboresService.getByNome(nomeSabor);
         if (saboresDTO != null) {
             return ResponseEntity.ok(saboresDTO);
@@ -42,7 +42,7 @@ public class SaboresController {
     }
 
     @GetMapping("id/{id}")
-    private ResponseEntity<SaboresDTO> getById(@PathVariable("id") Long id){
+    public ResponseEntity<SaboresDTO> getById(@PathVariable("id") Long id){
         SaboresDTO saboresDTO = saboresService.getById(id);
         if (saboresDTO != null) {
             return ResponseEntity.ok(saboresDTO);
@@ -58,7 +58,7 @@ public class SaboresController {
      * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
      */
     @PostMapping
-    private ResponseEntity<String> cadastrarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
+    public ResponseEntity<String> cadastrarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
         try {
             this.saboresService.cadastrar(saboresDTO);
             return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi realizado com sucesso.",
@@ -75,7 +75,7 @@ public class SaboresController {
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
     @PutMapping("/{id}")
-    private ResponseEntity<String> editarSabor(@PathVariable Long id,
+    public ResponseEntity<String> editarSabor(@PathVariable Long id,
                                                @RequestBody @Validated SaboresDTO saboresDTO) {
         try {
             this.saboresService.editar(id,saboresDTO);
@@ -93,7 +93,7 @@ public class SaboresController {
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
     @DeleteMapping("/{id}")
-    private ResponseEntity<String> excluirSabor(@PathVariable("id") Long id){
+    public ResponseEntity<String> excluirSabor(@PathVariable("id") Long id){
         try{
             this.saboresService.deletar(id);
             return ResponseEntity.ok().body("Sabor excluido com sucesso!");

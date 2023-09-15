@@ -44,7 +44,7 @@ public class ClienteService {
                     .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com o ID: " + id));
             return toClienteDTO(clientesEncontrado);
         } catch (EntityNotFoundException ex) {
-            throw new RuntimeException("Ocorreu um erro ao tentar recuperar o cliente.", ex);
+            throw new IllegalArgumentException("Ocorreu um erro ao tentar recuperar o cliente.", ex);
         }
     }
 
@@ -79,7 +79,7 @@ public class ClienteService {
         try {
             return clienteRepository.save(clientes);
         } catch (Exception ex) {
-            throw new RuntimeException("Failed to create the client.", ex);
+            throw new IllegalArgumentException("Failed to create the client.", ex);
         }
     }
 

@@ -27,13 +27,13 @@ public class ProdutoController {
      * @return ResponseEntity contendo a lista de produtos ou uma resposta de erro.
      */
     @GetMapping("/all")
-    private ResponseEntity<List<ProdutosDTO>> getAllProdutos() {
+    public ResponseEntity<List<ProdutosDTO>> getAllProdutos() {
         List<ProdutosDTO> produtosDTOS = produtoService.getAll();
         return ResponseEntity.ok(produtosDTOS);
     }
 
     @GetMapping("/nome/{nomeProduto}")
-    private ResponseEntity<ProdutosDTO> getProdutoByNome(@PathVariable("nomeProduto") String nomeProduto){
+    public ResponseEntity<ProdutosDTO> getProdutoByNome(@PathVariable("nomeProduto") String nomeProduto){
         ProdutosDTO produtosDTO = produtoService.getByNome(nomeProduto);
         if (produtosDTO != null) {
             return ResponseEntity.ok(produtosDTO);
@@ -43,7 +43,7 @@ public class ProdutoController {
     }
 
     @GetMapping("id/{id}")
-    private ResponseEntity<ProdutosDTO> getProdutoById(@PathVariable("id") Long id){
+    public ResponseEntity<ProdutosDTO> getProdutoById(@PathVariable("id") Long id){
         ProdutosDTO produtosDTO = produtoService.getById(id);
         if (produtosDTO != null) {
             return ResponseEntity.ok(produtosDTO);
@@ -59,12 +59,12 @@ public class ProdutoController {
             List<ProdutosDTO> produtosDTOS = produtoService.findByCategoria(categoria);
             return ResponseEntity.ok(produtosDTOS);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Categoria Invalida: " + categoriaName);
+            throw new IllegalArgumentException("Categoria Invalida: " + categoriaName);
         }
     }
 
     @GetMapping("/disponivel")
-    private ResponseEntity<List<ProdutosDTO>> getByAvailable(){
+    public ResponseEntity<List<ProdutosDTO>> getByAvailable(){
         List<ProdutosDTO> produtosDTOS = produtoService.findByDisponivel();
         return ResponseEntity.ok(produtosDTOS);
     }
@@ -76,7 +76,7 @@ public class ProdutoController {
      * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
      */
     @PostMapping
-    private ResponseEntity<String> cadastrarProduto(@RequestBody @Validated ProdutosDTO produtosDTO) {
+    public ResponseEntity<String> cadastrarProduto(@RequestBody @Validated ProdutosDTO produtosDTO) {
         try {
             this.produtoService.cadastrar(produtosDTO);
             return ResponseEntity.ok().body(String.format("O cadastro de '%s' foi realizado com sucesso.",
@@ -94,7 +94,7 @@ public class ProdutoController {
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
     @PutMapping("/{id}")
-    private ResponseEntity<String> editarProduto(@PathVariable Long id,
+    public ResponseEntity<String> editarProduto(@PathVariable Long id,
                                                  @RequestBody @Validated ProdutosDTO produtosDTO) {
         try {
             this.produtoService.editar(produtosDTO);
@@ -112,7 +112,7 @@ public class ProdutoController {
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
     @DeleteMapping("/{id}")
-    private ResponseEntity<String> excluirProduto(@PathVariable("id") Long id) {
+    public ResponseEntity<String> excluirProduto(@PathVariable("id") Long id) {
         try {
             this.produtoService.deletar(id);
             return ResponseEntity.ok().body("Produto excluído com sucesso!");

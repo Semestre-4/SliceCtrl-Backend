@@ -54,12 +54,7 @@ public class ProdutoService {
     @Transactional
     public Produtos cadastrar(ProdutosDTO produtosDTO) {
         Produtos produtos = toProdutos(produtosDTO);
-        if (produtos.getQtdeEstoque() == 0) {
-            produtos.setDisponivel(false);
-        }else {
-            produtos.setDisponivel(true);
-        }
-
+        produtos.setDisponivel(produtos.getQtdeEstoque() != 0);
         return this.produtoRepository.save(produtos);
     }
 

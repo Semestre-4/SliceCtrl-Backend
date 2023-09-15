@@ -53,10 +53,13 @@ public class PedidoService {
         this.modelMapper = modelMapper;
     }
 
+    // Constante para a mensagem de erro
+    private static final String PEDIDO_NAO_ENCONTRADO_MSG = "Pedido não encontrado com o ID: ";
+
     // Método para encontrar um pedido pelo ID
     public PedidosDTO findById(Long id) {
         Pedidos pedidos = pedidoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado com o ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(PEDIDO_NAO_ENCONTRADO_MSG + id));
         return toPedidosDTO(pedidos);
     }
 
@@ -74,11 +77,11 @@ public class PedidoService {
         return pedidoRepository.findByformaDeEntrega(formaDeEntrega).stream().map(this::toPedidosDTO).toList();
     }
 
-    public List<PedidosDTO> findByCliente_Id(Long clienteId) {
+    public List<PedidosDTO> findByClienteId(Long clienteId) {
         return pedidoRepository.findByCliente(clienteId).stream().map(this::toPedidosDTO).toList();
     }
 
-    public List<PedidosDTO> findByFuncionario_Id(Long funcionarioId) {
+    public List<PedidosDTO> findByFuncionarioId(Long funcionarioId) {
         return pedidoRepository.findByFunc(funcionarioId).stream().map(this::toPedidosDTO).toList();
     }
 
@@ -130,7 +133,7 @@ public class PedidoService {
 
         // Verificar se o pedido foi encontrado
         if (pedido == null) {
-            throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
+            throw new IllegalArgumentException(PEDIDO_NAO_ENCONTRADO_MSG + pedidoId);
         }
 
         // Verificar o status do pedido
@@ -163,7 +166,7 @@ public class PedidoService {
 
         // Verificar se o pedido foi encontrado
         if (pedido == null) {
-            throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
+            throw new IllegalArgumentException(PEDIDO_NAO_ENCONTRADO_MSG + pedidoId);
         }
 
         // Verificar o status do pedido
@@ -175,19 +178,15 @@ public class PedidoService {
         PedidoPizza pedidoPizza = toPedidoPizza(pedidoPizzaDTO);
 
         int maxFlavors = 0;
-        System.out.println(pedidoPizza.getPizza().getTamanho());
         switch (pedidoPizza.getPizza().getTamanho()) {
             case P -> maxFlavors = 1;
             case M -> maxFlavors = 2;
             case G -> maxFlavors = 3;
             case XG -> maxFlavors = 4;
-            default -> {
-                throw new IllegalArgumentException("Tamanho Inválido!");
-            }
+            default -> throw new IllegalArgumentException("Tamanho Inválido!");
         }
 
         // Verificar se o número máximo de sabores foi excedido para o tamanho da pizza.
-        System.out.println(pedidoPizza.getSabores().size());
         if (pedidoPizza.getSabores().size() > maxFlavors) {
             throw new IllegalArgumentException("Número máximo de sabores excedido para o tamanho da pizza.");
         }
@@ -210,7 +209,7 @@ public class PedidoService {
 
             // Verificar se o pedido foi encontrado
             if (pedido == null) {
-                throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
+                throw new IllegalArgumentException(PEDIDO_NAO_ENCONTRADO_MSG + pedidoId);
             }
 
             // Criar um novo pagamento
@@ -241,7 +240,7 @@ public class PedidoService {
 
         // Verificar se o pedido foi encontrado
         if (existingPedido == null) {
-            throw new IllegalArgumentException("Pedido não encontrado com o ID: " + pedidoId);
+            throw new IllegalArgumentException(PEDIDO_NAO_ENCONTRADO_MSG + pedidoId);
         }
 
         // Verificar o status do pedido
@@ -304,7 +303,7 @@ public class PedidoService {
         // Encontrar o pedido pelo ID
         Pedidos pedidos = pedidoRepository.findById(pedidoProdutoDTO.getPedido().getId()).orElse(null);
         if (pedidos == null) {
-            throw new IllegalArgumentException("Pedido não encontrado com o ID: "
+            throw new IllegalArgumentException(PEDIDO_NAO_ENCONTRADO_MSG
                     + pedidoProdutoDTO.getProduto().getId());
         }
 
@@ -327,19 +326,6 @@ public class PedidoService {
         return pedidosDTO;
     }
 
-
-    private Pedidos toPedido(PedidosDTO pedidosDTO) {
-        Pedidos pedidos = modelMapper.map(pedidosDTO, Pedidos.class);
-
-        if (pedidosDTO.getPagamentoDTO() != null) {
-            Pagamento pagamento = pagamentoRepository.findById(pedidosDTO.getPagamentoDTO().getId()).orElse(null);
-            pedidos.setPagamento(pagamento);
-        }
-
-        return pedidos;
-    }
-
-
     // Método para converter um DTO em um objeto PedidoPizza
     private PedidoPizza toPedidoPizza(PedidoPizzaDTO pedidoPizzaDTO) {
 
@@ -354,7 +340,7 @@ public class PedidoService {
         // Encontrar o pedido pelo ID
         Pedidos pedidos = pedidoRepository.findById(pedidoPizza.getPedido().getId()).orElse(null);
         if (pedidos == null) {
-            throw new IllegalArgumentException("Pedido não encontrado");
+            throw new IllegalArgumentException(PEDIDO_NAO_ENCONTRADO_MSG);
         }
 
         // Mapear os sabores
@@ -364,7 +350,6 @@ public class PedidoService {
             if (sabor == null) {
                 throw new IllegalArgumentException("Sabor não encontrado com o ID: " + saborDTO.getId());
             }
-            System.out.println(sabor);
             sabores.add(sabor);
 
         }

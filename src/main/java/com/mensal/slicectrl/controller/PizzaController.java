@@ -1,7 +1,6 @@
 package com.mensal.slicectrl.controller;
 
 import com.mensal.slicectrl.dto.PizzasDTO;
-import com.mensal.slicectrl.entity.Pizzas;
 import com.mensal.slicectrl.entity.enums.Tamanho;
 import com.mensal.slicectrl.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +30,8 @@ public class PizzaController {
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<PizzasDTO> getPizzaById(@PathVariable("id") Long id) {
-        try {
             PizzasDTO pizzaDTO = pizzaService.findById(id);
             return ResponseEntity.ok(pizzaDTO);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao recuperar a pizza.");
-        }
     }
 
     @GetMapping("/all")
@@ -53,7 +48,7 @@ public class PizzaController {
             List<PizzasDTO> pizzasDTOS = pizzaService.findByTamanho(tamanho);
             return ResponseEntity.ok(pizzasDTOS);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Tamanho Invalido: " + tamanhoName);
+            throw new IllegalArgumentException("Tamanho Invalido: " + tamanhoName);
         }
     }
 
@@ -66,7 +61,7 @@ public class PizzaController {
     @PostMapping
     public ResponseEntity<String> cadastrarPizza(@RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
-            Pizzas createdPizza = pizzaService.createPizza(pizzaDTO);
+            pizzaService.createPizza(pizzaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("O cadastro da pizza foi realizado com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
@@ -83,7 +78,7 @@ public class PizzaController {
     @PutMapping("/{id}")
     public ResponseEntity<String> editarPizza(@PathVariable Long id, @RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
-            Pizzas updatedPizza = pizzaService.updatePizza(id, pizzaDTO);
+            pizzaService.updatePizza(id, pizzaDTO);
             return ResponseEntity.ok("O cadastro da pizza foi atualizado com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());

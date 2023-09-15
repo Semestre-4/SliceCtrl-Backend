@@ -31,7 +31,7 @@ public class FuncionarioService {
                     .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado: " + id));
             return toFuncDTO(funcionariosEncontrado);
         } catch (EntityNotFoundException ex) {
-            throw new RuntimeException("Ocorreu um erro ao tentar recuperar o registro do funcionário.", ex);
+            throw new IllegalArgumentException("Ocorreu um erro ao tentar recuperar o registro do funcionário.", ex);
         }
     }
 
@@ -59,8 +59,10 @@ public class FuncionarioService {
 
     @Transactional
     public Funcionarios updateFuncionario(Long id, FuncionariosDTO funcionariosDTO) {
-        Funcionarios existingFunc = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = " + id + " nao encontrado"));
+
+        if (!funcionarioRepository.existsById(id)) {
+            throw new EntityNotFoundException("Funcionario com ID = " + id + " nao encontrado");
+        }
 
         if (!id.equals(funcionariosDTO.getId())) {
             throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
@@ -80,11 +82,6 @@ public class FuncionarioService {
         Funcionarios funcToDelete = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + " não foi encontrado"));
         funcionarioRepository.delete(funcToDelete);
-    }
-
-
-    private Pedidos toPedido(PedidosDTO pedidosDTO) {
-        return modelMapper.map(pedidosDTO, Pedidos.class);
     }
 
     public FuncionariosDTO toFuncDTO(Funcionarios funcionarios) {

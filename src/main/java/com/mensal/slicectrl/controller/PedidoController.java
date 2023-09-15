@@ -34,13 +34,9 @@ public class PedidoController {
      * @return ResponseEntity contendo as informações do pedido, se encontrado, ou uma resposta de erro.
      */
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> getPedidoById(@PathVariable("id") Long id) {
-        try {
+    public ResponseEntity<PedidosDTO> getPedidoById(@PathVariable("id") Long id) {
             PedidosDTO pedidosDTO = pedidoService.findById(id);
             return ResponseEntity.ok(pedidosDTO);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     /**
@@ -68,12 +64,12 @@ public class PedidoController {
 
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByCliente(@PathVariable Long clienteId) {
-        return ResponseEntity.ok(pedidoService.findByCliente_Id(clienteId));
+        return ResponseEntity.ok(pedidoService.findByClienteId(clienteId));
     }
 
     @GetMapping("/funcionario/{funcionarioId}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByFuncionario(@PathVariable Long funcionarioId) {
-        return ResponseEntity.ok(pedidoService.findByFuncionario_Id(funcionarioId));
+        return ResponseEntity.ok(pedidoService.findByFuncionarioId(funcionarioId));
     }
 
     @GetMapping("/pagamento-pending")
@@ -113,7 +109,7 @@ public class PedidoController {
             @PathVariable Long pedidoId,
             @RequestBody PedidoProdutoDTO pedidoProdutoDTO) {
         try {
-            Pedidos updatedPedido = pedidoService.addProdutoToPedido(pedidoId, pedidoProdutoDTO);
+             pedidoService.addProdutoToPedido(pedidoId, pedidoProdutoDTO);
             return ResponseEntity.ok(String.format("Produto [%s] adicionado com sucesso",
                     pedidoProdutoDTO.getProduto().getNomeProduto()));
         } catch (Exception e) {
@@ -133,7 +129,7 @@ public class PedidoController {
             @PathVariable Long pedidoId,
             @RequestBody PedidoPizzaDTO pedidoPizzaDTO) {
         try {
-            Pedidos updatedPedido = pedidoService.addPizzaToPedido(pedidoId, pedidoPizzaDTO);
+            pedidoService.addPizzaToPedido(pedidoId, pedidoPizzaDTO);
             return ResponseEntity.ok("Pizza adicionada com sucesso");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -167,7 +163,7 @@ public class PedidoController {
     @PutMapping("/{pedidoId}")
     public ResponseEntity<Pedidos> updateOrderByUser(@PathVariable Long pedidoId) {
         Pedidos pedido = pedidoService.updateOrder(pedidoId);
-        return new ResponseEntity<Pedidos>(pedido, HttpStatus.OK);
+        return new ResponseEntity<>(pedido, HttpStatus.OK);
     }
 
 

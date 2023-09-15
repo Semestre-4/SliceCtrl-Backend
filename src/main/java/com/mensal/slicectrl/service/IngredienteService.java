@@ -58,24 +58,21 @@ public class IngredienteService {
 
     @Transactional
     public Ingredientes editar(IngredientesDTO ingredientesDTO, Long id) {
-
         Ingredientes ingredientesBanco = this.ingredienteRepository.findByNome(ingredientesDTO.getNomeIngrediente());
-
-        if(ingredientesBanco != null){
-
-        if(ingredientesDTO.getId() != ingredientesBanco.getId()) {
-            Assert.isTrue(ingredientesBanco == null, "Já possui um ingrediente com esse nome!");
-        }
-        }
-
         final Ingredientes ingredientesBD = this.ingredienteRepository.findById(id).orElse(null);
+
         Assert.notNull(ingredientesBD, "Endereco inexistente!");
         Assert.isTrue(ingredientesBD.getId().equals(ingredientesDTO.getId()),
                 "Ingrediente informado não é o mesmo Ingrediente a ser atualizado");
 
+        if (ingredientesBanco != null && !ingredientesDTO.getId().equals(ingredientesBanco.getId())) {
+            throw new IllegalArgumentException("Já possui um ingrediente com esse nome!");
+        }
+
         Ingredientes ingredientes = toIngredientes(ingredientesDTO);
         return this.ingredienteRepository.save(ingredientes);
     }
+
 
     @Transactional
     public void delete(final Long id) {
