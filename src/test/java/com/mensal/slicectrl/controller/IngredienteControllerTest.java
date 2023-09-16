@@ -63,6 +63,22 @@ public class IngredienteControllerTest {
         verify(service, times(1)).getAll();
     }
 
+    @Test
+    public void testGetByNomeIngredientes(){
+        String nome = "Mussarela";
+        IngredientesDTO ingredientesDTO = new IngredientesDTO("Mussarela", 200);
+
+        Mockito.when(service.getByNome(nome)).thenReturn(ingredientesDTO);
+
+        ResponseEntity<IngredientesDTO> response = controller.getIngredienteByNome(nome);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ingredientesDTO, response.getBody());
+
+        verify(service, times(1)).getByNome(nome);
+
+    }
+
 
 
 }
