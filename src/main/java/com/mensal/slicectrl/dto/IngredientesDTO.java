@@ -3,10 +3,14 @@ package com.mensal.slicectrl.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class IngredientesDTO extends AbstractEntityDTO {
 
     @NotNull(message = "É obrigatorio informar o nome do ingrediente")
