@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -48,6 +49,22 @@ class PizzaControllerTest {
     }
 
     @Test
+    void testGetPizzaByIdNotFound() {
+        Long pizzaId = 1L;
+
+        // Simulate the service returning null, indicating that the pizza was not found
+        when(pizzaService.findById(pizzaId)).thenReturn(null);
+
+        ResponseEntity<PizzasDTO> response = pizzaController.getPizzaById(pizzaId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode()); // Expecting NOT_FOUND here
+        assertNull(response.getBody()); // Ensure the response body is null for a not found pizza
+
+        verify(pizzaService, times(1)).findById(pizzaId);
+    }
+
+
+    @Test
     void testGetAllPizzas() {
         List<PizzasDTO> pizzaDTOList = new ArrayList<>(); // Create a list of sample PizzasDTO
 
@@ -67,6 +84,7 @@ class PizzaControllerTest {
         Tamanho tamanho = Tamanho.M;
         List<PizzasDTO> pizzaDTOList = new ArrayList<>(); // Create a list of sample PizzasDTO
 
+        // Mock the service method to return the sample list
         when(pizzaService.findByTamanho(tamanho)).thenReturn(pizzaDTOList);
 
         ResponseEntity<List<PizzasDTO>> response = pizzaController.getPizzaByTamanho(tamanhoName);
@@ -77,8 +95,9 @@ class PizzaControllerTest {
         verify(pizzaService, times(1)).findByTamanho(tamanho);
     }
 
+
     @Test
-    void testCadastrarPizza() {
+    void testCadastrarPizzaSuccess() {
         PizzasDTO pizzaDTO = new PizzasDTO(); // Create a sample PizzasDTO
 
         ResponseEntity<String> response = pizzaController.cadastrarPizza(pizzaDTO);
@@ -90,7 +109,23 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testEditarPizza() {
+    void testCadastrarPizzaError() {
+        PizzasDTO pizzaDTO = new PizzasDTO(); // Create a sample PizzasDTO
+
+        // Simulate an exception being thrown when creating the pizza
+        when(pizzaService.createPizza(pizzaDTO)).thenThrow(new RuntimeException("Something went wrong"));
+
+        ResponseEntity<String> response = pizzaController.cadastrarPizza(pizzaDTO);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Ocorreu um erro durante o cadastro: Something went wrong", response.getBody());
+
+        verify(pizzaService, times(1)).createPizza(pizzaDTO);
+    }
+
+
+    @Test
+    void testPutPizzaSuccess() {
         Long pizzaId = 1L;
         PizzasDTO pizzaDTO = new PizzasDTO(); // Create a sample PizzasDTO
 
@@ -103,6 +138,23 @@ class PizzaControllerTest {
     }
 
     @Test
+    void testPutPizzaError() {
+        Long pizzaId = 1L;
+        PizzasDTO pizzaDTO = new PizzasDTO(); // Create a sample PizzasDTO
+
+        // Simulate an exception being thrown when updating the pizza
+        when(pizzaService.updatePizza(pizzaId, pizzaDTO)).thenThrow(new RuntimeException("Update failed"));
+
+        ResponseEntity<String> response = pizzaController.editarPizza(pizzaId, pizzaDTO);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Ocorreu um erro durante a atualização: Update failed", response.getBody());
+
+        verify(pizzaService, times(1)).updatePizza(pizzaId, pizzaDTO);
+    }
+
+
+    @Test
     void testExcluirPizza() {
         Long pizzaId = 1L;
 
@@ -113,4 +165,6 @@ class PizzaControllerTest {
 
         verify(pizzaService, times(1)).deletePizza(pizzaId);
     }
+
+
 }
