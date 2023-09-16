@@ -35,7 +35,7 @@ class ClienteControllerTest {
     @Test
     void testGetClienteById() {
         Long clienteId = 1L;
-        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        ClientesDTO clienteDTO = new ClientesDTO(); // Criar um ClienteDTO de exemplo
 
         when(clienteService.findById(clienteId)).thenReturn(clienteDTO);
 
@@ -48,7 +48,7 @@ class ClienteControllerTest {
     }
 
     @Test
-     void testGetClienteByIdNotFound() {
+    void testGetClienteByIdNotFound() {
         Long clienteId = 1L;
 
         when(clienteService.findById(clienteId)).thenReturn(null);
@@ -60,7 +60,6 @@ class ClienteControllerTest {
 
         verify(clienteService, times(1)).findById(clienteId);
     }
-
 
     @Test
     void testGetClientesByNome() {
@@ -85,7 +84,7 @@ class ClienteControllerTest {
     void testGetClientesByNomeNotFound() {
         String nome = "NonExistentName";
 
-        List<ClientesDTO> emptyList = new ArrayList<>(); // An empty list to simulate no clients found
+        List<ClientesDTO> emptyList = new ArrayList<>(); // Uma lista vazia para simular nenhum cliente encontrado
 
         when(clienteService.findByNome(nome)).thenReturn(emptyList);
 
@@ -97,11 +96,10 @@ class ClienteControllerTest {
         verify(clienteService, times(1)).findByNome(nome);
     }
 
-
     @Test
     void testGetClientesByCPF() {
         String cpf = "12345678901";
-        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        ClientesDTO clienteDTO = new ClientesDTO(); // Criar um ClienteDTO de exemplo
 
         when(clienteService.findByCPF(cpf)).thenReturn(clienteDTO);
 
@@ -127,10 +125,9 @@ class ClienteControllerTest {
         verify(clienteService, times(1)).findByCPF(cpf);
     }
 
-
     @Test
     void testGetAllClientes() {
-        List<ClientesDTO> clienteDTOList = new ArrayList<>(); // Create a list of sample ClientesDTO
+        List<ClientesDTO> clienteDTOList = new ArrayList<>(); // Criar uma lista de ClienteDTO de exemplo
 
         when(clienteService.findAll()).thenReturn(clienteDTOList);
 
@@ -144,13 +141,13 @@ class ClienteControllerTest {
 
     @Test
     void testCadastrarClienteSuccess() {
-        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        ClientesDTO clienteDTO = new ClientesDTO(); // Criar um ClienteDTO de exemplo
         clienteDTO.setNome("Sample Name");
 
         ResponseEntity<String> expectedResponse = ResponseEntity.ok("O cadastro de 'Sample Name' foi realizado com sucesso.");
 
         try {
-            when(clienteService.createCliente(clienteDTO)).thenReturn(null); // Mock to return null when successful
+            when(clienteService.createCliente(clienteDTO)).thenReturn(null); // Simular retorno nulo quando bem-sucedido
             ResponseEntity<String> response = clienteController.cadastrarCliente(clienteDTO);
 
             assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -158,18 +155,17 @@ class ClienteControllerTest {
 
             verify(clienteService, times(1)).createCliente(clienteDTO);
         } catch (Exception e) {
-            // Handle any unexpected exceptions
-            fail("Unexpected exception: " + e.getMessage());
+            // Lidar com exceções inesperadas
+            fail("Exceção inesperada: " + e.getMessage());
         }
     }
 
-
     @Test
     void testCadastrarClienteError() {
-        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        ClientesDTO clienteDTO = new ClientesDTO(); // Criar um ClienteDTO de exemplo
         clienteDTO.setNome("Sample Name");
 
-        when(clienteService.createCliente(clienteDTO)).thenThrow(RuntimeException.class); // Simulate a runtime exception
+        when(clienteService.createCliente(clienteDTO)).thenThrow(RuntimeException.class); // Simular uma exceção de tempo de execução
 
         ResponseEntity<String> response = clienteController.cadastrarCliente(clienteDTO);
 
@@ -179,16 +175,15 @@ class ClienteControllerTest {
         verify(clienteService, times(1)).createCliente(clienteDTO);
     }
 
-
     @Test
     void testPutClienteSuccess() {
         Long clienteId = 1L;
-        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        ClientesDTO clienteDTO = new ClientesDTO(); // Criar um ClienteDTO de exemplo
         clienteDTO.setNome("Sample Name");
 
         ResponseEntity<String> expectedResponse = ResponseEntity.ok("O cadastro de 'Sample Name' foi atualizado com sucesso.");
 
-        // Mock the updateCliente method to return null when successful
+        // Simular o método updateCliente para retornar nulo quando bem-sucedido
         when(clienteService.updateCliente(clienteId, clienteDTO)).thenReturn(null);
 
         ResponseEntity<String> response = clienteController.putCliente(clienteId, clienteDTO);
@@ -202,7 +197,7 @@ class ClienteControllerTest {
     @Test
     void testPutClienteError() {
         Long clienteId = 1L;
-        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        ClientesDTO clienteDTO = new ClientesDTO(); // Criar um ClienteDTO de exemplo
         clienteDTO.setNome("Sample Name");
 
         when(clienteService.updateCliente(clienteId, clienteDTO)).thenThrow(RuntimeException.class);
@@ -214,7 +209,6 @@ class ClienteControllerTest {
 
         verify(clienteService, times(1)).updateCliente(clienteId, clienteDTO);
     }
-
 
     @Test
     void testExcluirCliente() {
