@@ -1,5 +1,6 @@
 package com.mensal.slicectrl.controller;
 
+import com.mensal.slicectrl.dto.ClientesDTO;
 import com.mensal.slicectrl.dto.PizzasDTO;
 import com.mensal.slicectrl.entity.enums.Tamanho;
 import com.mensal.slicectrl.service.PizzaService;
@@ -30,8 +31,12 @@ public class PizzaController {
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<PizzasDTO> getPizzaById(@PathVariable("id") Long id) {
-            PizzasDTO pizzaDTO = pizzaService.findById(id);
-            return ResponseEntity.ok(pizzaDTO);
+        PizzasDTO pizzasDTO = pizzaService.findById(id);
+        if (pizzasDTO != null) {
+            return ResponseEntity.ok(pizzasDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/all")
