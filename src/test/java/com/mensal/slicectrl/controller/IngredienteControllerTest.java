@@ -79,6 +79,19 @@ public class IngredienteControllerTest {
 
     }
 
+    @Test
+    public void testCadastrarIngrediente(){
+        IngredientesDTO ingredientesDTO = new IngredientesDTO("Mussarela", 200);
+
+        ResponseEntity<String> response = controller.cadastrarIngrediente(ingredientesDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("O cadastro de 'Mussarela' foi realizado com sucesso.", response.getBody());
+
+        verify(service, times(1)).cadastrar(ingredientesDTO);
+
+    }
+
 
 
 }
