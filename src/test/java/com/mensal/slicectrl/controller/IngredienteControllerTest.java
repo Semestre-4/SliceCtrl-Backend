@@ -27,12 +27,12 @@ public class IngredienteControllerTest {
     private IngredienteService service;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetIngredientesById() {
+    void testGetIngredientesById() {
         Long ingredienteID = 1L;
         IngredientesDTO ingredientesDTO = new IngredientesDTO();
 
@@ -47,7 +47,7 @@ public class IngredienteControllerTest {
     }
 
     @Test
-    public void testGetAllIngredientes(){
+    void testGetAllIngredientes(){
 
         List<IngredientesDTO> ingredientesDTOList = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class IngredienteControllerTest {
     }
 
     @Test
-    public void testGetByNomeIngredientes(){
+    void testGetByNomeIngredientes(){
         String nome = "Mussarela";
         IngredientesDTO ingredientesDTO = new IngredientesDTO("Mussarela", 200);
 
@@ -80,7 +80,7 @@ public class IngredienteControllerTest {
     }
 
     @Test
-    public void testCadastrarIngrediente(){
+    void testCadastrarIngrediente(){
         IngredientesDTO ingredientesDTO = new IngredientesDTO("Mussarela", 200);
 
         ResponseEntity<String> response = controller.cadastrarIngrediente(ingredientesDTO);
@@ -93,7 +93,7 @@ public class IngredienteControllerTest {
     }
 
     @Test
-    public void testEditIngrediente(){
+    void testEditIngrediente(){
         IngredientesDTO ingredientesDTO = new IngredientesDTO("MussarelaEditado", 200);
 
         ResponseEntity<String> response = controller.editarIngrediente(1L, ingredientesDTO);
@@ -102,6 +102,19 @@ public class IngredienteControllerTest {
         assertEquals("O cadastro de 'MussarelaEditado' foi atualizado com sucesso.", response.getBody());
 
         verify(service, times(1)).editar(ingredientesDTO, 1L);
+
+    }
+
+    @Test
+    void testDeleteIngrediente(){
+        Long ingredienteID = 1L;
+
+        ResponseEntity<String> response = controller.excluirIngrediente(ingredienteID);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Ingrediente excluído com sucesso!", response.getBody());
+
+        verify(service, times(1)).delete(ingredienteID);
 
     }
 
