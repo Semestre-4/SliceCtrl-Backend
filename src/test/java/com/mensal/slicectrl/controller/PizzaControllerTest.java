@@ -34,7 +34,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testObterPizzaPorId() {
+    void testGetPizzaById() {
         Long pizzaId = 1L;
         PizzasDTO pizzaDTO = new PizzasDTO(); // Cria um PizzasDTO de exemplo
 
@@ -49,7 +49,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testObterPizzaPorIdNaoEncontrada() {
+    void testGetPizzaByIdNotFound() {
         Long pizzaId = 1L;
 
         // Simula o serviço retornando null, indicando que a pizza não foi encontrada
@@ -64,7 +64,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testObterTodasAsPizzas() {
+    void testGetAllPizzas() {
         List<PizzasDTO> pizzaDTOList = new ArrayList<>(); // Cria uma lista de PizzasDTO de exemplo
 
         when(pizzaService.findAll()).thenReturn(pizzaDTOList);
@@ -78,7 +78,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testObterPizzaPorTamanho() {
+    void testGetPizzaByTamanho() {
         String tamanhoName = "M";
         Tamanho tamanho = Tamanho.M;
         List<PizzasDTO> pizzaDTOList = new ArrayList<>(); // Cria uma lista de PizzasDTO de exemplo
@@ -95,7 +95,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testCadastrarPizzaSucesso() {
+    void testCadastrarPizzaSuccess() {
         PizzasDTO pizzaDTO = new PizzasDTO(); // Cria um PizzasDTO de exemplo
 
         ResponseEntity<String> response = pizzaController.cadastrarPizza(pizzaDTO);
@@ -107,7 +107,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testCadastrarPizzaErro() {
+    void testCadastrarPizzaError() {
         PizzasDTO pizzaDTO = new PizzasDTO(); // Cria um PizzasDTO de exemplo
 
         // Simula uma exceção sendo lançada ao criar a pizza
@@ -122,7 +122,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testAtualizarPizzaSucesso() {
+    void testPutPizzaSuccess() {
         Long pizzaId = 1L;
         PizzasDTO pizzaDTO = new PizzasDTO(); // Cria um PizzasDTO de exemplo
 
@@ -135,7 +135,7 @@ class PizzaControllerTest {
     }
 
     @Test
-    void testAtualizarPizzaErro() {
+    void testPutPizzaError() {
         Long pizzaId = 1L;
         PizzasDTO pizzaDTO = new PizzasDTO(); // Cria um PizzasDTO de exemplo
 
