@@ -92,6 +92,18 @@ public class IngredienteControllerTest {
 
     }
 
+    @Test
+    public void testEditIngrediente(){
+        IngredientesDTO ingredientesDTO = new IngredientesDTO("MussarelaEditado", 200);
+
+        ResponseEntity<String> response = controller.editarIngrediente(1L, ingredientesDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("O cadastro de 'MussarelaEditado' foi atualizado com sucesso.", response.getBody());
+
+        verify(service, times(1)).editar(ingredientesDTO, 1L);
+
+    }
 
 
 }
