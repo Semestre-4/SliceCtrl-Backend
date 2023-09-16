@@ -7,14 +7,19 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ClienteControllerTest {
+@SpringBootTest
+class ClienteControllerTest {
 
     @InjectMocks
     private ClienteController clienteController;
@@ -23,12 +28,12 @@ public class ClienteControllerTest {
     private ClienteService clienteService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetClienteById() {
+    void testGetClienteById() {
         Long clienteId = 1L;
         ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
 
@@ -43,7 +48,22 @@ public class ClienteControllerTest {
     }
 
     @Test
-    public void testGetClientesByNome() {
+     void testGetClienteByIdNotFound() {
+        Long clienteId = 1L;
+
+        when(clienteService.findById(clienteId)).thenReturn(null);
+
+        ResponseEntity<ClientesDTO> response = clienteController.getClienteById(clienteId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+
+        verify(clienteService, times(1)).findById(clienteId);
+    }
+
+
+    @Test
+    void testGetClientesByNome() {
         String nome = "John";
 
         List<ClientesDTO> clienteDTOList = new ArrayList<>();
@@ -61,9 +81,25 @@ public class ClienteControllerTest {
         verify(clienteService, times(1)).findByNome(nome);
     }
 
+    @Test
+    void testGetClientesByNomeNotFound() {
+        String nome = "NonExistentName";
+
+        List<ClientesDTO> emptyList = new ArrayList<>(); // An empty list to simulate no clients found
+
+        when(clienteService.findByNome(nome)).thenReturn(emptyList);
+
+        ResponseEntity<List<ClientesDTO>> response = clienteController.getClientesByNome(nome);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+
+        verify(clienteService, times(1)).findByNome(nome);
+    }
+
 
     @Test
-    public void testGetClientesByCPF() {
+    void testGetClientesByCPF() {
         String cpf = "12345678901";
         ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
 
@@ -78,7 +114,22 @@ public class ClienteControllerTest {
     }
 
     @Test
-    public void testGetAllClientes() {
+    void testGetClientesByCPFNotFound() {
+        String cpf = "NonExistentCPF";
+
+        when(clienteService.findByCPF(cpf)).thenReturn(null);
+
+        ResponseEntity<ClientesDTO> response = clienteController.getClientesByCPF(cpf);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+
+        verify(clienteService, times(1)).findByCPF(cpf);
+    }
+
+
+    @Test
+    void testGetAllClientes() {
         List<ClientesDTO> clienteDTOList = new ArrayList<>(); // Create a list of sample ClientesDTO
 
         when(clienteService.findAll()).thenReturn(clienteDTOList);
@@ -92,34 +143,81 @@ public class ClienteControllerTest {
     }
 
     @Test
-    public void testCadastrarCliente() {
-        ClientesDTO clienteDTO = new ClientesDTO();
+    void testCadastrarClienteSuccess() {
+        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
         clienteDTO.setNome("Sample Name");
+
+        ResponseEntity<String> expectedResponse = ResponseEntity.ok("O cadastro de 'Sample Name' foi realizado com sucesso.");
+
+        try {
+            when(clienteService.createCliente(clienteDTO)).thenReturn(null); // Mock to return null when successful
+            ResponseEntity<String> response = clienteController.cadastrarCliente(clienteDTO);
+
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(expectedResponse.getBody(), response.getBody());
+
+            verify(clienteService, times(1)).createCliente(clienteDTO);
+        } catch (Exception e) {
+            // Handle any unexpected exceptions
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+
+    @Test
+    void testCadastrarClienteError() {
+        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        clienteDTO.setNome("Sample Name");
+
+        when(clienteService.createCliente(clienteDTO)).thenThrow(RuntimeException.class); // Simulate a runtime exception
 
         ResponseEntity<String> response = clienteController.cadastrarCliente(clienteDTO);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("O cadastro de 'Sample Name' foi realizado com sucesso.", response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertFalse(Objects.requireNonNull(response.getBody()).contains("Exception"));
 
         verify(clienteService, times(1)).createCliente(clienteDTO);
     }
 
+
     @Test
-    public void testPutCliente() {
+    void testPutClienteSuccess() {
         Long clienteId = 1L;
-        ClientesDTO clienteDTO = new ClientesDTO();
-        clienteDTO.setNome("Edited Name");
+        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        clienteDTO.setNome("Sample Name");
+
+        ResponseEntity<String> expectedResponse = ResponseEntity.ok("O cadastro de 'Sample Name' foi atualizado com sucesso.");
+
+        // Mock the updateCliente method to return null when successful
+        when(clienteService.updateCliente(clienteId, clienteDTO)).thenReturn(null);
 
         ResponseEntity<String> response = clienteController.putCliente(clienteId, clienteDTO);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("O cadastro de 'Edited Name' foi atualizado com sucesso.", response.getBody());
+        assertEquals(expectedResponse.getBody(), response.getBody());
 
         verify(clienteService, times(1)).updateCliente(clienteId, clienteDTO);
     }
 
     @Test
-    public void testExcluirCliente() {
+    void testPutClienteError() {
+        Long clienteId = 1L;
+        ClientesDTO clienteDTO = new ClientesDTO(); // Create a sample ClientesDTO
+        clienteDTO.setNome("Sample Name");
+
+        when(clienteService.updateCliente(clienteId, clienteDTO)).thenThrow(RuntimeException.class);
+
+        ResponseEntity<String> response = clienteController.putCliente(clienteId, clienteDTO);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertFalse(Objects.requireNonNull(response.getBody()).contains("Exception"));
+
+        verify(clienteService, times(1)).updateCliente(clienteId, clienteDTO);
+    }
+
+
+    @Test
+    void testExcluirCliente() {
         Long clienteId = 1L;
 
         ResponseEntity<String> response = clienteController.excluirCliente(clienteId);

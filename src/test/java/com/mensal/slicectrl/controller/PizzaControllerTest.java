@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +18,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class PizzaControllerTest {
+@SpringBootTest
+class PizzaControllerTest {
 
     @InjectMocks
     private PizzaController pizzaController;
@@ -26,12 +28,12 @@ public class PizzaControllerTest {
     private PizzaService pizzaService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetPizzaById() {
+    void testGetPizzaById() {
         Long pizzaId = 1L;
         PizzasDTO pizzaDTO = new PizzasDTO(); // Create a sample PizzasDTO
 
@@ -46,7 +48,7 @@ public class PizzaControllerTest {
     }
 
     @Test
-    public void testGetAllPizzas() {
+    void testGetAllPizzas() {
         List<PizzasDTO> pizzaDTOList = new ArrayList<>(); // Create a list of sample PizzasDTO
 
         when(pizzaService.findAll()).thenReturn(pizzaDTOList);
@@ -60,7 +62,7 @@ public class PizzaControllerTest {
     }
 
     @Test
-    public void testGetPizzaByTamanho() {
+    void testGetPizzaByTamanho() {
         String tamanhoName = "M";
         Tamanho tamanho = Tamanho.M;
         List<PizzasDTO> pizzaDTOList = new ArrayList<>(); // Create a list of sample PizzasDTO
@@ -76,7 +78,7 @@ public class PizzaControllerTest {
     }
 
     @Test
-    public void testCadastrarPizza() {
+    void testCadastrarPizza() {
         PizzasDTO pizzaDTO = new PizzasDTO(); // Create a sample PizzasDTO
 
         ResponseEntity<String> response = pizzaController.cadastrarPizza(pizzaDTO);
@@ -88,7 +90,7 @@ public class PizzaControllerTest {
     }
 
     @Test
-    public void testEditarPizza() {
+    void testEditarPizza() {
         Long pizzaId = 1L;
         PizzasDTO pizzaDTO = new PizzasDTO(); // Create a sample PizzasDTO
 
@@ -101,7 +103,7 @@ public class PizzaControllerTest {
     }
 
     @Test
-    public void testExcluirPizza() {
+    void testExcluirPizza() {
         Long pizzaId = 1L;
 
         ResponseEntity<String> response = pizzaController.excluirPizza(pizzaId);
