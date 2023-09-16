@@ -11,6 +11,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -41,6 +44,23 @@ public class IngredienteControllerTest {
         assertEquals(ingredientesDTO, response.getBody());
 
         verify(service, times(1)).getById(ingredienteID);
+    }
+
+    @Test
+    public void testGetAllIngredientes(){
+
+        List<IngredientesDTO> ingredientesDTOList = new ArrayList<>();
+
+        ingredientesDTOList.add(new IngredientesDTO("Mussarela", 200));
+
+        Mockito.when(service.getAll()).thenReturn(ingredientesDTOList);
+
+        ResponseEntity<List<IngredientesDTO>> response = controller.getAllIngredientes();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ingredientesDTOList, response.getBody());
+
+        verify(service, times(1)).getAll();
     }
 
 
