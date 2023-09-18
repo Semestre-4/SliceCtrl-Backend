@@ -1,9 +1,7 @@
 package com.mensal.slicectrl.controller;
 
 import com.mensal.slicectrl.dto.IngredientesDTO;
-import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
-import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.SaboresService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -110,7 +108,7 @@ public class SaboresControllerTest {
     }
 
     @Test
-    void testCadastrarProdutos(){
+    void testCadastrarSabores(){
         List<IngredientesDTO> ingredientesDTOList= new ArrayList<>();
         SaboresDTO saboresDTO = new SaboresDTO("Teste", ingredientesDTOList);
 
@@ -124,8 +122,29 @@ public class SaboresControllerTest {
     }
 
 
+    @Test
+    void testCadastrarSaboresError(){
 
+        ResponseEntity<String> response = controller.cadastrarSabor(null);
 
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        verify(service, times(1)).cadastrar(null);
+
+    }
+
+    @Test
+    void testDeleteSabores(){
+        Long saborId = 1L;
+
+        ResponseEntity<String> response = controller.excluirSabor(saborId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Sabor excluido com sucesso!", response.getBody());
+
+        verify(service, times(1)).deletar(saborId);
+
+    }
 
 
     }
