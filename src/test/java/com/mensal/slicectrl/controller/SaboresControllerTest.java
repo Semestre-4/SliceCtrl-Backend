@@ -1,7 +1,9 @@
 package com.mensal.slicectrl.controller;
 
 import com.mensal.slicectrl.dto.IngredientesDTO;
+import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
+import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.SaboresService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -130,6 +132,31 @@ public class SaboresControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
         verify(service, times(1)).cadastrar(null);
+
+    }
+
+    @Test
+    void testEditSabores(){
+        List<IngredientesDTO> ingredientesDTOList= new ArrayList<>();
+        SaboresDTO saboresDTO = new SaboresDTO("Teste", ingredientesDTOList);
+
+        ResponseEntity<String> response = controller.editarSabor(1L, saboresDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("O cadastro de 'Teste' foi atualizado com sucesso.", response.getBody());
+
+        verify(service, times(1)).editar(1L, saboresDTO);
+
+    }
+
+    @Test
+    void testEditSaboresError(){
+
+        ResponseEntity<String> response = controller.editarSabor(1L, null);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        verify(service, times(1)).editar(1L, null);
 
     }
 
