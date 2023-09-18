@@ -1,7 +1,10 @@
 package com.mensal.slicectrl.controller;
 
+import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
+import com.mensal.slicectrl.entity.Sabores;
+import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.ProdutoService;
 import com.mensal.slicectrl.service.SaboresService;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,6 +78,23 @@ public class SaboresControllerTest {
         assertEquals(saboresDTOList, response.getBody());
 
         verify(service, times(1)).getAll();
+    }
+
+    @Test
+    void testGetByNomeSabores() {
+        String nome = "Teste";
+        List<IngredientesDTO> ingredientesDTOList= new ArrayList<>();
+        SaboresDTO saboresDTO = new SaboresDTO("Teste", ingredientesDTOList);
+
+        Mockito.when(service.getByNome(nome)).thenReturn(saboresDTO);
+
+        ResponseEntity<SaboresDTO> response = controller.getByNome(nome);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(saboresDTO, response.getBody());
+
+        verify(service, times(1)).getByNome(nome);
+
     }
 
 
