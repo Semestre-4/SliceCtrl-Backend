@@ -1,12 +1,7 @@
 package com.mensal.slicectrl.controller;
 
 import com.mensal.slicectrl.dto.EnderecosDTO;
-import com.mensal.slicectrl.dto.IngredientesDTO;
-import com.mensal.slicectrl.dto.ProdutosDTO;
-import com.mensal.slicectrl.dto.SaboresDTO;
-import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.EnderecoService;
-import com.mensal.slicectrl.service.SaboresService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -136,18 +131,6 @@ public class EnderecoControllerTest {
 
     }
 
-//    @Test
-//    void testEditEnderecoError(){
-//
-//        when(controller.editarEndereco(1L, null)).thenThrow(RuntimeException.class); // Simular uma exceção de tempo de execução
-//        ResponseEntity<String> response = controller.cadastrarEndereco(null);
-//
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//
-//        verify(controller, times(1)).editarEndereco(1L, null);
-//
-//    }
-
     @Test
     void testDeleteEndereco(){
         Long enderecoId = 1L;
@@ -160,8 +143,6 @@ public class EnderecoControllerTest {
         verify(service, times(1)).delete(enderecoId);
 
     }
-
-
 
 
 
