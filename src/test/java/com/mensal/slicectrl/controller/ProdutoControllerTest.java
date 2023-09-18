@@ -95,6 +95,25 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    void testGetByCategoriaProduto() {
+        ProdutosDTO produtosDTO = new ProdutosDTO("Coca", Categoria.BEBIDAS, 100, true, 100.00);
+        List<ProdutosDTO> produtosDTOList = new ArrayList<>();
+        produtosDTOList.add(produtosDTO);
+
+        Mockito.when(service.findByCategoria(Categoria.BEBIDAS)).thenReturn(produtosDTOList);
+
+        ResponseEntity<List<ProdutosDTO>> response = controller.getProductsByCategoria("BEBIDAS");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(produtosDTOList, response.getBody());
+
+        verify(service, times(1)).findByCategoria(Categoria.BEBIDAS);
+
+    }
+
+
+
+    @Test
     void testGetByNomeProdutoNotFound() {
         String nome = "Coca";
 
