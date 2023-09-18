@@ -44,6 +44,20 @@ public class EnderecoControllerTest {
         verify(service, times(1)).getById(enderecoId);
     }
 
+    @Test
+    void testGetByIdNotFound() {
+
+        Mockito.when(service.getById(1L)).thenReturn(null);
+
+        ResponseEntity<EnderecosDTO> response = controller.getEnderecoById(1L);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        verify(service, times(1)).getById(1L);
+    }
+
+
+
 
 
 }
