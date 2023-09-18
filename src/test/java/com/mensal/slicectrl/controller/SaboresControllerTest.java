@@ -13,6 +13,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -56,6 +59,24 @@ public class SaboresControllerTest {
 
         verify(service, times(1)).getById(null);
     }
+
+    @Test
+    void testGetAllSabores(){
+
+        List<SaboresDTO> saboresDTOList = new ArrayList<>();
+
+        saboresDTOList.add(new SaboresDTO());
+
+        Mockito.when(service.getAll()).thenReturn(saboresDTOList);
+
+        ResponseEntity<List<SaboresDTO>> response = controller.getAllSabores();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(saboresDTOList, response.getBody());
+
+        verify(service, times(1)).getAll();
+    }
+
 
 
 
