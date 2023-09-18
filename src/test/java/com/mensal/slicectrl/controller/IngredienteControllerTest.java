@@ -2,6 +2,7 @@ package com.mensal.slicectrl.controller;
 
 import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.service.IngredienteService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.util.AssertionErrors.assertNull;
 
 public class IngredienteControllerTest {
 
@@ -47,6 +48,21 @@ public class IngredienteControllerTest {
     }
 
     @Test
+    void testGetIngredientesByIdNotFound() {
+        Long ingredienteID = 1L;
+
+        Mockito.when(service.getById(ingredienteID)).thenReturn(null);
+
+        ResponseEntity<IngredientesDTO> response = controller.getIngredienteById(ingredienteID);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        Assertions.assertNull(response.getBody());
+
+        verify(service, times(1)).getById(ingredienteID);
+    }
+
+
+    @Test
     void testGetAllIngredientes(){
 
         List<IngredientesDTO> ingredientesDTOList = new ArrayList<>();
@@ -62,6 +78,7 @@ public class IngredienteControllerTest {
 
         verify(service, times(1)).getAll();
     }
+
 
     @Test
     void testGetByNomeIngredientes(){
@@ -80,6 +97,21 @@ public class IngredienteControllerTest {
     }
 
     @Test
+    void testGetByNomeIngredientesNotFound(){
+
+        Mockito.when(service.getByNome("nome")).thenReturn(null);
+
+        ResponseEntity<IngredientesDTO> response = controller.getIngredienteByNome("nome");
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        Assertions.assertNull(response.getBody());
+
+        verify(service, times(1)).getByNome("nome");
+
+    }
+
+
+    @Test
     void testCadastrarIngrediente(){
         IngredientesDTO ingredientesDTO = new IngredientesDTO("Mussarela", 200);
 
@@ -89,6 +121,15 @@ public class IngredienteControllerTest {
         assertEquals("O cadastro de 'Mussarela' foi realizado com sucesso.", response.getBody());
 
         verify(service, times(1)).cadastrar(ingredientesDTO);
+
+    }
+
+    @Test
+    void testCadastrarIngredienteError(){
+
+        ResponseEntity<String> response = controller.cadastrarIngrediente(null);
+        when(controller.cadastrarIngrediente(null)).thenThrow(RuntimeException.class); // Simular uma exceção de tempo de execução
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
     }
 
@@ -106,6 +147,13 @@ public class IngredienteControllerTest {
     }
 
     @Test
+    void testEditIngredienteError(){
+        ResponseEntity<String> response = controller.editarIngrediente(1L, null);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+    }
+
+    @Test
     void testDeleteIngrediente(){
         Long ingredienteID = 1L;
 
@@ -117,6 +165,5 @@ public class IngredienteControllerTest {
         verify(service, times(1)).delete(ingredienteID);
 
     }
-
 
 }
