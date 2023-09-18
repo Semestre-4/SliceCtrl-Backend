@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class EnderecoControllerTest {
 
@@ -110,6 +109,18 @@ public class EnderecoControllerTest {
         verify(service, times(1)).cadastrar(enderecosDTO);
 
     }
+    @Test
+    void testCadastrarEnderecoError(){
+
+        when(service.cadastrar(null)).thenThrow(RuntimeException.class); // Simular uma exceção de tempo de execução
+        ResponseEntity<String> response = controller.cadastrarEndereco(null);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        verify(service, times(1)).cadastrar(null);
+
+    }
+
 
 
 
