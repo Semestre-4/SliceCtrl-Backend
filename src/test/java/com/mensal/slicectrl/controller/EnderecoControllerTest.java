@@ -2,7 +2,9 @@ package com.mensal.slicectrl.controller;
 
 import com.mensal.slicectrl.dto.EnderecosDTO;
 import com.mensal.slicectrl.dto.IngredientesDTO;
+import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
+import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.EnderecoService;
 import com.mensal.slicectrl.service.SaboresService;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,6 +120,19 @@ public class EnderecoControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
         verify(service, times(1)).cadastrar(null);
+
+    }
+
+    @Test
+    void testEditEndereco(){
+        EnderecosDTO enderecosDTO = new EnderecosDTO("teste", 123, "teste", "teste", "teste", "teste", "PR", "85857730");
+
+        ResponseEntity<String> response = controller.editarEndereco(1L, enderecosDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("O cadastro do endereço foi atualizado com sucesso.", response.getBody());
+
+        verify(service, times(1)).editar(enderecosDTO, 1L);
 
     }
 
