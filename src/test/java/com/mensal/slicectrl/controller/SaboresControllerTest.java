@@ -3,9 +3,7 @@ package com.mensal.slicectrl.controller;
 import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
-import com.mensal.slicectrl.entity.Sabores;
 import com.mensal.slicectrl.entity.enums.Categoria;
-import com.mensal.slicectrl.service.ProdutoService;
 import com.mensal.slicectrl.service.SaboresService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -110,6 +108,23 @@ public class SaboresControllerTest {
         verify(service, times(1)).getByNome(nome);
 
     }
+
+    @Test
+    void testCadastrarProdutos(){
+        List<IngredientesDTO> ingredientesDTOList= new ArrayList<>();
+        SaboresDTO saboresDTO = new SaboresDTO("Teste", ingredientesDTOList);
+
+        ResponseEntity<String> response = controller.cadastrarSabor(saboresDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("O cadastro de 'Teste' foi realizado com sucesso.", response.getBody());
+
+        verify(service, times(1)).cadastrar(saboresDTO);
+
+    }
+
+
+
 
 
 

@@ -28,7 +28,8 @@ public class SaboresDTO extends AbstractEntityDTO {
 
     private List<PedidoPizzaDTO> pedidosPizza;
 
-    public SaboresDTO(String teste, List<IngredientesDTO> ingredientesDTOList) {
-        super();
+    public SaboresDTO(String nomeSabor, List<IngredientesDTO> ingredientesDTOList) {
+        this.nomeSabor = nomeSabor;
+        this.ingredientesDTOS = ingredientesDTOList;
     }
 }
