@@ -45,5 +45,18 @@ public class SaboresControllerTest {
         verify(service, times(1)).getById(saboresId);
     }
 
+    @Test
+    void testGetByIdSaboresNotFound() {
+
+        Mockito.when(service.getById(null)).thenReturn(null);
+
+        ResponseEntity<SaboresDTO> response = controller.getById(null);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+        verify(service, times(1)).getById(null);
+    }
+
+
 
 }
