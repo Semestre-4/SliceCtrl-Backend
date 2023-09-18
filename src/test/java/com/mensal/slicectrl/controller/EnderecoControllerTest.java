@@ -136,6 +136,31 @@ public class EnderecoControllerTest {
 
     }
 
+//    @Test
+//    void testEditEnderecoError(){
+//
+//        when(controller.editarEndereco(1L, null)).thenThrow(RuntimeException.class); // Simular uma exceção de tempo de execução
+//        ResponseEntity<String> response = controller.cadastrarEndereco(null);
+//
+//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+//
+//        verify(controller, times(1)).editarEndereco(1L, null);
+//
+//    }
+
+    @Test
+    void testDeleteEndereco(){
+        Long enderecoId = 1L;
+
+        ResponseEntity<String> response = controller.excluirEndereco(enderecoId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Endereço excluído com sucesso!", response.getBody());
+
+        verify(service, times(1)).delete(enderecoId);
+
+    }
+
 
 
 
