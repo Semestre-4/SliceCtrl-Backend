@@ -125,6 +125,7 @@ public class SaboresControllerTest {
     @Test
     void testCadastrarSaboresError(){
 
+
         ResponseEntity<String> response = controller.cadastrarSabor(null);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
