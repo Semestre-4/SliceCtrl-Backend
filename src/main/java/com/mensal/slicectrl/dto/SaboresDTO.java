@@ -3,12 +3,16 @@ package com.mensal.slicectrl.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SaboresDTO extends AbstractEntityDTO {
 
     @NotBlank(message = "O nome do sabor não pode estar em branco")
@@ -24,4 +28,8 @@ public class SaboresDTO extends AbstractEntityDTO {
 
     private List<PedidoPizzaDTO> pedidosPizza;
 
+    public SaboresDTO(String nomeSabor, List<IngredientesDTO> ingredientesDTOList) {
+        this.nomeSabor = nomeSabor;
+        this.ingredientesDTOS = ingredientesDTOList;
+    }
 }

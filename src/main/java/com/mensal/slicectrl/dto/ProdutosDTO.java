@@ -2,10 +2,14 @@ package com.mensal.slicectrl.dto;
 
 import com.mensal.slicectrl.entity.enums.Categoria;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProdutosDTO extends AbstractEntityDTO {
 
     @NotBlank(message = "O nome do produto não pode estar em branco")
