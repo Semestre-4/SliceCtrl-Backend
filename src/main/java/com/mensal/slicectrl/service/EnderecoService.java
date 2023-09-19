@@ -52,11 +52,9 @@ public class EnderecoService {
     }
 
     @Transactional
-    public Enderecos editar(EnderecosDTO enderecosDTO, Long id){
-        final Enderecos enderecosBanco = this.enderecoRepository.findById(id).orElse(null);
+    public Enderecos editar(EnderecosDTO enderecosDTO){
+        final Enderecos enderecosBanco = this.enderecoRepository.findById(enderecosDTO.getId()).orElse(null);
         Assert.notNull(enderecosBanco, "Endereco inexistente!");
-        Assert.isTrue(enderecosBanco.getId().equals(enderecosDTO.getId()),
-                "Endereco informado não é o mesmo endereco a ser atualizado");
 
         Enderecos enderecos = toEnderecos(enderecosDTO);
         return this.enderecoRepository.save(enderecos);
