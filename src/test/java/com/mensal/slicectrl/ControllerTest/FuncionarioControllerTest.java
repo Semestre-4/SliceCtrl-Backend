@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.FuncionarioController;
 import com.mensal.slicectrl.dto.FuncionariosDTO;
 import com.mensal.slicectrl.service.FuncionarioService;
 import org.junit.jupiter.api.BeforeEach;

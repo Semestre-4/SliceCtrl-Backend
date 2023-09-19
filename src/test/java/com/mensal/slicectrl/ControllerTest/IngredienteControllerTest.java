@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.IngredienteController;
 import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.service.IngredienteService;
 import org.junit.jupiter.api.Assertions;

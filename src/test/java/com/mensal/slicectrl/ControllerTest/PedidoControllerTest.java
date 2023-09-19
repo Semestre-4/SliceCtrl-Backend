@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.PedidoController;
 import com.mensal.slicectrl.dto.*;
 import com.mensal.slicectrl.entity.Pedidos;
 import com.mensal.slicectrl.entity.enums.FormaDeEntrega;
