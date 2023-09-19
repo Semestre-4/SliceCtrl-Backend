@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.util.AssertionErrors.fail;
 
 @SpringBootTest
-public class PedidoControllerTest {
+class PedidoControllerTest {
 
     @InjectMocks
     private PedidoController pedidoController;
@@ -180,7 +180,7 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testAbrirPedidoWithException() {
+    void testAbrirPedidoWithException() {
         Long clienteId = 1L;
         Long funcId = 2L;
         FormaDeEntrega formaDeEntrega = FormaDeEntrega.RETIRADA;
@@ -256,7 +256,7 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testAddProdutoToPedidoWithException() {
+    void testAddProdutoToPedidoWithException() {
         Long pedidoId = 1L;
         PedidoProdutoDTO pedidoProdutoDTO = new PedidoProdutoDTO();
         pedidoProdutoDTO.setProduto(new ProdutosDTO()); // Configurar um DTO de produto válido
@@ -292,7 +292,7 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testAddPizzaToPedidoWithException() {
+    void testAddPizzaToPedidoWithException() {
         Long pedidoId = 1L;
         PedidoPizzaDTO pedidoPizzaDTO = new PedidoPizzaDTO();
         pedidoPizzaDTO.setPizza(new PizzasDTO()); // Configurar um DTO de pizza válido
@@ -337,7 +337,7 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testFinalizarPedidoWithException() {
+    void testFinalizarPedidoWithException() {
         Long pedidoId = 1L;
         FormasDePagamento formDePagamento = FormasDePagamento.CREDITO;
 
