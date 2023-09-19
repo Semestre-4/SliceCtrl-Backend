@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.PizzaController;
 import com.mensal.slicectrl.dto.PizzasDTO;
 import com.mensal.slicectrl.entity.enums.Tamanho;
 import com.mensal.slicectrl.service.PizzaService;

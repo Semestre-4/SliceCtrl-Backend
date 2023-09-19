@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.ClienteController;
 import com.mensal.slicectrl.dto.ClientesDTO;
 import com.mensal.slicectrl.service.ClienteService;
 import org.junit.jupiter.api.BeforeEach;
@@ -143,6 +144,9 @@ class ClienteControllerTest {
     void testCadastrarClienteSuccess() {
         ClientesDTO clienteDTO = new ClientesDTO(); // Criar um ClienteDTO de exemplo
         clienteDTO.setNome("Sample Name");
+        clienteDTO.setCpf("9329323");
+        clienteDTO.setTelefone("92020808320");
+        clienteDTO.setEmail("sdjnkjds@kdjee.dd");
 
         ResponseEntity<String> expectedResponse = ResponseEntity.ok("O cadastro de 'Sample Name' foi realizado com sucesso.");
 

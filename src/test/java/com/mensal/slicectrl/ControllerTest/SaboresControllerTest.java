@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.SaboresController;
 import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
 import com.mensal.slicectrl.service.SaboresService;

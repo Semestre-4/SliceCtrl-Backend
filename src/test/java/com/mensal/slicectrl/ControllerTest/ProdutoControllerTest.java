@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.ProdutoController;
 import com.mensal.slicectrl.dto.ProdutosDTO;import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.ProdutoService;
 import org.junit.jupiter.api.BeforeEach;
