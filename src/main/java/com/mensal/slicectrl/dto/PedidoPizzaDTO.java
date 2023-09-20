@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +21,7 @@ public class PedidoPizzaDTO extends AbstractEntityDTO {
     private PedidosDTO pedido;
     @NotNull(message = "O sabor não pode ser nulo")
     @JsonIgnoreProperties("pedidosPizza")
-    private Set<SaboresDTO> sabores = new HashSet<>();
+    private List<SaboresDTO> sabores = new ArrayList<>();
     @Min(value = 1, message = "A quantidade pedida deve ser pelo menos 1")
     private int qtdePedida;
     private String observacao;

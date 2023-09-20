@@ -1,6 +1,7 @@
 package com.mensal.slicectrl.ServiceTest;
 
 import com.mensal.slicectrl.dto.FuncionariosDTO;
+import com.mensal.slicectrl.entity.Enderecos;
 import com.mensal.slicectrl.entity.Funcionarios;
 import com.mensal.slicectrl.repository.FuncionarioRepository;
 import com.mensal.slicectrl.service.FuncionarioService;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class FuncionarioServiceTest {
 
     private List<Funcionarios> funcionariosList = new ArrayList<>();
     Funcionarios funcionarios = new Funcionarios();
+    FuncionariosDTO funcionariosDTO = new FuncionariosDTO("Jonh","0202938920","1111", BigDecimal.TEN);
     Funcionarios funcionarios2 = new Funcionarios();
 
     @BeforeEach
@@ -40,6 +43,8 @@ public class FuncionarioServiceTest {
         funcionarios.setId(1L);
         funcionarios.setNome("John");
         funcionarios.setCpf("0202938920");
+        funcionarios.setTelefone("1111");
+        funcionarios.setSalario(BigDecimal.TEN);
 
         funcionarios2.setId(2L);
         funcionarios2.setNome("Alice");
@@ -56,7 +61,8 @@ public class FuncionarioServiceTest {
         when(modelMapper.map(funcionarios, FuncionariosDTO.class)).thenReturn(new FuncionariosDTO());
         when(modelMapper.map(funcionarios, FuncionariosDTO.class)).thenReturn(new FuncionariosDTO());
         when(modelMapper.map(funcionarios2, FuncionariosDTO.class)).thenReturn(new FuncionariosDTO());
-    }
+        when(funcionarioService.toFunc(funcionariosDTO)).thenReturn(funcionarios);
+        when(funcionarioRepository.save(funcionarios)).thenReturn(funcionarios);    }
 
     @Test
     public void testFindById_ValidId() {
@@ -83,5 +89,11 @@ public class FuncionarioServiceTest {
         assertFalse(result.isEmpty());
     }
 
+    @Test
+    void testCadastrarFuncService(){
+        Funcionarios resposta = funcionarioService.createFuncionario(funcionariosDTO);
+        assertNotNull(resposta);
+        assertEquals(resposta, funcionarios);
+    }
 
 }

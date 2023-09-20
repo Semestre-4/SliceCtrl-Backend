@@ -45,4 +45,10 @@ public class Sabores extends AbstractEntity {
     public Sabores(String nomeSabor, String descricao, double valorAdicional) {
         super();
     }
+
+    public Sabores(String nomeSabor, List<Ingredientes> ingredientes) {
+        this.nomeSabor = nomeSabor;
+        this.ingredientes = ingredientes;
+
+    }
 }
