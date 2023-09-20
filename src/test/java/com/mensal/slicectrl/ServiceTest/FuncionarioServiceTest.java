@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class FuncionarioServiceTest {
+class FuncionarioServiceTest {
 
     @Mock
     private FuncionarioRepository funcionarioRepository;
@@ -65,24 +65,24 @@ public class FuncionarioServiceTest {
         when(funcionarioRepository.save(funcionarios)).thenReturn(funcionarios);    }
 
     @Test
-    public void testFindById_ValidId() {
+    void testFindById_ValidId() {
         FuncionariosDTO result = funcionarioService.findById(1L);
         assertNotNull(result);
     }
 
     @Test
-    public void testFindById_InvalidId() {
+    void testFindById_InvalidId() {
         assertThrows(IllegalArgumentException.class, () -> funcionarioService.findById(2L));
     }
 
     @Test
-    public void testGetAll() {
+    void testGetAll() {
         List<FuncionariosDTO> result = funcionarioService.findAll();
         assertEquals(2, result.size());
     }
 
     @Test
-    public void testFindByNome_ValidResult() {
+    void testFindByNome_ValidResult() {
         String validNome = "John";
         when(funcionarioRepository.findByNome(validNome)).thenReturn(funcionariosList);
         List<FuncionariosDTO> result = funcionarioService.findByNome(validNome);

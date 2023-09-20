@@ -25,13 +25,13 @@ class PagamentoDTOTest {
     }
 
     @Test
-    public void testInvalidPagamentoDTO() {
+    void testInvalidPagamentoDTO() {
         assertThrows(IllegalArgumentException.class, () -> validatePagamentoDTO(pagamentoDTO));
     }
 
     private void validatePagamentoDTO(PagamentoDTO dto) {
         if (dto.getFormasDePagamento() == null) {
-            throw new IllegalArgumentException("FormasDePagamento cannot be null");
+            throw new IllegalArgumentException("A forma de pagamento não pode ser nula");
         }
     }
 }

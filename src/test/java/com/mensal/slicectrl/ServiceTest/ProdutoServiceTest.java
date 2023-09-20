@@ -122,7 +122,7 @@ public class ProdutoServiceTest {
         Produtos resposta = service.cadastrar(produtoDTO);
 
         assertNotNull(resposta);
-        assertEquals(resposta, produto);
+        assertEquals(produto, resposta);
 
     }
 
@@ -134,7 +134,7 @@ public class ProdutoServiceTest {
         Produtos resposta = service.editar(produtoDTO);
 
         assertNotNull(resposta);
-        assertEquals(resposta, produto);
+        assertEquals(produto, resposta);
 
     }
 
@@ -147,7 +147,7 @@ public class ProdutoServiceTest {
 
         assertNotNull(resposta);
         assertFalse(resposta.isDisponivel());
-        assertEquals(resposta, produto);
+        assertEquals(produto, resposta);
 
     }
 }

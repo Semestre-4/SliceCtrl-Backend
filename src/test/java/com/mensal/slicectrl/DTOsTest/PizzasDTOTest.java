@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.mensal.slicectrl.dto.PizzasDTO;
 import com.mensal.slicectrl.entity.enums.Tamanho;
 
-public class PizzasDTOTest {
+class PizzasDTOTest {
 
     private PizzasDTO pizzasDTO;
 

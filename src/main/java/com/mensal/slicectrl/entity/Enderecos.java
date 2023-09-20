@@ -48,7 +48,7 @@ public class Enderecos extends AbstractEntity{
     @JsonIgnore
     private List<Clientes> clientes;
 
-    public Enderecos(String rua, int i, String complemento, String bairro, String cidade, String estado, String pais, String cep) {
+    public Enderecos(String rua, int i, String bairro, String cidade, String estado, String pais, String cep) {
         super();
     }
 }
