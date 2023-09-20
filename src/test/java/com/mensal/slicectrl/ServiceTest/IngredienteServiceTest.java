@@ -54,6 +54,9 @@ public class IngredienteServiceTest {
 
         when(repository.findById(2L)).thenReturn(Optional.empty());
 
+        when(repository.findById(7L)).thenReturn(Optional.empty());
+
+
         when(repository.findAll()).thenReturn(ingredientesList);
 
         when(repository.findByNome("Mussarela")).thenReturn(ingredientes);
@@ -105,10 +108,27 @@ public class IngredienteServiceTest {
     @Test
     void testEditarIngredienteService(){
 
-        Ingredientes resposta = service.cadastrar(ingredientesDTO);
+        ingredientesDTO.setId(1L);
+
+        Ingredientes resposta = service.editar(ingredientesDTO, 1L);
 
         assertNotNull(resposta);
         assertEquals(resposta, ingredientes);
+
+    }
+
+    @Test
+    void testEditarIngredienteServiceInexistente(){
+
+        assertThrows(IllegalArgumentException.class, () -> service.editar(ingredientesDTO, 7L));
+
+    }
+
+    @Test
+    void testEditarIngredienteServiceIdDiferente(){
+        ingredientesDTO.setId(3L);
+
+        assertThrows(IllegalArgumentException.class, () -> service.editar(ingredientesDTO, 1L));
 
     }
 
