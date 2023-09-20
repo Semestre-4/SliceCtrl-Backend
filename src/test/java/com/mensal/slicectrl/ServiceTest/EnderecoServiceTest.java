@@ -41,8 +41,13 @@ public class EnderecoServiceTest {
         List<Enderecos> enderecosList= new ArrayList<>();
 
         Enderecos enderecos = new Enderecos("rua", 123, "complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
+        Enderecos enderecosDelete = new Enderecos("rua", 123, "complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
+
+        enderecosDelete.setId(3L);
 
         enderecosList.add(enderecos);
+
+
 
         Mockito.when(repository.findById(1L)).thenReturn(Optional.of(enderecos));
         Mockito.when(modelMapper.map(enderecos, EnderecosDTO.class)).thenReturn(new EnderecosDTO());
@@ -54,7 +59,6 @@ public class EnderecoServiceTest {
         Mockito.when(repository.findByCep(cep)).thenReturn(enderecosList);
 
         Mockito.when(repository.save(enderecos)).thenReturn(enderecos);
-
 
     }
 
@@ -78,15 +82,6 @@ public class EnderecoServiceTest {
         assertNotNull(service.getByCep("85857730"));
     }
 
-//    @Test
-//    void testCadastrarEnderecoService(){
-//        EnderecosDTO enderecosDTO = new EnderecosDTO("rua", 123, "complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
-//
-//        Enderecos resposta = service.cadastrar(enderecosDTO);
-//
-//        assertTrue(resposta.getRua().contains("rua"));
-//
-//    }
 
 
 
