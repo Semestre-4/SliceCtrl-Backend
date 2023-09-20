@@ -1,9 +1,6 @@
 package com.mensal.slicectrl.ServiceTest;
 
-import com.mensal.slicectrl.controller.ProdutoController;
-import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.dto.ProdutosDTO;
-import com.mensal.slicectrl.entity.Ingredientes;
 import com.mensal.slicectrl.entity.Produtos;
 import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.repository.ProdutoRepository;
@@ -13,18 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.mensal.slicectrl.dto.ClientesDTO;
 import com.mensal.slicectrl.entity.Clientes;
 import com.mensal.slicectrl.repository.ClienteRepository;
-import com.mensal.slicectrl.repository.EnderecoRepository;
 import com.mensal.slicectrl.service.ClienteService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,11 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +29,12 @@ public class ClienteServiceTest {
     private ClienteRepository clienteRepository;
 
     @Mock
-    private EnderecoRepository enderecoRepository;
-
-    @Mock
     private ModelMapper modelMapper;
 
     @InjectMocks
     private ClienteService clienteService;
 
-    private List<Clientes> clientesList = new ArrayList<>();
+    private final List<Clientes> clientesList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {

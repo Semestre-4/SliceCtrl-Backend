@@ -1,18 +1,15 @@
 package com.mensal.slicectrl.ServiceTest;
 
-import com.mensal.slicectrl.dto.ClientesDTO;
 import com.mensal.slicectrl.dto.EnderecosDTO;
 import com.mensal.slicectrl.entity.Enderecos;
 import com.mensal.slicectrl.repository.EnderecoRepository;
 import com.mensal.slicectrl.service.EnderecoService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.util.Assert;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;

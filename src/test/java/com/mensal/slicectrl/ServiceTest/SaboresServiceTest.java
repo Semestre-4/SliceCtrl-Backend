@@ -2,11 +2,8 @@ package com.mensal.slicectrl.ServiceTest;
 
 import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
-import com.mensal.slicectrl.entity.Ingredientes;
 import com.mensal.slicectrl.entity.Sabores;
-import com.mensal.slicectrl.repository.IngredienteRepository;
 import com.mensal.slicectrl.repository.SaboresRepository;
-import com.mensal.slicectrl.service.IngredienteService;
 import com.mensal.slicectrl.service.SaboresService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,9 +26,6 @@ public class SaboresServiceTest {
 
     static final List<IngredientesDTO> ingredientesDTOList= new ArrayList<>();
     static final SaboresDTO saboresDTO = new SaboresDTO("Teste", ingredientesDTOList);
-
-    static final List<Ingredientes> ingredientesList = new ArrayList<>();
-
     static final Sabores sabores = new Sabores("Calabresa","sem cebola", 00.01);
 
     @Mock
@@ -54,8 +48,10 @@ public class SaboresServiceTest {
 
 
         when(repository.findById(1L)).thenReturn(Optional.of(sabores));
+
         when(modelMapper.map(sabores, SaboresDTO.class)).thenReturn(new SaboresDTO());
 
+        when(modelMapper.map(saboresDTO, Sabores.class)).thenReturn(new Sabores());
 
         when(repository.findById(2L)).thenReturn(Optional.empty());
 
