@@ -29,8 +29,8 @@ public class Ingredientes extends AbstractEntity{
     @JsonIgnore
     private List<Sabores> sabores = new ArrayList<>();
 
-
-    public Ingredientes(String nomeIngrediente, int qtdeIngrediente) {
-        super();
+    public Ingredientes(String nomeIngrediente, double qtdeIngrediente) {
+        this.nomeIngrediente = nomeIngrediente;
+        this.qtdeIngrediente = qtdeIngrediente;
     }
 }

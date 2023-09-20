@@ -44,17 +44,13 @@ class PedidoControllerTest {
         PedidosDTO pedidosDTO = new PedidosDTO();
         pedidosDTO.setId(pedidoId);
 
-        // Simulando o comportamento do pedidoService
         when(pedidoService.findById(pedidoId)).thenReturn(pedidosDTO);
 
-        // Chamar o método e verificar o resultado
         ResponseEntity<PedidosDTO> response = pedidoController.getPedidoById(pedidoId);
 
-        // Verificar se a resposta tem o código de status esperado e o corpo esperado
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(pedidosDTO, response.getBody());
 
-        // Verificar se o método findById foi chamado exatamente uma vez
         verify(pedidoService, times(1)).findById(pedidoId);
     }
 
@@ -342,8 +338,7 @@ class PedidoControllerTest {
         Long pedidoId = 1L;
         FormasDePagamento formDePagamento = FormasDePagamento.CREDITO;
 
-        // Simular o comportamento de pedidoService.efetuarPedido para lançar uma exceção
-        when(pedidoService.efetuarPedido(eq(pedidoId), eq(formDePagamento)))
+        when(pedidoService.efetuarPedido(pedidoId, formDePagamento))
                 .thenThrow(new RuntimeException("Mensagem de exceção de amostra"));
 
         ResponseEntity<Pedidos> response = pedidoController.finalizarPedido(pedidoId, formDePagamento);

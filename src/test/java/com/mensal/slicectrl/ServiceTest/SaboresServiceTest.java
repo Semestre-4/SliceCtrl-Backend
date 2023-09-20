@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class SaboresServiceTest {
+class SaboresServiceTest {
 
 
     static final List<IngredientesDTO> ingredientesDTOList= new ArrayList<>();
@@ -99,7 +99,7 @@ public class SaboresServiceTest {
         Sabores resposta = service.cadastrar(saboresDTO);
 
         assertNotNull(resposta);
-        assertEquals(resposta, sabores);
+        assertEquals(sabores, resposta);
 
     }
 
@@ -111,15 +111,13 @@ public class SaboresServiceTest {
         Sabores resposta = service.editar(1L, saboresDTO);
 
         assertNotNull(resposta);
-        assertEquals(resposta, sabores);
+        assertEquals(sabores, resposta);
 
     }
 
     @Test
     void testEditarSaboresServiceIdDiferentes(){
-
         saboresDTO.setId(2L);
-
         assertThrows(IllegalArgumentException.class, () -> service.editar(1L, saboresDTO));
 
     }

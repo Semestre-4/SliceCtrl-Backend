@@ -217,8 +217,11 @@ class PedidoServiceTest {
     void testAddProdutoToPedido_OrderNotFound() {
         when(pedidoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> pedidoService.addProdutoToPedido(1L, new PedidoProdutoDTO()));
+        assertThrows(IllegalArgumentException.class, this::invokeAddProdutoToPedido);
     }
+
+        private void invokeAddProdutoToPedido() {
+            pedidoService.addProdutoToPedido(1L, new PedidoProdutoDTO());    }
 
     @Test
     void testAddPizzaToPedido_OrderNotFound() {
@@ -306,7 +309,7 @@ class PedidoServiceTest {
     }
 
     @Test
-    public void testUpdateOrderNotAllowedStatus() {
+    void testUpdateOrderNotAllowedStatus() {
         Long pedidoId = 3L;
         Pedidos existingPedido = new Pedidos();
         existingPedido.setId(pedidoId);
@@ -318,7 +321,7 @@ class PedidoServiceTest {
     }
 
     @Test
-    public void testCalculatePedidoProdutoTotal() {
+    void testCalculatePedidoProdutoTotal() {
         Produtos produto = new Produtos();
         produto.setPreco(10.0);
         PedidoProduto pedidoProduto = new PedidoProduto();
@@ -329,7 +332,7 @@ class PedidoServiceTest {
     }
 
     @Test
-    public void testCalculatePedidoPizzaTotal() {
+    void testCalculatePedidoPizzaTotal() {
         Pizzas pizza = new Pizzas();
         pizza.setPreco(15.0);
         PedidoPizza pedidoPizza = new PedidoPizza();

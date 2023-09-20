@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class EnderecoServiceTest {
+class EnderecoServiceTest {
 
     EnderecosDTO enderecosDTO = new EnderecosDTO("rua", 123, "complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
 

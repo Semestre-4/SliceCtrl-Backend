@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class IngredienteServiceTest {
+class IngredienteServiceTest {
 
     static final IngredientesDTO ingredientesDTO = new IngredientesDTO("Mussarelas", 200);
 
@@ -101,7 +101,7 @@ public class IngredienteServiceTest {
         Ingredientes resposta = service.cadastrar(ingredientesDTO);
 
         assertNotNull(resposta);
-        assertEquals(resposta, ingredientes);
+        assertEquals(ingredientes,resposta);
 
     }
 
@@ -113,7 +113,7 @@ public class IngredienteServiceTest {
         Ingredientes resposta = service.editar(ingredientesDTO, 1L);
 
         assertNotNull(resposta);
-        assertEquals(resposta, ingredientes);
+        assertEquals(ingredientes, resposta);
 
     }
 
