@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.mensal.slicectrl.dto.PedidoProdutoDTO;
 
-public class PedidoProdutoDTOTest {
+class PedidoProdutoDTOTest {
 
     private PedidoProdutoDTO pedidoProdutoDTO;
 

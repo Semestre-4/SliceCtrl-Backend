@@ -10,7 +10,7 @@ import com.mensal.slicectrl.entity.enums.Status;
 
 import java.util.ArrayList;
 
-public class PedidosDTOTest {
+class PedidosDTOTest {
 
     private PedidosDTO pedidosDTO;
 

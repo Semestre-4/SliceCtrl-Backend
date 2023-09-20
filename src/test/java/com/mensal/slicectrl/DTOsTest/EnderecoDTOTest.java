@@ -1,15 +1,9 @@
 package com.mensal.slicectrl.DTOsTest;
 
-import com.mensal.slicectrl.dto.ClientesDTO;
 import com.mensal.slicectrl.dto.EnderecosDTO;
-import com.mensal.slicectrl.entity.Clientes;
-import com.mensal.slicectrl.entity.Enderecos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -46,11 +40,11 @@ class EnderecoDTOTest {
     }
 
     void validateEnderecoDTO(EnderecosDTO dto) {
-        if (dto.getRua() == null || dto.getRua().length() < 2 || dto.getRua().length() > 100) {
+        if (dto.getRua() == null || dto.getRua().length() < 2 || dto.getRua().length() > 50) {
             throw new IllegalArgumentException("Invalid rua");
         }
 
-        if (dto.getCep() == null || dto.getCep().length() < 2 || dto.getCep().length() > 100) {
+        if (dto.getCep() == null || dto.getCep().length() < 2 || dto.getCep().length() > 11) {
             throw new IllegalArgumentException("Invalid cep");
         }
 
