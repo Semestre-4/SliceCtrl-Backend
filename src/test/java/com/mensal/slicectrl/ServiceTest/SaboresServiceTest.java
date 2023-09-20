@@ -110,11 +110,27 @@ public class SaboresServiceTest {
     @Test
     void testEditarSaboresService(){
 
-        Sabores resposta = service.cadastrar(saboresDTO);
+        saboresDTO.setId(1L);
+
+        Sabores resposta = service.editar(1L, saboresDTO);
 
         assertNotNull(resposta);
         assertEquals(resposta, sabores);
 
+    }
+
+    @Test
+    void testEditarSaboresServiceIdDiferentes(){
+
+        saboresDTO.setId(2L);
+
+        assertThrows(IllegalArgumentException.class, () -> service.editar(1L, saboresDTO));
+
+    }
+
+    @Test
+    void testEditarSaboresServiceIdInexistente(){
+        assertThrows(IllegalArgumentException.class, () -> service.editar(70L, saboresDTO));
     }
 
 }
