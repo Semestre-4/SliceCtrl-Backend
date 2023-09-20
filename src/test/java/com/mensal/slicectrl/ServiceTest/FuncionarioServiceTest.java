@@ -108,6 +108,18 @@ public class FuncionarioServiceTest {
         });
     }
 
+    @Test
+    void testUpdateFuncWhenIdMismatch() {
+        Long id = 1L;
+        when(funcionarioRepository.existsById(id)).thenReturn(true);
+        FuncionariosDTO funcionariosDTO1 = new FuncionariosDTO("Jonh", "0202938920", "1111", BigDecimal.TEN);
+        funcionariosDTO1.setId(2L);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            funcionarioService.updateFuncionario(id, funcionariosDTO1);
+        });
+    }
+
 
 
 }
