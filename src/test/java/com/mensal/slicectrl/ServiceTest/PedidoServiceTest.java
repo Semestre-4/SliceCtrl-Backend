@@ -174,20 +174,16 @@ class PedidoServiceTest {
 
     @Test
     void testIniciarPedido_ValidScenario() {
-        // Arrange
         Long clienteId = 1L;
         Long funcId = 2L;
         FormaDeEntrega formaDeEntrega = FormaDeEntrega.RETIRADA;
 
-        // Mock behavior of repository methods
         when(clienteRepository.findById(clienteId)).thenReturn(Optional.of(cliente));
         when(funcionarioRepository.findById(funcId)).thenReturn(Optional.of(funcionarios));
         when(pedidoRepository.findByClienteAndStatus(cliente, Status.PENDENTE)).thenReturn(new ArrayList<>());
 
-        // Act
         PedidosDTO result = pedidoService.iniciarPedido(clienteId, pedido, funcId, formaDeEntrega);
 
-        // Assert
         assertNotNull(result);
     }
 
@@ -249,7 +245,6 @@ class PedidoServiceTest {
 
     @Test
     void testAddProdutoToPedido_ProductNotAvailable() {
-        // Product not available scenario
         Pedidos order = new Pedidos();
         order.setStatus(Status.PENDENTE);
         Produtos product = new Produtos();
@@ -268,15 +263,12 @@ class PedidoServiceTest {
 
     @Test
     void testEfetuarPedido() {
-        // Mock data
         Long pedidoId = 1L;
         FormasDePagamento formDePagamento = FormasDePagamento.CREDITO;
         double totalAmount = 0.0;
 
-        // Mock behavior for pedidoRepository
         Pedidos result = pedidoService.efetuarPedido(pedidoId, formDePagamento);
 
-        // Assertions
         assertNotNull(result);
         assertEquals(Status.PAGO, result.getStatus());
         assertEquals(totalAmount, result.getValorTotal());
@@ -285,7 +277,6 @@ class PedidoServiceTest {
 
     @Test
     void testUpdateOrderSuccess() {
-        // Mock data
         Long pedidoId = 1L;
         Pedidos existingPedido = new Pedidos();
         existingPedido.setId(pedidoId);
@@ -296,33 +287,26 @@ class PedidoServiceTest {
 
         Pedidos result = pedidoService.updateOrder(pedidoId);
 
-        // Assertions
         assertNotNull(result);
         assertEquals(pedidoId, result.getId());
         assertEquals(Status.PENDENTE, result.getStatus());
 
-        // Verify that save method was called
         Mockito.verify(pedidoRepository, Mockito.times(1)).save(existingPedido);
     }
 
     @Test
     void testUpdateOrderNotFound() {
-        // Mock data
         Long pedidoId = 2L;
 
-        // Mock behavior for pedidoRepository
         when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.empty());
 
-        // Call the method to be tested and expect an exception
         assertThrows(IllegalArgumentException.class, () -> pedidoService.updateOrder(pedidoId));
 
-        // Verify that save method was not called
         Mockito.verify(pedidoRepository, Mockito.never()).save(any(Pedidos.class));
     }
 
     @Test
     public void testUpdateOrderNotAllowedStatus() {
-        // Mock data
         Long pedidoId = 3L;
         Pedidos existingPedido = new Pedidos();
         existingPedido.setId(pedidoId);

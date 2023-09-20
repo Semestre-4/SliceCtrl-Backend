@@ -44,5 +44,8 @@ public class ClientesDTO extends AbstractEntityDTO{
         this.enderecos = enderecos;
     }
 
-
+    public ClientesDTO(String nome, String cpf) {
+        this.nome = nome;
+        this.cpf = cpf;
+    }
 }
