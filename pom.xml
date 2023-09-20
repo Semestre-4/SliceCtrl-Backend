@@ -20,8 +20,6 @@
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.xmlReportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.xmlReportPath>
 		<sonar.language>java</sonar.language>
-		<sonar.login>admin</sonar.login>
-		<sonar.password>Piegat2004@</sonar.password>
 	</properties>
 	<dependencies>
 		<dependency>

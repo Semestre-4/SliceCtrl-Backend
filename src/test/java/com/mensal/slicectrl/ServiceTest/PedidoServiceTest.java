@@ -226,7 +226,10 @@ class PedidoServiceTest {
     @Test
     void testAddPizzaToPedido_OrderNotFound() {
         when(pedidoRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(IllegalArgumentException.class, () -> pedidoService.addPizzaToPedido(1L, new PedidoPizzaDTO()));
+        PedidoPizzaDTO pedidoPizzaDTO = new PedidoPizzaDTO();
+        assertThrows(IllegalArgumentException.class, () -> {
+            pedidoService.addPizzaToPedido(1L, pedidoPizzaDTO);});
+
     }
 
     @Test
@@ -235,7 +238,9 @@ class PedidoServiceTest {
         order.setStatus(Status.PAGO);
         when(pedidoRepository.findById(anyLong())).thenReturn(Optional.of(order));
 
-        assertThrows(IllegalArgumentException.class, () -> pedidoService.addProdutoToPedido(1L, new PedidoProdutoDTO()));
+        PedidoProdutoDTO pedidoProdutoDTO = new PedidoProdutoDTO();
+        assertThrows(IllegalArgumentException.class, () -> {
+            pedidoService.addProdutoToPedido(1L, pedidoProdutoDTO);});
     }
 
     @Test
@@ -243,7 +248,11 @@ class PedidoServiceTest {
         Pedidos order = new Pedidos();
         order.setStatus(Status.PAGO);
         when(pedidoRepository.findById(anyLong())).thenReturn(Optional.of(order));
-        assertThrows(IllegalArgumentException.class, () -> pedidoService.addPizzaToPedido(1L, new PedidoPizzaDTO()));
+
+        PedidoPizzaDTO pedidoPizzaDTO = new PedidoPizzaDTO();
+        assertThrows(IllegalArgumentException.class, () -> {
+            pedidoService.addPizzaToPedido(1L, pedidoPizzaDTO);});
+
     }
 
     @Test
@@ -261,7 +270,8 @@ class PedidoServiceTest {
         when(pedidoRepository.findById(anyLong())).thenReturn(Optional.of(order));
         when(produtoRepository.findById(anyLong())).thenReturn(Optional.of(product));
 
-        assertThrows(IllegalArgumentException.class, () -> pedidoService.addProdutoToPedido(1L, pedidoProdutoDTO));
+        assertThrows(IllegalArgumentException.class, () -> {
+            pedidoService.addProdutoToPedido(1L, pedidoProdutoDTO);});
     }
 
     @Test

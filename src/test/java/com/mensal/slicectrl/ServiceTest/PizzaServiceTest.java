@@ -68,7 +68,7 @@ class PizzaServiceTest {
     }
 
     @Test
-    public void testGetAll() {
+    void testGetAll() {
         List<PizzasDTO> result = pizzaService.findAll();
         assertEquals(1, result.size());
     }

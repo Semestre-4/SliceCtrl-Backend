@@ -346,7 +346,7 @@ class PedidoControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertNull(response.getBody()); // Verificar que o corpo da resposta é nulo
 
-        verify(pedidoService, times(1)).efetuarPedido(eq(pedidoId), eq(formDePagamento));
+        verify(pedidoService, times(1)).efetuarPedido(pedidoId, formDePagamento);
     }
 
     @Test
