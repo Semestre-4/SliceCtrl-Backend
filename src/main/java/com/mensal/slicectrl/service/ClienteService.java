@@ -77,6 +77,7 @@ public class ClienteService {
         clientes.setEnderecos(enderecosList);
 
         try {
+            // Make sure to check if the save operation returns a non-null result
             return clienteRepository.save(clientes);
         } catch (Exception ex) {
             throw new IllegalArgumentException("Failed to create the client.", ex);
