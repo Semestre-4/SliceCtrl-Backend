@@ -82,7 +82,7 @@ public class EnderecoServiceTest {
     }
 
     @Test
-    void testGetALlEnderecoService(){
+    void testGetAllEnderecoService(){
         assertNotNull(service.getAll());
     }
 
@@ -104,10 +104,19 @@ public class EnderecoServiceTest {
     @Test
     void testEditarEnderecoService(){
 
+        enderecosDTO.setId(1L);
+
         Enderecos resposta = service.editar(enderecosDTO);
 
         assertNotNull(resposta);
         assertEquals(resposta, enderecos);
+
+    }
+
+    @Test
+    void testEditarEnderecoServiceError(){
+
+        assertThrows(IllegalArgumentException.class, () -> service.editar(enderecosDTO));
 
     }
 
