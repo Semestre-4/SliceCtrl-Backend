@@ -15,7 +15,7 @@ public class PedidosDTOTest {
     private PedidosDTO pedidosDTO;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         pedidosDTO = new PedidosDTO();
         pedidosDTO.setCliente(new ClientesDTO());
         pedidosDTO.setFuncionario(new FuncionariosDTO());
@@ -26,7 +26,7 @@ public class PedidosDTOTest {
     }
 
     @Test
-    public void testValidPedidosDTO() {
+    void testValidPedidosDTO() {
         pedidosDTO.getProdutos().add(new PedidoProdutoDTO());
         pedidosDTO.getPizzas().add(new PedidoPizzaDTO());
 
@@ -34,7 +34,7 @@ public class PedidosDTOTest {
     }
 
     @Test
-    public void testInvalidPedidosDTO() {
+    void testInvalidPedidosDTO() {
         assertThrows(IllegalArgumentException.class, () -> validatePedidosDTO(pedidosDTO));
     }
 

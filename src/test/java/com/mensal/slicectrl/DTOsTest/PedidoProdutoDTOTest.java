@@ -10,19 +10,19 @@ public class PedidoProdutoDTOTest {
     private PedidoProdutoDTO pedidoProdutoDTO;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         pedidoProdutoDTO = new PedidoProdutoDTO();
     }
 
     @Test
-    public void testValidPedidoProdutoDTO() {
+    void testValidPedidoProdutoDTO() {
         pedidoProdutoDTO.setQtdePedida(2);
 
         assertDoesNotThrow(() -> validatePedidoProdutoDTO(pedidoProdutoDTO));
     }
 
     @Test
-    public void testInvalidPedidoProdutoDTO() {
+    void testInvalidPedidoProdutoDTO() {
         assertThrows(IllegalArgumentException.class, () -> validatePedidoProdutoDTO(pedidoProdutoDTO));
     }
 

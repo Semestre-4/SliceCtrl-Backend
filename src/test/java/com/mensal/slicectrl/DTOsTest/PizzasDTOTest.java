@@ -12,12 +12,12 @@ public class PizzasDTOTest {
     private PizzasDTO pizzasDTO;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         pizzasDTO = new PizzasDTO();
     }
 
     @Test
-    public void testValidPizzasDTO() {
+    void testValidPizzasDTO() {
         pizzasDTO.setTamanho(Tamanho.M);
         pizzasDTO.setPreco(12.99);
 
@@ -25,7 +25,7 @@ public class PizzasDTOTest {
     }
 
     @Test
-    public void testInvalidPizzasDTO() {
+    void testInvalidPizzasDTO() {
         assertThrows(IllegalArgumentException.class, () -> validatePizzasDTO(pizzasDTO));
     }
 
