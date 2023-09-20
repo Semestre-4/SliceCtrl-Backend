@@ -138,5 +138,18 @@ public class ProdutoServiceTest {
 
     }
 
+    @Test
+    void testEditarProdutoServiceIndisponivel() {
+        produtoDTO.setQtdeEstoque(0);
+        produto.setDisponivel(false);
+
+        Produtos resposta = service.editar(produtoDTO);
+
+        assertNotNull(resposta);
+        assertFalse(resposta.isDisponivel());
+        assertEquals(resposta, produto);
+
+    }
+
 
 }
