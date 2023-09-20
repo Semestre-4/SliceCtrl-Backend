@@ -82,11 +82,11 @@ public class EnderecoController {
      * @param enderecosDTO Os dados atualizados do endereço.
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<String> editarEndereco(@PathVariable("id") Long id,
+    @PutMapping()
+    public ResponseEntity<String> editarEndereco(
                                                   @RequestBody @Validated EnderecosDTO enderecosDTO) {
         try {
-            this.enderecoService.editar(enderecosDTO, id);
+            this.enderecoService.editar(enderecosDTO);
             return ResponseEntity.ok().body("O cadastro do endereço foi atualizado com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());

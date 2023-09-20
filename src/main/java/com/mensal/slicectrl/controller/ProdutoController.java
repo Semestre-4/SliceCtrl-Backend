@@ -56,7 +56,7 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutosDTO>> getProductsByCategoria(@PathVariable String categoriaName) {
         try {
             Categoria categoria = Categoria.valueOf(categoriaName);
-            List<ProdutosDTO> produtosDTOS = produtoService.findByCategoria(categoria);
+            List<ProdutosDTO> produtosDTOS = produtoService.getByCategoria(categoria);
             return ResponseEntity.ok(produtosDTOS);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Categoria Invalida: " + categoriaName);
@@ -65,7 +65,7 @@ public class ProdutoController {
 
     @GetMapping("/disponivel")
     public ResponseEntity<List<ProdutosDTO>> getByAvailable(){
-        List<ProdutosDTO> produtosDTOS = produtoService.findByDisponivel();
+        List<ProdutosDTO> produtosDTOS = produtoService.getByDisponivel();
         return ResponseEntity.ok(produtosDTOS);
     }
 

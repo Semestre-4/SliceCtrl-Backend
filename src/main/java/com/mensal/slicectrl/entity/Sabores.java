@@ -2,7 +2,9 @@ package com.mensal.slicectrl.entity;
 
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -14,15 +16,17 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "sabores", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Sabores extends AbstractEntity {
 
     @Column(name = "nome_sabor", nullable = false, unique = true)
     private String nomeSabor;
 
-    @Column(name = "descricao_sabor", nullable = true)
+    @Column(name = "descricao_sabor")
     private String descricao;
 
-    @Column(name = "valor_adicional", nullable = true)
+    @Column(name = "valor_adicional")
     private double valorAdicional;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -38,4 +42,15 @@ public class Sabores extends AbstractEntity {
 //    @JsonIgnoreProperties("sabor")
     private List<PedidoPizza> pedidosPizza;
 
+    public Sabores(String nomeSabor, List<Ingredientes> ingredientes) {
+        this.nomeSabor = nomeSabor;
+        this.ingredientes = ingredientes;
+
+    }
+
+    public Sabores(String nomeSabor, String descricao, double valorAdicional) {
+        this.nomeSabor = nomeSabor;
+        this.descricao = descricao;
+        this.valorAdicional = valorAdicional;
+    }
 }

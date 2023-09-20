@@ -20,7 +20,4 @@ public class IngredientesDTO extends AbstractEntityDTO {
     @NotNull(message = "É obrigatorio informar a quantidade de ingredientes")
     private int qtdeIngrediente;
 
-    public IngredientesDTO(String mussarela) {
-        super();
-    }
 }

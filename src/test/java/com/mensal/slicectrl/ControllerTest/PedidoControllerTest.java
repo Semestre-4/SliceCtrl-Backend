@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.PedidoController;
 import com.mensal.slicectrl.dto.*;
 import com.mensal.slicectrl.entity.Pedidos;
 import com.mensal.slicectrl.entity.enums.FormaDeEntrega;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.util.AssertionErrors.fail;
 
 @SpringBootTest
-public class PedidoControllerTest {
+class PedidoControllerTest {
 
     @InjectMocks
     private PedidoController pedidoController;
@@ -43,17 +44,13 @@ public class PedidoControllerTest {
         PedidosDTO pedidosDTO = new PedidosDTO();
         pedidosDTO.setId(pedidoId);
 
-        // Simulando o comportamento do pedidoService
         when(pedidoService.findById(pedidoId)).thenReturn(pedidosDTO);
 
-        // Chamar o método e verificar o resultado
         ResponseEntity<PedidosDTO> response = pedidoController.getPedidoById(pedidoId);
 
-        // Verificar se a resposta tem o código de status esperado e o corpo esperado
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(pedidosDTO, response.getBody());
 
-        // Verificar se o método findById foi chamado exatamente uma vez
         verify(pedidoService, times(1)).findById(pedidoId);
     }
 
@@ -180,7 +177,7 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testAbrirPedidoWithException() {
+    void testAbrirPedidoWithException() {
         Long clienteId = 1L;
         Long funcId = 2L;
         FormaDeEntrega formaDeEntrega = FormaDeEntrega.RETIRADA;
@@ -256,7 +253,7 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testAddProdutoToPedidoWithException() {
+    void testAddProdutoToPedidoWithException() {
         Long pedidoId = 1L;
         PedidoProdutoDTO pedidoProdutoDTO = new PedidoProdutoDTO();
         pedidoProdutoDTO.setProduto(new ProdutosDTO()); // Configurar um DTO de produto válido
@@ -292,7 +289,7 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testAddPizzaToPedidoWithException() {
+    void testAddPizzaToPedidoWithException() {
         Long pedidoId = 1L;
         PedidoPizzaDTO pedidoPizzaDTO = new PedidoPizzaDTO();
         pedidoPizzaDTO.setPizza(new PizzasDTO()); // Configurar um DTO de pizza válido
@@ -337,12 +334,11 @@ public class PedidoControllerTest {
     }
 
     @Test
-    public void testFinalizarPedidoWithException() {
+    void testFinalizarPedidoWithException() {
         Long pedidoId = 1L;
         FormasDePagamento formDePagamento = FormasDePagamento.CREDITO;
 
-        // Simular o comportamento de pedidoService.efetuarPedido para lançar uma exceção
-        when(pedidoService.efetuarPedido(eq(pedidoId), eq(formDePagamento)))
+        when(pedidoService.efetuarPedido(pedidoId, formDePagamento))
                 .thenThrow(new RuntimeException("Mensagem de exceção de amostra"));
 
         ResponseEntity<Pedidos> response = pedidoController.finalizarPedido(pedidoId, formDePagamento);

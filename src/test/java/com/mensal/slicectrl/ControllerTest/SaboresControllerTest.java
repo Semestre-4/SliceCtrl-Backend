@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.SaboresController;
 import com.mensal.slicectrl.dto.IngredientesDTO;
 import com.mensal.slicectrl.dto.SaboresDTO;
 import com.mensal.slicectrl.service.SaboresService;
@@ -9,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class SaboresControllerTest {
+@SpringBootTest
+class SaboresControllerTest {
 
     @InjectMocks
     private SaboresController controller;
@@ -125,11 +128,37 @@ public class SaboresControllerTest {
     @Test
     void testCadastrarSaboresError(){
 
+
         ResponseEntity<String> response = controller.cadastrarSabor(null);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
         verify(service, times(1)).cadastrar(null);
+
+    }
+
+    @Test
+    void testEditSabores(){
+        List<IngredientesDTO> ingredientesDTOList= new ArrayList<>();
+        SaboresDTO saboresDTO = new SaboresDTO("Teste", ingredientesDTOList);
+
+        ResponseEntity<String> response = controller.editarSabor(1L, saboresDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("O cadastro de 'Teste' foi atualizado com sucesso.", response.getBody());
+
+        verify(service, times(1)).editar(1L, saboresDTO);
+
+    }
+
+    @Test
+    void testEditSaboresError(){
+
+        ResponseEntity<String> response = controller.editarSabor(1L, null);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        verify(service, times(1)).editar(1L, null);
 
     }
 

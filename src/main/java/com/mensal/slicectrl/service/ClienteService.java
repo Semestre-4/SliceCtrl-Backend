@@ -41,10 +41,10 @@ public class ClienteService {
     public ClientesDTO findById(Long id) {
         try {
             Clientes clientesEncontrado = clienteRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com o ID: " + id));
+                    .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado com o ID: " + id));
             return toClienteDTO(clientesEncontrado);
-        } catch (EntityNotFoundException ex) {
-            throw new IllegalArgumentException("Ocorreu um erro ao tentar recuperar o cliente.", ex);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("Ocorreu um erro ao tentar recuperar o cliente."+ex.getMessage(), ex);
         }
     }
 
@@ -77,6 +77,7 @@ public class ClienteService {
         clientes.setEnderecos(enderecosList);
 
         try {
+            // Make sure to check if the save operation returns a non-null result
             return clienteRepository.save(clientes);
         } catch (Exception ex) {
             throw new IllegalArgumentException("Failed to create the client.", ex);

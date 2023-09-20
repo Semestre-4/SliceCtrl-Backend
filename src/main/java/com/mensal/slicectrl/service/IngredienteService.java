@@ -61,7 +61,7 @@ public class IngredienteService {
         Ingredientes ingredientesBanco = this.ingredienteRepository.findByNome(ingredientesDTO.getNomeIngrediente());
         final Ingredientes ingredientesBD = this.ingredienteRepository.findById(id).orElse(null);
 
-        Assert.notNull(ingredientesBD, "Endereco inexistente!");
+        Assert.notNull(ingredientesBD, "Ingrediente inexistente!");
         Assert.isTrue(ingredientesBD.getId().equals(ingredientesDTO.getId()),
                 "Ingrediente informado não é o mesmo Ingrediente a ser atualizado");
 

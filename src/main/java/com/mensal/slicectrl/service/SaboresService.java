@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class SaboresService {
         this.modelMapper = modelMapper;
     }
 
-    private SaboresDTO toSaboresDTO(Sabores sabores) {
+    public SaboresDTO toSaboresDTO(Sabores sabores) {
         SaboresDTO saboresDTO = modelMapper.map(sabores, SaboresDTO.class);
 
         List<IngredientesDTO> ingredientesDTOS = new ArrayList<>();
@@ -46,7 +47,7 @@ public class SaboresService {
     }
 
 
-    private Sabores toSabores (SaboresDTO saboresDTO){
+    public Sabores toSabores (SaboresDTO saboresDTO){
         return modelMapper.map(saboresDTO, Sabores.class);
     }
 
@@ -56,11 +57,16 @@ public class SaboresService {
 
     public SaboresDTO getByNome(String nomeSabor){
         Sabores sabores = this.saboresRepository.findByNome(nomeSabor);
+        Assert.notNull(sabores, "Sabor inexistente!");
+
+
         return toSaboresDTO(sabores);
     }
 
     public SaboresDTO getById(Long id){
         Sabores sabores = this.saboresRepository.findById(id).orElse(null);
+        Assert.notNull(sabores, "Sabor inexistente!");
+
         return toSaboresDTO(sabores);
     }
 

@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.ProdutoController;
 import com.mensal.slicectrl.dto.ProdutosDTO;import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.ProdutoService;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
+@SpringBootTest
 class ProdutoControllerTest {
 
     @InjectMocks
@@ -98,14 +100,14 @@ class ProdutoControllerTest {
         List<ProdutosDTO> produtosDTOList = new ArrayList<>();
         produtosDTOList.add(produtosDTO);
 
-        Mockito.when(service.findByCategoria(Categoria.BEBIDAS)).thenReturn(produtosDTOList);
+        Mockito.when(service.getByCategoria(Categoria.BEBIDAS)).thenReturn(produtosDTOList);
 
         ResponseEntity<List<ProdutosDTO>> response = controller.getProductsByCategoria("BEBIDAS");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(produtosDTOList, response.getBody());
 
-        verify(service, times(1)).findByCategoria(Categoria.BEBIDAS);
+        verify(service, times(1)).getByCategoria(Categoria.BEBIDAS);
 
     }
 
@@ -115,14 +117,14 @@ class ProdutoControllerTest {
         List<ProdutosDTO> produtosDTOList = new ArrayList<>();
         produtosDTOList.add(produtosDTO);
 
-        Mockito.when(service.findByDisponivel()).thenReturn(produtosDTOList);
+        Mockito.when(service.getByDisponivel()).thenReturn(produtosDTOList);
 
         ResponseEntity<List<ProdutosDTO>> response = controller.getByAvailable();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(produtosDTOList, response.getBody());
 
-        verify(service, times(1)).findByDisponivel();
+        verify(service, times(1)).getByDisponivel();
 
     }
 

@@ -5,11 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter @Setter
+@NoArgsConstructor
 public class ClientesDTO extends AbstractEntityDTO{
 
     @NotBlank(message = "O nome do cliente é obrigatório")
@@ -31,5 +33,13 @@ public class ClientesDTO extends AbstractEntityDTO{
 
     @NotNull(message = "O cliente deve ter pelo menos um endereço vinculado.")
     private List<EnderecosDTO> enderecos;
+
+    public ClientesDTO(String nome, String cpf, String telefone, String email, List<EnderecosDTO> enderecos) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.email = email;
+        this.enderecos = enderecos;
+    }
 
 }

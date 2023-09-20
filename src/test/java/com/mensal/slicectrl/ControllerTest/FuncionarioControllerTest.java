@@ -1,5 +1,6 @@
-package com.mensal.slicectrl.controller;
+package com.mensal.slicectrl.ControllerTest;
 
+import com.mensal.slicectrl.controller.FuncionarioController;
 import com.mensal.slicectrl.dto.FuncionariosDTO;
 import com.mensal.slicectrl.service.FuncionarioService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class FuncionarioControllerTest {
+class FuncionarioControllerTest {
 
     @InjectMocks
     private FuncionarioController funcionarioController;
@@ -53,7 +54,7 @@ public class FuncionarioControllerTest {
     }
 
     @Test
-    public void testGetFuncionarioByIdNotFound() {
+    void testGetFuncionarioByIdNotFound() {
         Long funcionarioId = 1L;
 
         // Mocking the behavior of the funcionarioService to return null, simulating a not found scenario
@@ -99,7 +100,7 @@ public class FuncionarioControllerTest {
     }
 
     @Test
-    public void testGetFuncionariosByNomeNotFound() {
+    void testGetFuncionariosByNomeNotFound() {
         String nome = "NonExistentName";
 
         // Mocking the behavior of the funcionarioService to return an empty list, simulating a not found scenario
@@ -138,7 +139,7 @@ public class FuncionarioControllerTest {
     }
 
     @Test
-    public void testGetFuncionarioByCPFNotFound() {
+    void testGetFuncionarioByCPFNotFound() {
         String cpf = "NonExistentCPF";
 
         // Mocking the behavior of the funcionarioService to return null, simulating a not found scenario
