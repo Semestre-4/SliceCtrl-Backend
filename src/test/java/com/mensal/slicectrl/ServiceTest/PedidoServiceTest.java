@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +39,10 @@ class PedidoServiceTest {
     private  PedidoProdutoRepository pedidoProdutoRepository;
 
     @Mock
-    private PedidoPizzaRepository pedidoPizzaDTORepository;
+    private PedidoPizzaRepository pedidoPizzaRepository;
+
+    @Mock
+    private PizzaRepository pizzaRepository;
 
     @Mock
     private PagamentoRepository pagamentoRepository;
@@ -101,6 +105,7 @@ class PedidoServiceTest {
         pedidos.add(pedido1);
 
         when(pedidoRepository.findById(1L)).thenReturn(Optional.of(pedido));
+        when(pizzaRepository.findById(1L)).thenReturn(Optional.of(pizza));
         when(pedidoRepository.findAll()).thenReturn(pedidos);
         when(pedidoRepository.findByCliente(1L)).thenReturn(pedidos);
         when(pedidoRepository.findByFunc(1L)).thenReturn(pedidos);
@@ -108,7 +113,7 @@ class PedidoServiceTest {
         when(modelMapper.map(cliente, ClientesDTO.class)).thenReturn(new ClientesDTO());
         when(modelMapper.map(funcionarios, FuncionariosDTO.class)).thenReturn(new FuncionariosDTO());
         when(pedidoProdutoRepository.save(pedidoProduto)).thenReturn(pedidoProduto);
-        when(pedidoPizzaDTORepository.save(pedidoPizza)).thenReturn(pedidoPizza);
+        when(pedidoPizzaRepository.save(pedidoPizza)).thenReturn(pedidoPizza);
         when(pedidoRepository.save(pedido)).thenReturn(pedido);
 
 
@@ -220,12 +225,26 @@ class PedidoServiceTest {
     }
 
     @Test
+    void testAddPizzaToPedido_OrderNotFound() {
+        when(pedidoRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(IllegalArgumentException.class, () -> pedidoService.addPizzaToPedido(1L, new PedidoPizzaDTO()));
+    }
+
+    @Test
     void testAddProdutoToPedido_OrderIsPaid() {
         Pedidos order = new Pedidos();
         order.setStatus(Status.PAGO);
         when(pedidoRepository.findById(anyLong())).thenReturn(Optional.of(order));
 
         assertThrows(IllegalArgumentException.class, () -> pedidoService.addProdutoToPedido(1L, new PedidoProdutoDTO()));
+    }
+
+    @Test
+    void testAddPizzaToPedido_OrderIsPaid() {
+        Pedidos order = new Pedidos();
+        order.setStatus(Status.PAGO);
+        when(pedidoRepository.findById(anyLong())).thenReturn(Optional.of(order));
+        assertThrows(IllegalArgumentException.class, () -> pedidoService.addPizzaToPedido(1L, new PedidoPizzaDTO()));
     }
 
     @Test
@@ -295,12 +314,10 @@ class PedidoServiceTest {
         when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.empty());
 
         // Call the method to be tested and expect an exception
-        assertThrows(IllegalArgumentException.class, () -> {
-            pedidoService.updateOrder(pedidoId);
-        });
+        assertThrows(IllegalArgumentException.class, () -> pedidoService.updateOrder(pedidoId));
 
         // Verify that save method was not called
-        Mockito.verify(pedidoRepository, Mockito.never()).save(Mockito.any(Pedidos.class));
+        Mockito.verify(pedidoRepository, Mockito.never()).save(any(Pedidos.class));
     }
 
     @Test
@@ -312,11 +329,30 @@ class PedidoServiceTest {
         existingPedido.setStatus(Status.PAGO);
 
         when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(existingPedido));
-        assertThrows(IllegalArgumentException.class, () -> {
-            pedidoService.updateOrder(pedidoId);
-        });
-        Mockito.verify(pedidoRepository, Mockito.never()).save(Mockito.any(Pedidos.class));
+        assertThrows(IllegalArgumentException.class, () -> pedidoService.updateOrder(pedidoId));
+        Mockito.verify(pedidoRepository, Mockito.never()).save(any(Pedidos.class));
     }
 
+    @Test
+    public void testCalculatePedidoProdutoTotal() {
+        Produtos produto = new Produtos();
+        produto.setPreco(10.0);
+        PedidoProduto pedidoProduto = new PedidoProduto();
+        pedidoProduto.setProduto(produto);
+        pedidoProduto.setQtdePedida(3);
+        double total = pedidoService.calculatePedidoProdutoTotal(pedidoProduto);
+        assertEquals(30.0, total, 0.01); // Expected total is 3 * 10 = 30
+    }
+
+    @Test
+    public void testCalculatePedidoPizzaTotal() {
+        Pizzas pizza = new Pizzas();
+        pizza.setPreco(15.0);
+        PedidoPizza pedidoPizza = new PedidoPizza();
+        pedidoPizza.setPizza(pizza);
+        pedidoPizza.setQtdePedida(2);
+        double total = pedidoService.calculatePedidoPizzaTotal(pedidoPizza);
+        assertEquals(30.0, total, 0.01); // Expected total is 2 * 15 = 30
+    }
 
 }
