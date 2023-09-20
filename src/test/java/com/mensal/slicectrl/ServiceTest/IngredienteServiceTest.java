@@ -16,12 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class IngredienteServiceTest {
+
+    static final IngredientesDTO ingredientesDTO = new IngredientesDTO("Mussarelas", 200);
+
+    static final Ingredientes ingredientes = new Ingredientes("Mussarelas", 200);
 
     @Mock
     private IngredienteRepository repository;
@@ -36,7 +39,8 @@ public class IngredienteServiceTest {
     void setUp() {
 
         List<Ingredientes> ingredientesList= new ArrayList<>();
-        Ingredientes ingredientes = new Ingredientes("Mussarela", 200);
+
+
 
         ingredientesList.add(ingredientes);
 
@@ -55,6 +59,10 @@ public class IngredienteServiceTest {
         when(repository.findByNome("Mussarela")).thenReturn(ingredientes);
 
         when(repository.findByNome("Null")).thenReturn(null);
+
+        Mockito.when(service.toIngredientes(ingredientesDTO)).thenReturn(ingredientes);
+
+        when(repository.save(ingredientes)).thenReturn(ingredientes);
 
 
     }
@@ -84,7 +92,25 @@ public class IngredienteServiceTest {
         assertNull(service.getByNome("Null"));
     }
 
+    @Test
+    void testCadastrarIngredienteService(){
 
+        Ingredientes resposta = service.cadastrar(ingredientesDTO);
+
+        assertNotNull(resposta);
+        assertEquals(resposta, ingredientes);
+
+    }
+
+    @Test
+    void testEditarIngredienteService(){
+
+        Ingredientes resposta = service.cadastrar(ingredientesDTO);
+
+        assertNotNull(resposta);
+        assertEquals(resposta, ingredientes);
+
+    }
 
 
 

@@ -67,7 +67,6 @@ public class EnderecoServiceTest {
 
         Mockito.when(service.toEnderecos(enderecosDTO)).thenReturn(enderecos);
 
-        System.out.println(enderecos.getCep());
         when(repository.save(enderecos)).thenReturn(enderecos);
 
     }
@@ -105,17 +104,11 @@ public class EnderecoServiceTest {
     @Test
     void testEditarEnderecoService(){
 
-        enderecosDTO.setId(1L);
-
         Enderecos resposta = service.editar(enderecosDTO);
 
         assertNotNull(resposta);
         assertEquals(resposta, enderecos);
 
     }
-
-
-
-
 
 }
