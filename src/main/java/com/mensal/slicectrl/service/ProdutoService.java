@@ -47,7 +47,7 @@ public class ProdutoService {
         return toProdutosDTO(produtos);
     }
 
-    public List<ProdutosDTO> findByCategoria(Categoria categoria) {
+    public List<ProdutosDTO> getByCategoria(Categoria categoria) {
         return this.produtoRepository.findByCategoria(categoria).stream().map(this::toProdutosDTO).toList();
     }
 
@@ -80,7 +80,7 @@ public class ProdutoService {
             }
     }}
 
-    public List<ProdutosDTO> findByDisponivel() {
+    public List<ProdutosDTO> getByDisponivel() {
         return produtoRepository.findByDisponivelTrue().stream().map(this::toProdutosDTO).toList();
     }
 
