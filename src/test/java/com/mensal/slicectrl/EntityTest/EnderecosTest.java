@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnderecosTest {
+class EnderecosTest {
 
     private Enderecos enderecos;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         enderecos = new Enderecos();
         enderecos.setRua("123 Main St");
         enderecos.setNumero(456);
@@ -34,47 +34,47 @@ public class EnderecosTest {
     }
 
     @Test
-    public void testRua() {
+    void testRua() {
         assertEquals("123 Main St", enderecos.getRua());
     }
 
     @Test
-    public void testNumero() {
+    void testNumero() {
         assertEquals(456, enderecos.getNumero());
     }
 
     @Test
-    public void testComplemento() {
+    void testComplemento() {
         assertEquals("Apt 101", enderecos.getComplemento());
     }
 
     @Test
-    public void testBairro() {
+    void testBairro() {
         assertEquals("Downtown", enderecos.getBairro());
     }
 
     @Test
-    public void testCidade() {
+    void testCidade() {
         assertEquals("Cityville", enderecos.getCidade());
     }
 
     @Test
-    public void testEstado() {
+    void testEstado() {
         assertEquals("ST", enderecos.getEstado());
     }
 
     @Test
-    public void testPais() {
+    void testPais() {
         assertEquals("Country", enderecos.getPais());
     }
 
     @Test
-    public void testCep() {
+    void testCep() {
         assertEquals("12345-678", enderecos.getCep());
     }
 
     @Test
-    public void testClientes() {
+    void testClientes() {
         assertNotNull(enderecos.getClientes());
         assertEquals(1, enderecos.getClientes().size());
         assertEquals("John Doe", enderecos.getClientes().get(0).getNome());

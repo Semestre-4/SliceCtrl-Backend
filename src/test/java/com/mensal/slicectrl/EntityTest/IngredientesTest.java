@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientesTest {
+class IngredientesTest {
 
     private Ingredientes ingredientes;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ingredientes = new Ingredientes();
         ingredientes.setNomeIngrediente("Tomato Sauce");
         ingredientes.setQtdeIngrediente(0.5);
@@ -28,17 +28,17 @@ public class IngredientesTest {
     }
 
     @Test
-    public void testNomeIngrediente() {
+    void testNomeIngrediente() {
         assertEquals("Tomato Sauce", ingredientes.getNomeIngrediente());
     }
 
     @Test
-    public void testQtdeIngrediente() {
+    void testQtdeIngrediente() {
         assertEquals(0.5, ingredientes.getQtdeIngrediente(), 0.01); // Using delta for double comparison
     }
 
     @Test
-    public void testSabores() {
+    void testSabores() {
         assertNotNull(ingredientes.getSabores());
         assertEquals(1, ingredientes.getSabores().size());
         assertEquals("Margarita", ingredientes.getSabores().get(0).getNomeSabor());

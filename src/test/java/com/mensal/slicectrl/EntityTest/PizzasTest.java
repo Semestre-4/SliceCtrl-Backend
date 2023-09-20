@@ -15,7 +15,7 @@ class PizzasTest {
     private Pizzas pizzas;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         pizzas = new Pizzas(Tamanho.M, 12.99);
         pizzas.setDiscricao("Delicious pizza");
         pizzas.setDisponivel(true);
@@ -29,27 +29,27 @@ class PizzasTest {
     }
 
     @Test
-    public void testTamanho() {
+    void testTamanho() {
         assertEquals(Tamanho.M, pizzas.getTamanho());
     }
 
     @Test
-    public void testPreco() {
+    void testPreco() {
         assertEquals(12.99, pizzas.getPreco(), 0.01); // Using delta for double comparison
     }
 
     @Test
-    public void testDiscricao() {
+    void testDiscricao() {
         assertEquals("Delicious pizza", pizzas.getDiscricao());
     }
 
     @Test
-    public void testDisponivel() {
+    void testDisponivel() {
         assertTrue(pizzas.isDisponivel());
     }
 
     @Test
-    public void testPedidos() {
+     void testPedidos() {
         assertNotNull(pizzas.getPedidos());
         assertEquals(1, pizzas.getPedidos().size());
         assertEquals(2, pizzas.getPedidos().get(0).getQtdePedida());

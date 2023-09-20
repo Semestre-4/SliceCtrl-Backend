@@ -7,12 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PedidoProdutoTest {
+class PedidoProdutoTest {
 
     private PedidoProduto pedidoProduto;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         pedidoProduto = new PedidoProduto();
         pedidoProduto.setQtdePedida(5);
 
@@ -25,18 +25,18 @@ public class PedidoProdutoTest {
     }
 
     @Test
-    public void testQtdePedida() {
+    void testQtdePedida() {
         assertEquals(5, pedidoProduto.getQtdePedida());
     }
 
     @Test
-    public void testProduto() {
+    void testProduto() {
         assertNotNull(pedidoProduto.getProduto());
         assertEquals("Sample Product", pedidoProduto.getProduto().getNomeProduto());
     }
 
     @Test
-    public void testPedido() {
+    void testPedido() {
         assertNotNull(pedidoProduto.getPedido());
     }
 }

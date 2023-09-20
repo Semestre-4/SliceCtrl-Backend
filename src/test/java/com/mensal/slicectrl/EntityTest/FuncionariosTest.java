@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuncionariosTest {
+class FuncionariosTest {
 
     private Funcionarios funcionario;
 
@@ -31,27 +31,27 @@ public class FuncionariosTest {
     }
 
     @Test
-    public void testNome() {
+    void testNome() {
         assertEquals("John Doe", funcionario.getNome());
     }
 
     @Test
-    public void testCpf() {
+    void testCpf() {
         assertEquals("123456789", funcionario.getCpf());
     }
 
     @Test
-    public void testTelefone() {
+    void testTelefone() {
         assertEquals("555-555-5555", funcionario.getTelefone());
     }
 
     @Test
-    public void testSalario() {
+    void testSalario() {
         assertEquals(new BigDecimal("50000.00"), funcionario.getSalario());
     }
 
     @Test
-    public void testPedidos() {
+    void testPedidos() {
         List<Pedidos> pedidos = funcionario.getPedidos();
         assertNotNull(pedidos);
         assertEquals(1, pedidos.size());
