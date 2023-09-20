@@ -4,12 +4,14 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.mensal.slicectrl.dto.ClientesDTO;
+import com.mensal.slicectrl.dto.EnderecosDTO;
 import com.mensal.slicectrl.entity.Clientes;
 import com.mensal.slicectrl.entity.Enderecos;
 import com.mensal.slicectrl.repository.ClienteRepository;
 import com.mensal.slicectrl.repository.EnderecoRepository;
 import com.mensal.slicectrl.service.ClienteService;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +21,7 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +46,8 @@ class ClienteServiceTest {
     Clientes sampleCliente = new Clientes();
     Clientes sampleCliente1 = new Clientes();
     Clientes sampleCliente2 = new Clientes();
+    List<EnderecosDTO> enderecosDTO = new ArrayList<>();
+
 
     @BeforeEach
     void setUp() {
@@ -58,15 +63,6 @@ class ClienteServiceTest {
         Enderecos endereco = new Enderecos();
         enderecos.add(endereco);
         sampleCliente.setEnderecos(enderecos);
-
-        sampleCliente1.setId(1L);
-        sampleCliente1.setNome("John");
-        sampleCliente1.setCpf("0202938920");
-
-
-        sampleCliente2.setId(2L);
-        sampleCliente2.setNome("Alice");
-        sampleCliente2.setCpf("723798932323");
 
         clientesList.add(sampleCliente1);
         clientesList.add(sampleCliente2);
@@ -108,28 +104,19 @@ class ClienteServiceTest {
         List<ClientesDTO> result = clienteService.findByNome(validNome);
         assertFalse(result.isEmpty());
     }
-//
-//    @Test
-//    public void testCreateCliente() {
-//        ClientesDTO clienteDTO = new ClientesDTO();
-//        clienteDTO.setId(1L);
-//        clienteDTO.setNome("John");
-//        clienteDTO.setCpf("0202938920");
-//        clienteDTO.setTelefone("92020808320");
-//        clienteDTO.setEmail("sdjnkjds@kdjee.dd");
-//
-//        List<EnderecosDTO> enderecos = new ArrayList<>();
-//        EnderecosDTO enderecoDTO = new EnderecosDTO();
-//        enderecos.add(enderecoDTO);
-//
-//        clienteDTO.setEnderecos(enderecos);
-//        Clientes sampleCliente = new Clientes();
-//        sampleCliente.setId(1L);
-//        when(clienteRepository.save(sampleCliente)).thenReturn(sampleCliente);
-//        when(modelMapper.map(clienteDTO, Clientes.class)).thenReturn(sampleCliente);
-//
-//        Clientes clientes = clienteService.createCliente(clienteDTO);
-//        assertEquals(clientes, sampleCliente);
-//    }
+
+    @Test
+    void testUpdateClienteWhenClienteNotFound() {
+        Long id = 1L;
+        when(clienteRepository.existsById(id)).thenReturn(false);
+
+        ClientesDTO clientesDTO = new ClientesDTO("John","0202938920","92020808320","sdjnkjds@kdjee.dd",enderecosDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            clienteService.updateCliente(id, clientesDTO);
+        });
+    }
+
+
+
 
 }

@@ -1,10 +1,10 @@
 package com.mensal.slicectrl.ServiceTest;
 
 import com.mensal.slicectrl.dto.FuncionariosDTO;
-import com.mensal.slicectrl.entity.Enderecos;
 import com.mensal.slicectrl.entity.Funcionarios;
 import com.mensal.slicectrl.repository.FuncionarioRepository;
 import com.mensal.slicectrl.service.FuncionarioService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -95,5 +95,19 @@ public class FuncionarioServiceTest {
         assertNotNull(resposta);
         assertEquals(resposta, funcionarios);
     }
+
+    @Test
+    void testUpdateFuncWhenFuncNotFound() {
+        Long id = 1L;
+        when(funcionarioRepository.existsById(id)).thenReturn(false);
+
+        FuncionariosDTO funcionariosDTO1 = new FuncionariosDTO("Jonh","0202938920","1111", BigDecimal.TEN);
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            funcionarioService.updateFuncionario(id, funcionariosDTO1);
+        });
+    }
+
+
 
 }
