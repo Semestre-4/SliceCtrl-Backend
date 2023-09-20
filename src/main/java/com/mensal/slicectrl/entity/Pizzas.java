@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mensal.slicectrl.entity.enums.Tamanho;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "pizzas",schema = "public")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Pizzas extends AbstractEntity{
 
     @Column(name = "tamanho_pizza",nullable = false)
@@ -33,4 +35,8 @@ public class Pizzas extends AbstractEntity{
     @Column(name = "is_disponivel", nullable = false)
     private boolean disponivel;
 
+    public Pizzas(Tamanho tamanho, Double preco) {
+        this.tamanho = tamanho;
+        this.preco = preco;
+    }
 }

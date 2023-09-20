@@ -228,7 +228,7 @@ public class PedidoService {
             pedido.setStatus(Status.PAGO);
             return pedidoRepository.save(pedido);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Erro ao finalizar o pedido.");
+            throw new IllegalArgumentException("Erro ao finalizar o pedido." + e);
         }
     }
 
@@ -280,12 +280,12 @@ public class PedidoService {
     }
 
     // Método para calcular o total de um item do tipo PedidoProduto
-    private double calculatePedidoProdutoTotal(PedidoProduto pedidoProduto) {
+    public double calculatePedidoProdutoTotal(PedidoProduto pedidoProduto) {
         return pedidoProduto.getQtdePedida() * pedidoProduto.getProduto().getPreco();
     }
 
     // Método para calcular o total de um item do tipo PedidoPizza
-    private double calculatePedidoPizzaTotal(PedidoPizza pedidoPizza) {
+    public double calculatePedidoPizzaTotal(PedidoPizza pedidoPizza) {
         return pedidoPizza.getQtdePedida() * pedidoPizza.getPizza().getPreco();
     }
 
@@ -327,7 +327,7 @@ public class PedidoService {
     }
 
     // Método para converter um DTO em um objeto PedidoPizza
-    private PedidoPizza toPedidoPizza(PedidoPizzaDTO pedidoPizzaDTO) {
+    public PedidoPizza toPedidoPizza(PedidoPizzaDTO pedidoPizzaDTO) {
 
         PedidoPizza pedidoPizza = modelMapper.map(pedidoPizzaDTO, PedidoPizza.class);
 
