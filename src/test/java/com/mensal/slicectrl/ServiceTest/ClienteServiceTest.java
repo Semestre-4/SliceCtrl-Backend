@@ -44,6 +44,8 @@ class ClienteServiceTest {
     Clientes sampleCliente = new Clientes();
     Clientes sampleCliente1 = new Clientes();
     Clientes sampleCliente2 = new Clientes();
+    List<EnderecosDTO> enderecosDTO = new ArrayList<>();
+
 
     @BeforeEach
     void setUp() {
@@ -109,28 +111,7 @@ class ClienteServiceTest {
         List<ClientesDTO> result = clienteService.findByNome(validNome);
         assertFalse(result.isEmpty());
     }
-//
-//    @Test
-//    public void testCreateCliente() {
-//        ClientesDTO clienteDTO = new ClientesDTO();
-//        clienteDTO.setId(1L);
-//        clienteDTO.setNome("John");
-//        clienteDTO.setCpf("0202938920");
-//        clienteDTO.setTelefone("92020808320");
-//        clienteDTO.setEmail("sdjnkjds@kdjee.dd");
-//
-//        List<EnderecosDTO> enderecos = new ArrayList<>();
-//        EnderecosDTO enderecoDTO = new EnderecosDTO();
-//        enderecos.add(enderecoDTO);
-//
-//        clienteDTO.setEnderecos(enderecos);
-//        Clientes sampleCliente = new Clientes();
-//        sampleCliente.setId(1L);
-//        when(clienteRepository.save(sampleCliente)).thenReturn(sampleCliente);
-//        when(modelMapper.map(clienteDTO, Clientes.class)).thenReturn(sampleCliente);
-//
-//        Clientes clientes = clienteService.createCliente(clienteDTO);
-//        assertEquals(clientes, sampleCliente);
-//    }
+
+
 
 }

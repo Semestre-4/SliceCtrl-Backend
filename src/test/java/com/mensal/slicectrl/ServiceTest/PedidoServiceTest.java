@@ -3,6 +3,7 @@ package com.mensal.slicectrl.ServiceTest;
 import com.mensal.slicectrl.dto.*;
 import com.mensal.slicectrl.entity.*;
 import com.mensal.slicectrl.entity.enums.FormaDeEntrega;
+import com.mensal.slicectrl.entity.enums.FormasDePagamento;
 import com.mensal.slicectrl.entity.enums.Status;
 import com.mensal.slicectrl.repository.*;
 import com.mensal.slicectrl.service.PedidoService;
@@ -10,11 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -38,6 +39,9 @@ class PedidoServiceTest {
 
     @Mock
     private PedidoPizzaRepository pedidoPizzaDTORepository;
+
+    @Mock
+    private PagamentoRepository pagamentoRepository;
 
     @Mock
     private ModelMapper modelMapper;
@@ -75,6 +79,8 @@ class PedidoServiceTest {
         cliente.setId(1L);
         pedido.setCliente(cliente);
         pedido.setFuncionario(funcionarios);
+        pedido.setValorTotal(100.0);
+
 
         pedidoProduto.setPedido(pedido);
         pedidoProduto.setProduto(new Produtos());
@@ -101,9 +107,10 @@ class PedidoServiceTest {
         when(modelMapper.map(pedido, PedidosDTO.class)).thenReturn(new PedidosDTO());
         when(modelMapper.map(cliente, ClientesDTO.class)).thenReturn(new ClientesDTO());
         when(modelMapper.map(funcionarios, FuncionariosDTO.class)).thenReturn(new FuncionariosDTO());
-        when(pedidoRepository.save(pedido)).thenReturn(pedido);
         when(pedidoProdutoRepository.save(pedidoProduto)).thenReturn(pedidoProduto);
         when(pedidoPizzaDTORepository.save(pedidoPizza)).thenReturn(pedidoPizza);
+        when(pedidoRepository.save(pedido)).thenReturn(pedido);
+
 
     }
 
@@ -238,6 +245,77 @@ class PedidoServiceTest {
         when(produtoRepository.findById(anyLong())).thenReturn(Optional.of(product));
 
         assertThrows(IllegalArgumentException.class, () -> pedidoService.addProdutoToPedido(1L, pedidoProdutoDTO));
+    }
+
+    @Test
+    void testEfetuarPedido() {
+        // Mock data
+        Long pedidoId = 1L;
+        FormasDePagamento formDePagamento = FormasDePagamento.CREDITO;
+        double totalAmount = 0.0;
+
+        // Mock behavior for pedidoRepository
+        Pedidos result = pedidoService.efetuarPedido(pedidoId, formDePagamento);
+
+        // Assertions
+        assertNotNull(result);
+        assertEquals(Status.PAGO, result.getStatus());
+        assertEquals(totalAmount, result.getValorTotal());
+        assertTrue(result.getPagamento().isPago());
+    }
+
+    @Test
+    void testUpdateOrderSuccess() {
+        // Mock data
+        Long pedidoId = 1L;
+        Pedidos existingPedido = new Pedidos();
+        existingPedido.setId(pedidoId);
+        existingPedido.setStatus(Status.PENDENTE);
+
+        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(existingPedido));
+        when(pedidoRepository.save(existingPedido)).thenReturn(existingPedido);
+
+        Pedidos result = pedidoService.updateOrder(pedidoId);
+
+        // Assertions
+        assertNotNull(result);
+        assertEquals(pedidoId, result.getId());
+        assertEquals(Status.PENDENTE, result.getStatus());
+
+        // Verify that save method was called
+        Mockito.verify(pedidoRepository, Mockito.times(1)).save(existingPedido);
+    }
+
+    @Test
+    void testUpdateOrderNotFound() {
+        // Mock data
+        Long pedidoId = 2L;
+
+        // Mock behavior for pedidoRepository
+        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.empty());
+
+        // Call the method to be tested and expect an exception
+        assertThrows(IllegalArgumentException.class, () -> {
+            pedidoService.updateOrder(pedidoId);
+        });
+
+        // Verify that save method was not called
+        Mockito.verify(pedidoRepository, Mockito.never()).save(Mockito.any(Pedidos.class));
+    }
+
+    @Test
+    public void testUpdateOrderNotAllowedStatus() {
+        // Mock data
+        Long pedidoId = 3L;
+        Pedidos existingPedido = new Pedidos();
+        existingPedido.setId(pedidoId);
+        existingPedido.setStatus(Status.PAGO);
+
+        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(existingPedido));
+        assertThrows(IllegalArgumentException.class, () -> {
+            pedidoService.updateOrder(pedidoId);
+        });
+        Mockito.verify(pedidoRepository, Mockito.never()).save(Mockito.any(Pedidos.class));
     }
 
 
