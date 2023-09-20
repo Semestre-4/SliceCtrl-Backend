@@ -12,7 +12,7 @@ import java.util.List;
 class ClienteTest {
 
     Enderecos endereco =
-            new Enderecos("rua", 123,"bairro", "cidade", "PR", "Brazil", "85857730");
+            new Enderecos("rua", "complemento","bairro", "cidade", "PR", "Brazil", "85857730");
     private List<Enderecos> enderecos = new ArrayList<>();
     Clientes cliente = new Clientes("John","0202938920","92020808320","sdjnkjds@kdjee.dd",enderecos);
 
@@ -53,7 +53,7 @@ class ClienteTest {
     void setEndereco() {
 
         List<Enderecos> endereco1 = new ArrayList<>();
-        Enderecos added = new Enderecos ("rua", 123, "bairro", "cidade", "PR", "Brazil", "85857730");
+        Enderecos added = new Enderecos ("rua","complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
         added.setId(2L);
         endereco1.add(added);
         cliente.setEnderecos(endereco1);
