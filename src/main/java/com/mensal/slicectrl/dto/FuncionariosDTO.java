@@ -4,11 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Getter @Setter
+@NoArgsConstructor
 public class FuncionariosDTO extends AbstractEntityDTO {
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
@@ -28,5 +30,10 @@ public class FuncionariosDTO extends AbstractEntityDTO {
     @NotNull(message = "O campo 'salario' não pode ser nulo")
     private BigDecimal salario;
 
-
+    public FuncionariosDTO(String nome, String cpf, String telefone, BigDecimal salario) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.salario = salario;
+    }
 }

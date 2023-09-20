@@ -1,14 +1,10 @@
 package com.mensal.slicectrl.ServiceTest;
 
-import com.mensal.slicectrl.dto.FuncionariosDTO;
 import com.mensal.slicectrl.dto.PizzasDTO;
 import com.mensal.slicectrl.entity.Pizzas;
 import com.mensal.slicectrl.entity.enums.Tamanho;
-import com.mensal.slicectrl.repository.ClienteRepository;
-import com.mensal.slicectrl.repository.FuncionarioRepository;
-import com.mensal.slicectrl.repository.PedidoRepository;
+
 import com.mensal.slicectrl.repository.PizzaRepository;
-import com.mensal.slicectrl.service.PedidoService;
 import com.mensal.slicectrl.service.PizzaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class PizzaServiceTest {
+class PizzaServiceTest {
 
     @Mock
     private PizzaRepository pizzaRepository;
@@ -37,6 +33,7 @@ public class PizzaServiceTest {
     private PizzaService pizzaService;
 
     Pizzas pizzas = new Pizzas();
+    PizzasDTO pizzaDTO = new PizzasDTO(Tamanho.P,92.8);
 
     @BeforeEach
     void setup(){
@@ -44,15 +41,24 @@ public class PizzaServiceTest {
         pizzas.setPreco(92.8);
         when(pizzaRepository.findByTamanho(Tamanho.P)).thenReturn(Collections.singletonList(pizzas));
         when(modelMapper.map(pizzas, PizzasDTO.class)).thenReturn(new PizzasDTO());
+        when(pizzaService.toPizza(pizzaDTO)).thenReturn(pizzas);
+        when(pizzaRepository.save(pizzas)).thenReturn(pizzas);
     }
 
     @Test
-    public void testFindByTamanho() {
+    void testFindByTamanho() {
         Tamanho tamanho = Tamanho.P;
         List<PizzasDTO> result = pizzaService.findByTamanho(tamanho);
         assertNotNull(result);
         assertEquals(1, result.size());
         verify(pizzaRepository, times(1)).findByTamanho(tamanho);
+    }
+
+    @Test
+    void testCadastrarPizzaService(){
+        Pizzas resposta = pizzaService.createPizza(pizzaDTO);
+        assertNotNull(resposta);
+        assertEquals(resposta, pizzas);
     }
 
 
