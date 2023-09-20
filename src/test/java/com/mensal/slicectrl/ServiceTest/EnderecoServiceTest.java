@@ -25,6 +25,10 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class EnderecoServiceTest {
 
+    EnderecosDTO enderecosDTO = new EnderecosDTO("rua", 123, "complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
+
+    Enderecos enderecos = new Enderecos();
+
     @Mock
     private EnderecoRepository repository;
 
@@ -40,7 +44,15 @@ public class EnderecoServiceTest {
         String cep = "85857730";
         List<Enderecos> enderecosList= new ArrayList<>();
 
-        Enderecos enderecos = new Enderecos("rua", 123, "complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
+
+        enderecos.setRua("ruaas");
+        enderecos.setBairro("bairross");
+        enderecos.setNumero(123);
+        enderecos.setCep("85857730");
+        enderecos.setEstado("PR");
+        enderecos.setComplemento("abc");
+        enderecos.setPais("Brazil");
+        enderecos.setCidade("Foz");
 
         enderecosList.add(enderecos);
 
@@ -53,8 +65,10 @@ public class EnderecoServiceTest {
 
         Mockito.when(repository.findByCep(cep)).thenReturn(enderecosList);
 
-        Mockito.when(repository.save(enderecos)).thenReturn(enderecos);
+        Mockito.when(service.toEnderecos(enderecosDTO)).thenReturn(enderecos);
 
+        System.out.println(enderecos.getCep());
+        when(repository.save(enderecos)).thenReturn(enderecos);
 
     }
 
@@ -78,15 +92,28 @@ public class EnderecoServiceTest {
         assertNotNull(service.getByCep("85857730"));
     }
 
-//    @Test
-//    void testCadastrarEnderecoService(){
-//        EnderecosDTO enderecosDTO = new EnderecosDTO("rua", 123, "complemento", "bairro", "cidade", "PR", "Brazil", "85857730");
-//
-//        Enderecos resposta = service.cadastrar(enderecosDTO);
-//
-//        assertTrue(resposta.getRua().contains("rua"));
-//
-//    }
+    @Test
+    void testCadastrarEnderecoService(){
+
+
+        Enderecos resposta = service.cadastrar(enderecosDTO);
+
+        assertNotNull(resposta);
+        assertEquals(resposta, enderecos);
+    }
+
+    @Test
+    void testEditarEnderecoService(){
+
+        enderecosDTO.setId(1L);
+
+        Enderecos resposta = service.editar(enderecosDTO);
+
+        assertNotNull(resposta);
+        assertEquals(resposta, enderecos);
+
+    }
+
 
 
 
