@@ -32,7 +32,6 @@ class EnderecoServiceTest {
     @Mock
     private ModelMapper modelMapper;
 
-
     @InjectMocks
     private EnderecoService service;
 
