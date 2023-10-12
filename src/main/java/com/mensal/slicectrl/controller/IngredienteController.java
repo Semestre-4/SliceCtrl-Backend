@@ -38,7 +38,7 @@ public class IngredienteController {
      * @param nomeIngrediente O nome do ingrediente a ser recuperado.
      * @return ResponseEntity contendo as informações do ingrediente, se encontrado, ou uma resposta de "não encontrado".
      */
-    @GetMapping("nome/{nomeIngrediente}")
+    @GetMapping("/nome/{nomeIngrediente}")
     public ResponseEntity<IngredientesDTO> getIngredienteByNome(@PathVariable("nomeIngrediente") String nomeIngrediente) {
         IngredientesDTO ingredientesDTO = ingredienteService.getByNome(nomeIngrediente);
         if (ingredientesDTO != null) {
@@ -110,8 +110,8 @@ public class IngredienteController {
      * @param id O ID do ingrediente a ser excluído.
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
-    @DeleteMapping
-    public ResponseEntity<String> excluirIngrediente(@RequestParam("id") final Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> excluirIngrediente(@PathVariable("id") final Long id) {
         try {
             this.ingredienteService.delete(id);
             return ResponseEntity.ok().body("Ingrediente excluído com sucesso!");

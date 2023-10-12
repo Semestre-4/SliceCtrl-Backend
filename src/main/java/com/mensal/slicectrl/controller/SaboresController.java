@@ -3,6 +3,7 @@ package com.mensal.slicectrl.controller;
 import com.mensal.slicectrl.dto.SaboresDTO;
 import com.mensal.slicectrl.service.SaboresService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class SaboresController {
         }
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<SaboresDTO> getById(@PathVariable("id") Long id){
         SaboresDTO saboresDTO = saboresService.getById(id);
         if (saboresDTO != null) {
