@@ -190,7 +190,7 @@ class PedidoControllerTest {
                 eq(formaDeEntrega)
         )).thenThrow(new RuntimeException("Mensagem de exceção de amostra"));
 
-        ResponseEntity<String> response = pedidoController.abrirPedido(clienteId, funcId, formaDeEntrega);
+        ResponseEntity<PedidosDTO> response = pedidoController.abrirPedido(clienteId, funcId, formaDeEntrega);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Mensagem de exceção de amostra", response.getBody());
@@ -222,7 +222,7 @@ class PedidoControllerTest {
                 eq(formaDeEntrega)
         )).thenReturn(pedidosDTO);
 
-        ResponseEntity<String> response = pedidoController.abrirPedido(clienteId, funcId, formaDeEntrega);
+        ResponseEntity<PedidosDTO> response = pedidoController.abrirPedido(clienteId, funcId, formaDeEntrega);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Você pode realizar mais asserções no corpo da resposta ou em outros aspectos da resposta

@@ -120,9 +120,8 @@ public class PedidoService {
         pedido.setFuncionario(funcionarios);
         pedido.setStatus(Status.PENDENTE);
         pedido.setFormaDeEntrega(formaDeEntrega);
-        pedidoRepository.save(pedido);
 
-        return toPedidosDTO(pedido);
+        return toPedidosDTO(pedidoRepository.save(pedido));
     }
 
     // Método para adicionar um produto ao pedido

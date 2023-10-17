@@ -16,4 +16,7 @@ public interface SaboresRepository  extends JpaRepository<Sabores, Long> {
 
     @Query("SELECT s FROM Sabores s WHERE s.nomeSabor = :nomeSabor")
     Optional<Sabores> findByNomeSabor(String nomeSabor);
+
+    @Query("SELECT COUNT(s) > 0 FROM Sabores s WHERE s.nomeSabor = :nomeSabor")
+    boolean existsByNomeSabor(@Param("nomeSabor") String nomeSabor);
 }

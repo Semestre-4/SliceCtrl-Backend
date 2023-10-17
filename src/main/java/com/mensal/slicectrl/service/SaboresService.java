@@ -15,6 +15,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SaboresService {
@@ -74,30 +75,23 @@ public class SaboresService {
     public Sabores cadastrar(SaboresDTO saboresDTO) {
         String nomeSabor = saboresDTO.getNomeSabor();
 
-        Optional<Sabores> saborExistente = saboresRepository.findByNomeSabor(nomeSabor);
-        if (saborExistente.isPresent()) {
+        if (saboresRepository.existsByNomeSabor(nomeSabor)) {
             throw new IllegalArgumentException("O sabor com o nome '" + nomeSabor + "' já existe.");
         }
 
-        List<Ingredientes> ingredientes = new ArrayList<>();
-
-        for (IngredientesDTO ingredientesDTO : saboresDTO.getIngredientesDTOS()) {
-            Ingredientes ingredientes1 = modelMapper.map(ingredientesDTO, Ingredientes.class);
-
-            Ingredientes ingredientesfiltrado = ingredienteRepository.findByNome(ingredientes1.getNomeIngrediente());
-
-            if (ingredientesfiltrado == null){
-                ingredientes.add(ingredientes1);
-            }else {
-                ingredientes.add(ingredientesfiltrado);
-            }
-        }
+        List<Ingredientes> ingredientes = saboresDTO.getIngredientesDTOS().stream()
+                .map(ingredientesDTO -> {
+                    Ingredientes ingredientes1 = modelMapper.map(ingredientesDTO, Ingredientes.class);
+                    return ingredienteRepository.findByNome(ingredientes1.getNomeIngrediente());
+                })
+                .collect(Collectors.toList());
 
         Sabores sabores = toSabores(saboresDTO);
         sabores.setIngredientes(ingredientes);
 
         return saboresRepository.save(sabores);
     }
+
 
 
     @Transactional
