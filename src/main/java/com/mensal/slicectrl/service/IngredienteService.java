@@ -42,6 +42,10 @@ public class IngredienteService {
         return ingredienteRepository.findAll().stream().map(this::toIngredientesDTO).toList();
     }
 
+    public List<IngredientesDTO> findByAtivo(boolean ativo){
+        return ingredienteRepository.findByAtivo(ativo).stream().map(this::toIngredientesDTO).toList();
+    }
+
     public IngredientesDTO getByNome(String nome) {
         Ingredientes ingredientes = this.ingredienteRepository.findByNome(nome);
         return toIngredientesDTO(ingredientes);

@@ -48,6 +48,17 @@ public class IngredienteController {
         }
     }
 
+
+    @GetMapping("/{ativo}")
+    public ResponseEntity<List<IngredientesDTO>> getAllByAtivo(@PathVariable boolean ativo){
+        try {
+            List<IngredientesDTO> ingredientesDTOS = ingredienteService.findByAtivo(ativo);
+            return ResponseEntity.ok(ingredientesDTOS);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Ouve algum erro.");
+        }
+    }
+
     /**
      * Recupera um ingrediente pelo seu ID.
      *
