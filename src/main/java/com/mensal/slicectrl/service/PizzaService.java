@@ -44,6 +44,10 @@ public class PizzaService {
         return pizzaRepository.findAll().stream().map(this::toPizzaDTO).toList();
     }
 
+    public List<PizzasDTO> findByAtivo(boolean ativo){
+        return pizzaRepository.findByAtivo(ativo).stream().map(this::toPizzaDTO).toList();
+    }
+
     @Transactional
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
         Pizzas pizza = toPizza(pizzaDTO);

@@ -45,6 +45,16 @@ public class PizzaController {
         return ResponseEntity.ok(pizzaDTOS);
     }
 
+    @GetMapping("/{ativo}")
+    public ResponseEntity<List<PizzasDTO>> getAllByAtivo(@PathVariable boolean ativo){
+        try {
+            List<PizzasDTO> pizzasDTOS = pizzaService.findByAtivo(ativo);
+            return ResponseEntity.ok(pizzasDTOS);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Ouve algum erro.");
+        }
+    }
+
 
     @GetMapping("/tamanho/{tamanhoName}")
     public ResponseEntity<List<PizzasDTO>> getPizzaByTamanho(@PathVariable String tamanhoName) {
