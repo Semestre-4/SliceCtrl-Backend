@@ -1,5 +1,6 @@
 package com.mensal.slicectrl.service;
 
+import com.mensal.slicectrl.dto.PizzasDTO;
 import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.entity.Produtos;
 import com.mensal.slicectrl.entity.enums.Categoria;
@@ -40,6 +41,10 @@ public class ProdutoService {
     public ProdutosDTO getByNome(String nomeProduto) {
         Produtos produtos = this.produtoRepository.findByNome(nomeProduto);
         return toProdutosDTO(produtos);
+    }
+
+    public List<ProdutosDTO> findByAtivo(boolean ativo){
+        return produtoRepository.findByAtivo(ativo).stream().map(this::toProdutosDTO).toList();
     }
 
     public ProdutosDTO getById(Long id) {
