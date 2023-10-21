@@ -71,14 +71,10 @@ public class ProdutoService {
     public void deletar(Long id){
         Produtos produtos = this.produtoRepository.findById(id).orElse(null);
 
+        produtos.setAtivo(false);
+        produtoRepository.save(produtos);
 
-        if (produtos != null) {
-            if (!produtos.getPedidos().isEmpty()) {
-                throw new IllegalArgumentException("Não é possível excluir o produto devido à relação com pedidos existentes.");
-            } else {
-                this.produtoRepository.delete(produtos);
-            }
-    }}
+    }
 
     public List<ProdutosDTO> getByDisponivel() {
         return produtoRepository.findByDisponivelTrue().stream().map(this::toProdutosDTO).toList();

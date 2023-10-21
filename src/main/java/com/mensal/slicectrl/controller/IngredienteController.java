@@ -32,7 +32,6 @@ public class IngredienteController {
         List<IngredientesDTO> ingredientesDTOS = ingredienteService.getAll();
         return ResponseEntity.ok(ingredientesDTOS);
     }
-
     /**
      * Recupera um ingrediente pelo seu nome.
      *

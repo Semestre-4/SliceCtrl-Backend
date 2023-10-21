@@ -67,11 +67,9 @@ public class EnderecoService {
         final Enderecos enderecos = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecos, "Endereco inexistente!");
 
-        if (!enderecos.getClientes().isEmpty()) {
-            throw new IllegalArgumentException("Não é possível excluir o endereco devido à relação com clientes existente.");
-        }else{
-            enderecoRepository.delete(enderecos);
-        }
+        enderecos.setAtivo(false);
+
+        enderecoRepository.save(enderecos);
     }
 
     }

@@ -79,15 +79,8 @@ public class IngredienteService {
         final Ingredientes ingredientes = this.ingredienteRepository.findById(id).orElse(null);
         Assert.notNull(ingredientes, "Ingrediente inexiste!");
 
-
-        if (ingredientes != null) {
-            if (!ingredientes.getSabores().isEmpty()) {
-                throw new IllegalArgumentException("Não é possível excluir o ingrediente devido às relações com sabores existentes.");
-            } else {
-                this.ingredienteRepository.delete(ingredientes);
-            }
-            }
-
+        ingredientes.setAtivo(false);
+        this.ingredienteRepository.save(ingredientes);
     }
 
 }
