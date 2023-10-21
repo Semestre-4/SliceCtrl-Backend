@@ -49,7 +49,7 @@ public class IngredienteController {
     }
 
 
-    @GetMapping("/{ativo}")
+    @GetMapping("/ativo/{ativo}")
     public ResponseEntity<List<IngredientesDTO>> getAllByAtivo(@PathVariable boolean ativo){
         try {
             List<IngredientesDTO> ingredientesDTOS = ingredienteService.findByAtivo(ativo);

@@ -71,6 +71,10 @@ public class SaboresService {
         return toSaboresDTO(sabores);
     }
 
+    public List<SaboresDTO> findByAtivo(boolean ativo){
+        return saboresRepository.findByAtivo(ativo).stream().map(this::toSaboresDTO).toList();
+    }
+
     @Transactional
     public Sabores cadastrar(SaboresDTO saboresDTO) {
         String nomeSabor = saboresDTO.getNomeSabor();

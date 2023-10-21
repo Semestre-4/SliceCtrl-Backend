@@ -53,6 +53,16 @@ public class SaboresController {
         }
     }
 
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<SaboresDTO>> getAllByAtivo(@PathVariable boolean ativo){
+        try {
+            List<SaboresDTO> saboresDTOS = saboresService.findByAtivo(ativo);
+            return ResponseEntity.ok(saboresDTOS);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Ouve algum erro.");
+        }
+    }
+
     /**
      * Cria um novo sabor.
      *

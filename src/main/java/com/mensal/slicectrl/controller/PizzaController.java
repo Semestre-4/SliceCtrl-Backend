@@ -45,7 +45,7 @@ public class PizzaController {
         return ResponseEntity.ok(pizzaDTOS);
     }
 
-    @GetMapping("/{ativo}")
+    @GetMapping("/ativo/{ativo}")
     public ResponseEntity<List<PizzasDTO>> getAllByAtivo(@PathVariable boolean ativo){
         try {
             List<PizzasDTO> pizzasDTOS = pizzaService.findByAtivo(ativo);
