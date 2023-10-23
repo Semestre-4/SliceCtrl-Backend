@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 
@@ -120,6 +121,7 @@ public class PedidoService {
         pedido.setFuncionario(funcionarios);
         pedido.setStatus(Status.PENDENTE);
         pedido.setFormaDeEntrega(formaDeEntrega);
+        pedido.setValorTotal(Double.parseDouble("0"));
 
         return toPedidosDTO(pedidoRepository.save(pedido));
     }
@@ -194,8 +196,7 @@ public class PedidoService {
         pedidoPizza.setPedido(pedido);
         pedidoPizzaRepository.save(pedidoPizza);
 
-        pedido.getPizzas().add(pedidoPizza);
-        return pedidoRepository.save(pedido);
+  return pedidoRepository.save(pedido);
     }
 
 
@@ -361,5 +362,18 @@ public class PedidoService {
         return pedidoPizza;
     }
 
+
+    public Pedidos removePedidoPizzaFromPedido(Long pedidoId, Long pedidoPizzaId) {
+        Pedidos pedido = pedidoRepository.findById(pedidoId).orElse(null);
+
+        if (pedido != null) {
+            List<PedidoPizza> pedidoPizzas = pedido.getPizzas();
+            pedidoPizzas.removeIf(pedidoPizza -> pedidoPizza.getId().equals(pedidoPizzaId));
+            pedidoRepository.save(pedido);
+            return pedido;
+        }
+
+        throw new IllegalArgumentException("Pedido not found");
+    }
 
 }

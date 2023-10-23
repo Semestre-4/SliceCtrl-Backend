@@ -45,4 +45,7 @@ public class PedidosDTO extends AbstractEntityDTO {
     @AssertTrue(message = "O pagamento deve estar marcado como pago se o status for PAGO")
     private boolean isPago;
 
+    @NotNull
+    private Double valorTotal;
+
 }

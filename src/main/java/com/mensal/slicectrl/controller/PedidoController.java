@@ -167,5 +167,16 @@ public class PedidoController {
         return new ResponseEntity<>(pedido, HttpStatus.OK);
     }
 
+    @PutMapping("/{pedidoId}/remover-pedido-pizza/{pedidoPizzaId}")
+    public ResponseEntity<Pedidos> removePedidoPizzaFromPedido(@PathVariable Long pedidoId, @PathVariable Long pedidoPizzaId) {
+        try {
+            Pedidos pedido = pedidoService.removePedidoPizzaFromPedido(pedidoId, pedidoPizzaId);
+            return new ResponseEntity<>(pedido, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
 
 }

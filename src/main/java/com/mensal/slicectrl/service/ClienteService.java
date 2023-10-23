@@ -86,20 +86,22 @@ public class ClienteService {
 
     @Transactional
     public Clientes updateCliente(Long id, ClientesDTO clientesDTO) {
-
-        if (!id.equals(clientesDTO.getId())) {
-            throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
-        }
-
-        List<Enderecos> existingEnderecos = new ArrayList<>();
-
-        for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
-            existingEnderecos.add(toEnderecos(enderecoDTO));
-        }
-
-        validateEnderecoIds(clientesDTO.getEnderecos());
-
-        Clientes clientes = toCliente(clientesDTO, existingEnderecos);
+//
+//        if (!id.equals(clientesDTO.getId())) {
+//            throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
+//        }
+//
+//        for (EnderecosDTO enderecoDTO : clientesDTO.getEnderecos()) {
+//            Enderecos existingEndereco = enderecoRepository.findById(enderecoDTO.getId()).orElse(null);
+//
+//            if (existingEndereco == null) {
+//                Enderecos newEndereco = toEnderecos(enderecoDTO);
+//                enderecoRepository.save(newEndereco);
+//                clientesDTO.getEnderecos().add(enderecoDTO);
+//            }
+//        }
+//
+        Clientes clientes = toCliente(clientesDTO);
         return clienteRepository.save(clientes);
     }
 
@@ -140,9 +142,7 @@ public class ClienteService {
         return modelMapper.map(clientes, ClientesDTO.class);
     }
 
-    public Clientes toCliente(ClientesDTO clientesDTO, List<Enderecos> enderecosList) {
-        Clientes clientes = modelMapper.map(clientesDTO, Clientes.class);
-        clientes.setEnderecos(enderecosList);
-        return clientes;
+    public Clientes toCliente(ClientesDTO clientesDTO) {
+        return modelMapper.map(clientesDTO, Clientes.class);
     }
 }
