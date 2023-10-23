@@ -16,7 +16,8 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("api/pizza")
+@RequestMapping("/api/pizza")
+@CrossOrigin("http://localhost:4200")
 public class PizzaController {
 
     @Autowired
@@ -42,6 +43,16 @@ public class PizzaController {
     public ResponseEntity<List<PizzasDTO>> getAllPizzas() {
         List<PizzasDTO> pizzaDTOS = pizzaService.findAll();
         return ResponseEntity.ok(pizzaDTOS);
+    }
+
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<PizzasDTO>> getAllByAtivo(@PathVariable boolean ativo){
+        try {
+            List<PizzasDTO> pizzasDTOS = pizzaService.findByAtivo(ativo);
+            return ResponseEntity.ok(pizzasDTOS);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Ouve algum erro.");
+        }
     }
 
 

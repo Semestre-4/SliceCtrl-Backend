@@ -1,5 +1,6 @@
 package com.mensal.slicectrl.controller;
 
+import com.mensal.slicectrl.dto.PizzasDTO;
 import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.ProdutoService;
@@ -42,7 +43,17 @@ public class ProdutoController {
         }
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<ProdutosDTO>> getAllByAtivo(@PathVariable boolean ativo){
+        try {
+            List<ProdutosDTO> ProdutosDTO = produtoService.findByAtivo(ativo);
+            return ResponseEntity.ok(ProdutosDTO);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Ouve algum erro.");
+        }
+    }
+
+    @GetMapping("/id/{id}")
     public ResponseEntity<ProdutosDTO> getProdutoById(@PathVariable("id") Long id){
         ProdutosDTO produtosDTO = produtoService.getById(id);
         if (produtosDTO != null) {

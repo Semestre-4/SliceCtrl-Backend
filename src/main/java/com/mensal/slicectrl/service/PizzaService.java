@@ -44,6 +44,10 @@ public class PizzaService {
         return pizzaRepository.findAll().stream().map(this::toPizzaDTO).toList();
     }
 
+    public List<PizzasDTO> findByAtivo(boolean ativo){
+        return pizzaRepository.findByAtivo(ativo).stream().map(this::toPizzaDTO).toList();
+    }
+
     @Transactional
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
         Pizzas pizza = toPizza(pizzaDTO);
@@ -63,15 +67,12 @@ public class PizzaService {
     @Transactional
     public void deletePizza(Long id) {
         Pizzas pizzaToDelete = pizzaRepository.findById(id).orElse(null);
-        if (pizzaToDelete != null) {
-            if (!pizzaToDelete.getPedidos().isEmpty()) {
-                throw new IllegalArgumentException("Não é possível excluir a pizza devido à relação com pedidos existentes.");
-            } else {
-                pizzaRepository.delete(pizzaToDelete);
-            }
-        }
+
+        pizzaToDelete.setAtivo(false);
+        pizzaRepository.save(pizzaToDelete);
 
     }
+
 
     public PizzasDTO toPizzaDTO(Pizzas pizza) {
         return modelMapper.map(pizza, PizzasDTO.class);

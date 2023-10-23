@@ -1,5 +1,6 @@
 package com.mensal.slicectrl.service;
 
+import com.mensal.slicectrl.dto.PizzasDTO;
 import com.mensal.slicectrl.dto.ProdutosDTO;
 import com.mensal.slicectrl.entity.Produtos;
 import com.mensal.slicectrl.entity.enums.Categoria;
@@ -42,6 +43,10 @@ public class ProdutoService {
         return toProdutosDTO(produtos);
     }
 
+    public List<ProdutosDTO> findByAtivo(boolean ativo){
+        return produtoRepository.findByAtivo(ativo).stream().map(this::toProdutosDTO).toList();
+    }
+
     public ProdutosDTO getById(Long id) {
         Produtos produtos = this.produtoRepository.findById(id).orElse(null);
         return toProdutosDTO(produtos);
@@ -71,14 +76,10 @@ public class ProdutoService {
     public void deletar(Long id){
         Produtos produtos = this.produtoRepository.findById(id).orElse(null);
 
+        produtos.setAtivo(false);
+        produtoRepository.save(produtos);
 
-        if (produtos != null) {
-            if (!produtos.getPedidos().isEmpty()) {
-                throw new IllegalArgumentException("Não é possível excluir o produto devido à relação com pedidos existentes.");
-            } else {
-                this.produtoRepository.delete(produtos);
-            }
-    }}
+    }
 
     public List<ProdutosDTO> getByDisponivel() {
         return produtoRepository.findByDisponivelTrue().stream().map(this::toProdutosDTO).toList();

@@ -42,6 +42,10 @@ public class IngredienteService {
         return ingredienteRepository.findAll().stream().map(this::toIngredientesDTO).toList();
     }
 
+    public List<IngredientesDTO> findByAtivo(boolean ativo){
+        return ingredienteRepository.findByAtivo(ativo).stream().map(this::toIngredientesDTO).toList();
+    }
+
     public IngredientesDTO getByNome(String nome) {
         Ingredientes ingredientes = this.ingredienteRepository.findByNome(nome);
         return toIngredientesDTO(ingredientes);
@@ -79,15 +83,8 @@ public class IngredienteService {
         final Ingredientes ingredientes = this.ingredienteRepository.findById(id).orElse(null);
         Assert.notNull(ingredientes, "Ingrediente inexiste!");
 
-
-        if (ingredientes != null) {
-            if (!ingredientes.getSabores().isEmpty()) {
-                throw new IllegalArgumentException("Não é possível excluir o ingrediente devido às relações com sabores existentes.");
-            } else {
-                this.ingredienteRepository.delete(ingredientes);
-            }
-            }
-
+        ingredientes.setAtivo(false);
+        this.ingredienteRepository.save(ingredientes);
     }
 
 }

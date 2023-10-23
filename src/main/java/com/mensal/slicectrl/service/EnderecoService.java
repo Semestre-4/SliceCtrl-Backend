@@ -52,9 +52,11 @@ public class EnderecoService {
     }
 
     @Transactional
-    public Enderecos editar(EnderecosDTO enderecosDTO){
-        final Enderecos enderecosBanco = this.enderecoRepository.findById(enderecosDTO.getId()).orElse(null);
+    public Enderecos editar(Long id, EnderecosDTO enderecosDTO){
+        final Enderecos enderecosBanco = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecosBanco, "Endereco inexistente!");
+
+        Assert.isTrue(id == enderecosDTO.getId(), "Os IDs não são iguais");
 
         Enderecos enderecos = toEnderecos(enderecosDTO);
         return this.enderecoRepository.save(enderecos);
@@ -65,11 +67,9 @@ public class EnderecoService {
         final Enderecos enderecos = this.enderecoRepository.findById(id).orElse(null);
         Assert.notNull(enderecos, "Endereco inexistente!");
 
-        if (!enderecos.getClientes().isEmpty()) {
-            throw new IllegalArgumentException("Não é possível excluir o endereco devido à relação com clientes existente.");
-        }else{
-            enderecoRepository.delete(enderecos);
-        }
+        enderecos.setAtivo(false);
+
+        enderecoRepository.save(enderecos);
     }
 
     }

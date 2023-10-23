@@ -27,7 +27,6 @@ public class FuncionariosDTO extends AbstractEntityDTO {
     @NotNull(message = "O campo 'telefone' não pode ser nulo")
     private String telefone;
 
-    @NotNull(message = "O campo 'salario' não pode ser nulo")
     private BigDecimal salario;
 
     public FuncionariosDTO(String nome, String cpf, String telefone, BigDecimal salario) {

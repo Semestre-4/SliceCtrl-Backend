@@ -26,7 +26,7 @@ public class EnderecoController {
      * @param id O ID do endereço a ser recuperado.
      * @return ResponseEntity contendo as informações do endereço, se encontrado, ou uma resposta de "não encontrado".
      */
-    @GetMapping("id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<EnderecosDTO> getEnderecoById(@PathVariable("id") Long id) {
         EnderecosDTO enderecosDTO = enderecoService.getById(id);
         if (enderecosDTO != null) {
@@ -53,7 +53,7 @@ public class EnderecoController {
      * @param cep O CEP dos endereços a serem recuperados.
      * @return ResponseEntity contendo a lista de endereços, se encontrados.
      */
-    @GetMapping("cep/{cep}")
+    @GetMapping("/cep/{cep}")
     public ResponseEntity<List<EnderecosDTO>> getByCep(@PathVariable("cep") String cep) {
         List<EnderecosDTO> enderecosDTOS = enderecoService.getByCep(cep);
         return ResponseEntity.ok(enderecosDTOS);
@@ -82,11 +82,11 @@ public class EnderecoController {
      * @param enderecosDTO Os dados atualizados do endereço.
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
-    @PutMapping()
-    public ResponseEntity<String> editarEndereco(
+    @PutMapping("/{id}")
+    public ResponseEntity<String> editarEndereco( @PathVariable("id") Long id,
                                                   @RequestBody @Validated EnderecosDTO enderecosDTO) {
         try {
-            this.enderecoService.editar(enderecosDTO);
+            this.enderecoService.editar(id, enderecosDTO);
             return ResponseEntity.ok().body("O cadastro do endereço foi atualizado com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante a atualização: " + e.getMessage());

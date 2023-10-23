@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("api/funcionario")
+@RequestMapping("/api/funcionario")
 public class FuncionarioController {
 
     @Autowired
