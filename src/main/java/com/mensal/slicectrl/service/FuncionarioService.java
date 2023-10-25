@@ -39,6 +39,10 @@ public class FuncionarioService {
         return funcionarioRepository.findByNome(nome).stream().map(this::toFuncDTO).toList();
     }
 
+    public List<FuncionariosDTO> findByAtivo(boolean ativo) {
+        return funcionarioRepository.findByAtivo(ativo).stream().map(this::toFuncDTO).toList();
+    }
+
     public FuncionariosDTO findByCPF(String cpf) {
         return toFuncDTO(funcionarioRepository.findByCpf(cpf));
     }
