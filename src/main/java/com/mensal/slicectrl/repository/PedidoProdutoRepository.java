@@ -1,6 +1,7 @@
 package com.mensal.slicectrl.repository;
 
 import com.mensal.slicectrl.entity.PedidoProduto;
+import com.mensal.slicectrl.entity.Produtos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,5 +13,5 @@ public interface PedidoProdutoRepository extends JpaRepository<PedidoProduto, Lo
             "FROM PedidoProduto pp " +
             "GROUP BY pp.produto " +
             "ORDER BY totalQuantity DESC")
-    List<Object[]> findMostUsedProducts();
+    List<Produtos> findMostUsedProducts();
 }

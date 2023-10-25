@@ -4,6 +4,8 @@ import com.mensal.slicectrl.dto.PedidoPizzaDTO;
 import com.mensal.slicectrl.dto.PedidoProdutoDTO;
 import com.mensal.slicectrl.dto.PedidosDTO;
 import com.mensal.slicectrl.entity.Pedidos;
+import com.mensal.slicectrl.entity.Produtos;
+import com.mensal.slicectrl.entity.Sabores;
 import com.mensal.slicectrl.entity.enums.FormaDeEntrega;
 import com.mensal.slicectrl.entity.enums.FormasDePagamento;
 import com.mensal.slicectrl.entity.enums.Status;
@@ -75,7 +77,7 @@ public class PedidoController {
     }
 
     @GetMapping("/mostUsedProducts")
-    public List<Object[]> getMostUsedProducts() {
+    public List<Produtos> getMostUsedProducts() {
         return pedidoService.findMostUsedProducts();
     }
 

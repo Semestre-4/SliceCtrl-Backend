@@ -84,7 +84,7 @@ public class PedidoService {
         return pedidoPizzaRepository.findMostUsedSabores();
     }
 
-    public List<Object[]> findMostUsedProducts() {
+    public List<Produtos> findMostUsedProducts() {
         return pedidoProdutoRepository.findMostUsedProducts();
     }
 
