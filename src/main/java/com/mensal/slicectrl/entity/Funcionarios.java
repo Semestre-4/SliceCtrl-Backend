@@ -23,7 +23,7 @@ public class Funcionarios extends AbstractEntity{
     @Column(name = "telefone-cliente", nullable = false)
     private String telefone;
 
-    @Column(name = "salario_func",nullable = false)
+    @Column(name = "salario_func")
     private BigDecimal salario;
 
     @OneToMany(mappedBy = "funcionario",cascade = CascadeType.ALL)

@@ -81,7 +81,9 @@ public class FuncionarioService {
     public void deleteFuncionario(Long id) {
         Funcionarios funcToDelete = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionario com ID = : " + id + " não foi encontrado"));
-        funcionarioRepository.delete(funcToDelete);
+
+        funcToDelete.setAtivo(false);
+        funcionarioRepository.save(funcToDelete);
     }
 
     public FuncionariosDTO toFuncDTO(Funcionarios funcionarios) {

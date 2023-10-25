@@ -3,6 +3,7 @@ package com.mensal.slicectrl.controller;
 import com.mensal.slicectrl.dto.SaboresDTO;
 import com.mensal.slicectrl.service.SaboresService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sabores")
+@CrossOrigin("http://localhost:4200")
 public class SaboresController {
 
     @Autowired
@@ -41,13 +43,23 @@ public class SaboresController {
         }
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<SaboresDTO> getById(@PathVariable("id") Long id){
         SaboresDTO saboresDTO = saboresService.getById(id);
         if (saboresDTO != null) {
             return ResponseEntity.ok(saboresDTO);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<SaboresDTO>> getAllByAtivo(@PathVariable boolean ativo){
+        try {
+            List<SaboresDTO> saboresDTOS = saboresService.findByAtivo(ativo);
+            return ResponseEntity.ok(saboresDTOS);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Ouve algum erro.");
         }
     }
 

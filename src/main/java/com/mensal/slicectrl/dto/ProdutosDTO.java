@@ -25,6 +25,7 @@ public class ProdutosDTO extends AbstractEntityDTO {
     private boolean disponivel;
 
     @Positive(message = "O preço do produto deve ser um valor positivo")
+    @NotNull(message = "O preço do produto não pode ser nulo")
     private Double preco;
 
 }

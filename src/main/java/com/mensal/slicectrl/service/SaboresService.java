@@ -71,6 +71,10 @@ public class SaboresService {
         return toSaboresDTO(sabores);
     }
 
+    public List<SaboresDTO> findByAtivo(boolean ativo){
+        return saboresRepository.findByAtivo(ativo).stream().map(this::toSaboresDTO).toList();
+    }
+
     @Transactional
     public Sabores cadastrar(SaboresDTO saboresDTO) {
         String nomeSabor = saboresDTO.getNomeSabor();
@@ -111,7 +115,13 @@ public class SaboresService {
 
     @Transactional
     public void deletar(Long id) {
-        this.saboresRepository.findById(id).ifPresent(this.saboresRepository::delete);
+
+        Sabores sabor = this.saboresRepository.findById(id).orElse(null);
+
+        Assert.notNull(sabor, "Sabor inexistente");
+
+        sabor.setAtivo(false);
+        saboresRepository.save(sabor);
     }
 
 
