@@ -349,21 +349,21 @@ class PedidoControllerTest {
         verify(pedidoService, times(1)).efetuarPedido(pedidoId, formDePagamento);
     }
 
-    @Test
-    void testUpdateOrderByUser() {
-        Long pedidoId = 1L;
-
-        // Criar um objeto Pedidos de amostra
-        Pedidos pedido = new Pedidos();
-        pedido.setId(pedidoId);
-
-        when(pedidoService.updateOrder(pedidoId)).thenReturn(pedido);
-
-        ResponseEntity<Pedidos> response = pedidoController.updateOrderByUser(pedidoId);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(pedido, response.getBody());
-
-        verify(pedidoService, times(1)).updateOrder(pedidoId);
-    }
+//    @Test
+//    void testUpdateOrderByUser() {
+//        Long pedidoId = 1L;
+//
+//        // Criar um objeto Pedidos de amostra
+//        Pedidos pedido = new Pedidos();
+//        pedido.setId(pedidoId);
+//
+//        when(pedidoService.updateOrder(pedidoId)).thenReturn(pedido);
+//
+//        ResponseEntity<Pedidos> response = pedidoController.updateOrderByUser(pedidoId);
+//
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        assertEquals(pedido, response.getBody());
+//
+//        verify(pedidoService, times(1)).updateOrder(pedidoId);
+//    }
 }

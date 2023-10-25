@@ -43,5 +43,8 @@ public class PedidoPizza extends AbstractEntity{
     @Column(name = "observacao")
     private String observacao;
 
+    @Column(name = "valor",nullable = false)
+    private Double valor;
+
 
 }

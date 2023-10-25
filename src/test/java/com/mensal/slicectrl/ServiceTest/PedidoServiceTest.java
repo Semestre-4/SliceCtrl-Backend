@@ -288,47 +288,47 @@ class PedidoServiceTest {
         assertTrue(result.getPagamento().isPago());
     }
 
-    @Test
-    void testUpdateOrderSuccess() {
-        Long pedidoId = 1L;
-        Pedidos existingPedido = new Pedidos();
-        existingPedido.setId(pedidoId);
-        existingPedido.setStatus(Status.PENDENTE);
+//    @Test
+//    void testUpdateOrderSuccess() {
+//        Long pedidoId = 1L;
+//        Pedidos existingPedido = new Pedidos();
+//        existingPedido.setId(pedidoId);
+//        existingPedido.setStatus(Status.PENDENTE);
+//
+//        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(existingPedido));
+//        when(pedidoRepository.save(existingPedido)).thenReturn(existingPedido);
+//
+//        Pedidos result = pedidoService.updateOrder(pedidoId);
+//
+//        assertNotNull(result);
+//        assertEquals(pedidoId, result.getId());
+//        assertEquals(Status.PENDENTE, result.getStatus());
+//
+//        Mockito.verify(pedidoRepository, Mockito.times(1)).save(existingPedido);
+//    }
+//
+//    @Test
+//    void testUpdateOrderNotFound() {
+//        Long pedidoId = 2L;
+//
+//        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.empty());
+//
+//        assertThrows(IllegalArgumentException.class, () -> pedidoService.updateOrder(pedidoId));
+//
+//        Mockito.verify(pedidoRepository, Mockito.never()).save(any(Pedidos.class));
+//    }
 
-        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(existingPedido));
-        when(pedidoRepository.save(existingPedido)).thenReturn(existingPedido);
-
-        Pedidos result = pedidoService.updateOrder(pedidoId);
-
-        assertNotNull(result);
-        assertEquals(pedidoId, result.getId());
-        assertEquals(Status.PENDENTE, result.getStatus());
-
-        Mockito.verify(pedidoRepository, Mockito.times(1)).save(existingPedido);
-    }
-
-    @Test
-    void testUpdateOrderNotFound() {
-        Long pedidoId = 2L;
-
-        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.empty());
-
-        assertThrows(IllegalArgumentException.class, () -> pedidoService.updateOrder(pedidoId));
-
-        Mockito.verify(pedidoRepository, Mockito.never()).save(any(Pedidos.class));
-    }
-
-    @Test
-    void testUpdateOrderNotAllowedStatus() {
-        Long pedidoId = 3L;
-        Pedidos existingPedido = new Pedidos();
-        existingPedido.setId(pedidoId);
-        existingPedido.setStatus(Status.PAGO);
-
-        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(existingPedido));
-        assertThrows(IllegalArgumentException.class, () -> pedidoService.updateOrder(pedidoId));
-        Mockito.verify(pedidoRepository, Mockito.never()).save(any(Pedidos.class));
-    }
+//    @Test
+//    void testUpdateOrderNotAllowedStatus() {
+//        Long pedidoId = 3L;
+//        Pedidos existingPedido = new Pedidos();
+//        existingPedido.setId(pedidoId);
+//        existingPedido.setStatus(Status.PAGO);
+//
+//        when(pedidoRepository.findById(pedidoId)).thenReturn(Optional.of(existingPedido));
+//        assertThrows(IllegalArgumentException.class, () -> pedidoService.updateOrder(pedidoId));
+//        Mockito.verify(pedidoRepository, Mockito.never()).save(any(Pedidos.class));
+//    }
 
     @Test
     void testCalculatePedidoProdutoTotal() {

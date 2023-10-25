@@ -74,8 +74,22 @@ public class PedidoService {
         return pedidoRepository.findByStatus(status).stream().map(this::toPedidosDTO).toList();
     }
 
+
+
     public List<PedidosDTO> findByformaDeEntrega(FormaDeEntrega formaDeEntrega) {
         return pedidoRepository.findByformaDeEntrega(formaDeEntrega).stream().map(this::toPedidosDTO).toList();
+    }
+
+    public List<Object[]> findMostUsedSabores() {
+        return pedidoPizzaRepository.findMostUsedSabores();
+    }
+
+    public List<Object[]> findMostUsedProducts() {
+        return pedidoProdutoRepository.findMostUsedProducts();
+    }
+
+    public int countPedidosByFormaDePagamento(FormasDePagamento formaDePagamento) {
+        return pedidoRepository.countPedidosByFormaDePagamento(formaDePagamento);
     }
 
     public List<PedidosDTO> findByClienteId(Long clienteId) {
@@ -234,22 +248,19 @@ public class PedidoService {
 
     // Método para atualizar um pedido
     @Transactional
-    public Pedidos updateOrder(Long pedidoId) {
-        // Encontrar o pedido pelo ID
-        Pedidos existingPedido = pedidoRepository.findById(pedidoId).orElse(null);
+    public Pedidos updateOrder(Pedidos pedido) {
 
-        // Verificar se o pedido foi encontrado
-        if (existingPedido == null) {
-            throw new IllegalArgumentException(PEDIDO_NAO_ENCONTRADO_MSG + pedidoId);
-        }
+        if(pedido.getProdutos() != null)
+            for(int i=0; i<pedido.getProdutos().size(); i++){
+                pedido.getProdutos().get(i).setPedido(pedido);
+            }
 
-        // Verificar o status do pedido
-        if (existingPedido.getStatus() != Status.PENDENTE) {
-            throw new IllegalArgumentException(("O pedido não pode ser alterado"));
-        } else {
-            // Salvar as alterações no pedido
-            return pedidoRepository.save(existingPedido);
-        }
+        if(pedido.getPizzas() != null)
+            for(int i=0; i<pedido.getPizzas().size(); i++){
+                pedido.getPizzas().get(i).setPedido(pedido);
+            }
+
+            return pedidoRepository.save(pedido);
     }
 
     // Método para calcular o valor total do pedido
@@ -326,6 +337,10 @@ public class PedidoService {
         return pedidosDTO;
     }
 
+    public Pedidos toPedido(PedidosDTO pedidosDTO) {
+        return  modelMapper.map(pedidosDTO, Pedidos.class);
+    }
+
     // Método para converter um DTO em um objeto PedidoPizza
     public PedidoPizza toPedidoPizza(PedidoPizzaDTO pedidoPizzaDTO) {
 
@@ -375,5 +390,7 @@ public class PedidoService {
 
         throw new IllegalArgumentException("Pedido not found");
     }
+
+
 
 }
