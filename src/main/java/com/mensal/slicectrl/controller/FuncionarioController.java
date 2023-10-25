@@ -53,6 +53,16 @@ public class FuncionarioController {
         }
     }
 
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<FuncionariosDTO>> getFuncionariosByAtivo(@PathVariable("ativo") boolean ativo) {
+        List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findByAtivo(ativo);
+        if (!funcionariosDTOS.isEmpty()) {
+            return ResponseEntity.ok(funcionariosDTOS);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     /**
      * Recupera um funcionário pelo CPF.
      *
