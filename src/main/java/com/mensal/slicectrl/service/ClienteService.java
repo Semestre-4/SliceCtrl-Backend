@@ -52,6 +52,10 @@ public class ClienteService {
         return clienteRepository.findByNome(nome).stream().map(this::toClienteDTO).toList();
     }
 
+    public List<ClientesDTO> findByAtivo(boolean ativo) {
+        return clienteRepository.findByAtivo(ativo).stream().map(this::toClienteDTO).toList();
+    }
+
     public ClientesDTO findByCPF(String cpf) {
         return toClienteDTO(clienteRepository.findByCpf(cpf));
     }
