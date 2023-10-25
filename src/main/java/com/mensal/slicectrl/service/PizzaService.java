@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -51,6 +52,8 @@ public class PizzaService {
     @Transactional
     public Pizzas createPizza(PizzasDTO pizzaDTO) {
         Pizzas pizza = toPizza(pizzaDTO);
+
+        Assert.notNull(pizzaDTO.getPreco(), "Preço não pode ser nulo!");
         return pizzaRepository.save(pizza);
     }
 
