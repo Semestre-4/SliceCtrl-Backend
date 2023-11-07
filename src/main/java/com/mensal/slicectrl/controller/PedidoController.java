@@ -11,6 +11,7 @@ import com.mensal.slicectrl.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public class PedidoController {
         return ResponseEntity.ok(pedidosDTOS);
     }
 
+
     // Métodos semelhantes para recuperar pedidos por status, cliente, funcionário e tipo de entrega
 
     @GetMapping("/status/{status}")
@@ -60,6 +62,21 @@ public class PedidoController {
     @GetMapping("/formaDeEntrega/{formaDeEntrega}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByformaDeEntrega(@PathVariable FormaDeEntrega formaDeEntrega) {
         return ResponseEntity.ok(pedidoService.findByformaDeEntrega(formaDeEntrega));
+    }
+
+    @GetMapping("/countByFormaDePagamento/{formaDePagamento}")
+    public int countPedidosByFormaDePagamento(@PathVariable FormasDePagamento formaDePagamento) {
+        return pedidoService.countPedidosByFormaDePagamento(formaDePagamento);
+    }
+
+    @GetMapping("/mostUsedSabores")
+    public List<Object[]> getMostUsedSabores() {
+        return pedidoService.findMostUsedSabores();
+    }
+
+    @GetMapping("/mostUsedProducts")
+    public List<Object[]> getMostUsedProducts() {
+        return pedidoService.findMostUsedProducts();
     }
 
     @GetMapping("/cliente/{clienteId}")
@@ -85,15 +102,16 @@ public class PedidoController {
      * @return ResponseEntity contendo as informações do pedido aberto ou uma resposta de erro.
      */
     @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
-    public ResponseEntity<String> abrirPedido(@PathVariable("clienteId") Long clienteId,
+    public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                   @PathVariable("funcId") Long funcId,
                                                   @PathVariable("formaDeEntrega") FormaDeEntrega formaDeEntrega){
         try {
             Pedidos pedido = new Pedidos();
             PedidosDTO savedPedido = pedidoService.iniciarPedido(clienteId, pedido,funcId,formaDeEntrega);
-            return ResponseEntity.ok(String.format("%s",savedPedido));
+//            return ResponseEntity.ok(String.format("%s",savedPedido));
+            return  ResponseEntity.ok(savedPedido);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -154,17 +172,28 @@ public class PedidoController {
         }
     }
 
-    /**
-     * Atualiza um pedido existente.
-     *
-     * @param pedidoId O ID do pedido a ser atualizado.
-     * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
-     */
-    @PutMapping("/{pedidoId}")
-    public ResponseEntity<Pedidos> updateOrderByUser(@PathVariable Long pedidoId) {
-        Pedidos pedido = pedidoService.updateOrder(pedidoId);
-        return new ResponseEntity<>(pedido, HttpStatus.OK);
+
+    @PutMapping
+    public ResponseEntity<Pedidos> updateOrderByUser(@RequestBody @Validated Pedidos pedido) {
+     try{
+        Pedidos pedidoabc = pedidoService.updateOrder(pedido);
+        return new ResponseEntity<>(pedidoabc, HttpStatus.OK);
+    } catch (Exception e) {
+         System.out.println(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+    }
+
+    @PutMapping("/{pedidoId}/remover-pedido-pizza/{pedidoPizzaId}")
+    public ResponseEntity<Pedidos> removePedidoPizzaFromPedido(@PathVariable Long pedidoId, @PathVariable Long pedidoPizzaId) {
+        try {
+            Pedidos pedido = pedidoService.removePedidoPizzaFromPedido(pedidoId, pedidoPizzaId);
+            return new ResponseEntity<>(pedido, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 
 }

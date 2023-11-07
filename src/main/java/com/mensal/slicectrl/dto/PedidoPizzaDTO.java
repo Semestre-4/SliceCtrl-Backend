@@ -25,5 +25,6 @@ public class PedidoPizzaDTO extends AbstractEntityDTO {
     @Min(value = 1, message = "A quantidade pedida deve ser pelo menos 1")
     private int qtdePedida;
     private String observacao;
-
+    @NotNull(message = "O valor não pode ser nulo")
+    private Double valor;
 }

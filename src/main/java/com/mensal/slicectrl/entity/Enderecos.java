@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Enderecos extends AbstractEntity{
 
-    @Column(name = "rua", nullable = false)
+    @Column(name = "rua", nullable = true)
     private String rua;
 
     @Column(name = "numero", nullable = true)
@@ -29,19 +29,19 @@ public class Enderecos extends AbstractEntity{
     @Column(name = "complemento", nullable = true)
     private String complemento;
 
-    @Column(name = "bairro", nullable = false)
+    @Column(name = "bairro",nullable = true)
     private String bairro;
 
-    @Column(name = "cidade", nullable = false)
+    @Column(name = "cidade",nullable = true)
     private String cidade;
 
-    @Column(name = "estado", nullable = false)
+    @Column(name = "estado",nullable = true)
     private String estado;
 
-    @Column(name = "pais", nullable = false)
+    @Column(name = "pais",nullable = true)
     private String pais;
 
-    @Column(name = "cep", nullable = false)
+    @Column(name = "cep",nullable = true)
     private String cep;
 
     @ManyToMany(mappedBy = "enderecos")

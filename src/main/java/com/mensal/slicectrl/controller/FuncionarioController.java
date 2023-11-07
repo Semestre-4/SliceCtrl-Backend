@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("api/funcionario")
+@RequestMapping("/api/funcionario")
 public class FuncionarioController {
 
     @Autowired
@@ -46,6 +46,16 @@ public class FuncionarioController {
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<FuncionariosDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
         List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findByNome(nome);
+        if (!funcionariosDTOS.isEmpty()) {
+            return ResponseEntity.ok(funcionariosDTOS);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<FuncionariosDTO>> getFuncionariosByAtivo(@PathVariable("ativo") boolean ativo) {
+        List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findByAtivo(ativo);
         if (!funcionariosDTOS.isEmpty()) {
             return ResponseEntity.ok(funcionariosDTOS);
         } else {

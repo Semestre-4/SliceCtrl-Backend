@@ -52,6 +52,16 @@ public class ClienteController {
         }
     }
 
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<ClientesDTO>> getClientesByAtivo(@PathVariable("ativo") boolean ativo) {
+        List<ClientesDTO> clientes = clienteService.findByAtivo(ativo);
+        if (!clientes.isEmpty()) {
+            return ResponseEntity.ok(clientes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     /**
      * Recupera um cliente pelo CPF.
      *

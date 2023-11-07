@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ingredientes")
+@CrossOrigin("http://localhost:4200")
 public class IngredienteController {
 
     @Autowired
@@ -31,20 +32,30 @@ public class IngredienteController {
         List<IngredientesDTO> ingredientesDTOS = ingredienteService.getAll();
         return ResponseEntity.ok(ingredientesDTOS);
     }
-
     /**
      * Recupera um ingrediente pelo seu nome.
      *
      * @param nomeIngrediente O nome do ingrediente a ser recuperado.
      * @return ResponseEntity contendo as informações do ingrediente, se encontrado, ou uma resposta de "não encontrado".
      */
-    @GetMapping("nome/{nomeIngrediente}")
+    @GetMapping("/nome/{nomeIngrediente}")
     public ResponseEntity<IngredientesDTO> getIngredienteByNome(@PathVariable("nomeIngrediente") String nomeIngrediente) {
         IngredientesDTO ingredientesDTO = ingredienteService.getByNome(nomeIngrediente);
         if (ingredientesDTO != null) {
             return ResponseEntity.ok(ingredientesDTO);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<IngredientesDTO>> getAllByAtivo(@PathVariable boolean ativo){
+        try {
+            List<IngredientesDTO> ingredientesDTOS = ingredienteService.findByAtivo(ativo);
+            return ResponseEntity.ok(ingredientesDTOS);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Ouve algum erro.");
         }
     }
 
@@ -110,8 +121,8 @@ public class IngredienteController {
      * @param id O ID do ingrediente a ser excluído.
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
-    @DeleteMapping
-    public ResponseEntity<String> excluirIngrediente(@RequestParam("id") final Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> excluirIngrediente(@PathVariable("id") final Long id) {
         try {
             this.ingredienteService.delete(id);
             return ResponseEntity.ok().body("Ingrediente excluído com sucesso!");
