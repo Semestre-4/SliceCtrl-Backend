@@ -19,11 +19,15 @@ public class UsuarioDTO extends AbstractEntityDTO {
     private String nome;
 
 //    @CPF(message = "O CPF é inválido")
-    @NotBlank(message = "O CPF do funcionario é obrigatório")
+    @NotBlank(message = "O CPF do usuario é obrigatório")
     @NotNull(message = "O campo 'CPF' não pode ser nulo")
     private String cpf;
 
-    @NotBlank(message = "O telefone do funcionario é obrigatório")
+    @NotBlank(message = "O CPF do usuario é obrigatório")
+    @NotNull(message = "O campo 'Senha' não pode ser nulo")
+    private String password;
+
+    @NotBlank(message = "O telefone do usuario é obrigatório")
     @NotNull(message = "O campo 'telefone' não pode ser nulo")
     private String telefone;
 

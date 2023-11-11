@@ -7,12 +7,17 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final ModelMapper modelMapper;
@@ -33,6 +38,10 @@ public class UsuarioService {
         }
     }
 
+    private PasswordEncoder encode(){
+        return new BCryptPasswordEncoder();
+    }
+
     public List<UsuarioDTO> findByNome(String nome) {
         return usuarioRepository.findByNome(nome).stream().map(this::toFuncDTO).toList();
     }
@@ -51,10 +60,10 @@ public class UsuarioService {
 
     @Transactional
     public Usuario createFuncionario(UsuarioDTO usuarioDTO) {
-        // Check if the CPF already exists
         if (usuarioRepository.existsByCpf(usuarioDTO.getCpf())) {
             throw new IllegalArgumentException("Funcionario com CPF = " + usuarioDTO.getCpf() + " já existe");
         }
+        usuarioDTO.setPassword(encode().encode(usuarioDTO.getPassword()));
         Usuario usuario = toFunc(usuarioDTO);
         return usuarioRepository.save(usuario);
     }
@@ -96,4 +105,8 @@ public class UsuarioService {
         return modelMapper.map(usuarioDTO, Usuario.class);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepository.findByCpf(username);
+    }
 }

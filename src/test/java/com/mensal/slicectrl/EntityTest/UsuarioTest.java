@@ -25,7 +25,7 @@ class UsuarioTest {
         // Initialize the list of pedidos
         List<Pedidos> pedidos = new ArrayList<>();
         Pedidos pedido1 = new Pedidos();
-        pedido1.setFuncionario(usuario);
+        pedido1.setUsuario(usuario);
         pedidos.add(pedido1);
         usuario.setPedidos(pedidos);
     }
