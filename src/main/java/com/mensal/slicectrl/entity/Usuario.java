@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "funcionarios",schema = "public")
+@Table(name = "usuario",schema = "public")
 @Getter
 @Setter
 public class Usuario extends AbstractEntity{
@@ -29,7 +29,7 @@ public class Usuario extends AbstractEntity{
     @Column(name = "salario")
     private BigDecimal salario;
 
-    @OneToMany(mappedBy = "funcionario",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Pedidos> pedidos;
 

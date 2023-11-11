@@ -12,47 +12,47 @@ import java.util.List;
 
 class UsuarioTest {
 
-    private Usuario funcionario;
+    private Usuario usuario;
 
     @BeforeEach
     public void setUp() {
-        funcionario = new Usuario();
-        funcionario.setNome("John Doe");
-        funcionario.setCpf("123456789");
-        funcionario.setTelefone("555-555-5555");
-        funcionario.setSalario(new BigDecimal("50000.00"));
+        usuario = new Usuario();
+        usuario.setNome("John Doe");
+        usuario.setCpf("123456789");
+        usuario.setTelefone("555-555-5555");
+        usuario.setSalario(new BigDecimal("50000.00"));
 
         // Initialize the list of pedidos
         List<Pedidos> pedidos = new ArrayList<>();
         Pedidos pedido1 = new Pedidos();
-        pedido1.setFuncionario(funcionario);
+        pedido1.setFuncionario(usuario);
         pedidos.add(pedido1);
-        funcionario.setPedidos(pedidos);
+        usuario.setPedidos(pedidos);
     }
 
     @Test
     void testNome() {
-        assertEquals("John Doe", funcionario.getNome());
+        assertEquals("John Doe", usuario.getNome());
     }
 
     @Test
     void testCpf() {
-        assertEquals("123456789", funcionario.getCpf());
+        assertEquals("123456789", usuario.getCpf());
     }
 
     @Test
     void testTelefone() {
-        assertEquals("555-555-5555", funcionario.getTelefone());
+        assertEquals("555-555-5555", usuario.getTelefone());
     }
 
     @Test
     void testSalario() {
-        assertEquals(new BigDecimal("50000.00"), funcionario.getSalario());
+        assertEquals(new BigDecimal("50000.00"), usuario.getSalario());
     }
 
     @Test
     void testPedidos() {
-        List<Pedidos> pedidos = funcionario.getPedidos();
+        List<Pedidos> pedidos = usuario.getPedidos();
         assertNotNull(pedidos);
         assertEquals(1, pedidos.size());
     }

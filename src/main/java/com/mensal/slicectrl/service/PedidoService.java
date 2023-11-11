@@ -131,7 +131,7 @@ public class PedidoService {
 
         // Definir informações do pedido
         pedido.setCliente(clientes);
-        pedido.setFuncionario(usuario);
+        pedido.setUsuario(usuario);
         pedido.setStatus(Status.PENDENTE);
         pedido.setFormaDeEntrega(formaDeEntrega);
         pedido.setValorTotal(Double.parseDouble("0"));

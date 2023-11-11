@@ -29,7 +29,7 @@ public interface PedidoRepository extends JpaRepository<Pedidos, Long> {
     @Query("SELECT p FROM Pedidos p WHERE p.cliente.id = :id")
     List<Pedidos> findByCliente(@Param("id") Long id);
 
-    @Query("SELECT p FROM Pedidos p WHERE p.funcionario.id = :id")
+    @Query("SELECT p FROM Pedidos p WHERE p.usuario.id = :id")
     List<Pedidos> findByFunc(@Param("id") Long id);
 
     @Query("SELECT p FROM Pedidos p WHERE p.status = :PENDENTE")
