@@ -4,6 +4,7 @@ import com.mensal.slicectrl.dto.UsuarioDTO;
 import com.mensal.slicectrl.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +21,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    /**
-     * Recupera um funcionário pelo seu ID.
-     *
-     * @param id O ID do funcionário a ser recuperado.
-     * @return ResponseEntity contendo as informações do funcionário, se encontrado, ou uma resposta de "não encontrado".
-     */
     @GetMapping("/id/{id}")
     public ResponseEntity<UsuarioDTO> getFuncionarioById(@PathVariable("id") Long id) {
         UsuarioDTO cliente = usuarioService.findById(id);
@@ -36,12 +31,6 @@ public class UsuarioController {
         }
     }
 
-    /**
-     * Recupera uma lista de funcionários pelo nome.
-     *
-     * @param nome O nome dos funcionários a serem recuperados.
-     * @return ResponseEntity contendo a lista de funcionários, se encontrados.
-     */
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<UsuarioDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
         List<UsuarioDTO> usuarioDTOS = usuarioService.findByNome(nome);
@@ -62,12 +51,6 @@ public class UsuarioController {
         }
     }
 
-    /**
-     * Recupera um funcionário pelo CPF.
-     *
-     * @param cpf O CPF do funcionário a ser recuperado.
-     * @return ResponseEntity contendo as informações do funcionário, se encontrado, ou uma resposta de "não encontrado".
-     */
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<UsuarioDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
         UsuarioDTO usuarioDTO = usuarioService.findByCPF(cpf);
@@ -78,23 +61,13 @@ public class UsuarioController {
         }
     }
 
-    /**
-     * Recupera uma lista de todos os funcionários.
-     *
-     * @return ResponseEntity contendo a lista de todos os funcionários.
-     */
     @GetMapping("/all")
     public ResponseEntity<List<UsuarioDTO>> getAllFuncionarios() {
         List<UsuarioDTO> usuarioDTOS = usuarioService.findAll();
         return ResponseEntity.ok(usuarioDTOS);
     }
 
-    /**
-     * Cria um novo funcionário.
-     *
-     * @param usuarioDTO Os dados do funcionário a serem cadastrados.
-     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<String> cadastrarFuncionario(@RequestBody @Validated UsuarioDTO usuarioDTO) {
         try {
@@ -106,13 +79,7 @@ public class UsuarioController {
         }
     }
 
-    /**
-     * Edita as informações de um funcionário.
-     *
-     * @param id          O ID do funcionário a ser editado.
-     * @param usuarioDTO Os dados atualizados do funcionário.
-     * @return ResponseEntity indicando o sucesso ou a falha da edição.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<String> editarFuncionario(@PathVariable Long id,
                                                     @RequestBody @Validated UsuarioDTO usuarioDTO) {
@@ -125,12 +92,7 @@ public class UsuarioController {
         }
     }
 
-    /**
-     * Exclui um funcionário pelo seu ID.
-     *
-     * @param id O ID do funcionário a ser excluído.
-     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirFuncionario(@PathVariable Long id) {
         try {

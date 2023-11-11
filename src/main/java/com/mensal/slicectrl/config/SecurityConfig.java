@@ -35,6 +35,7 @@ public class SecurityConfig {
                                 .requestMatchers("/home")
                                 .permitAll().anyRequest().authenticated());
 
+
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
         httpSecurity.httpBasic(Customizer.withDefaults());

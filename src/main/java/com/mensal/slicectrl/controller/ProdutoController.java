@@ -6,6 +6,7 @@ import com.mensal.slicectrl.entity.enums.Categoria;
 import com.mensal.slicectrl.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +23,6 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    /**
-     * Recupera todos os produtos cadastrados.
-     *
-     * @return ResponseEntity contendo a lista de produtos ou uma resposta de erro.
-     */
     @GetMapping("/all")
     public ResponseEntity<List<ProdutosDTO>> getAllProdutos() {
         List<ProdutosDTO> produtosDTOS = produtoService.getAll();
@@ -80,13 +76,8 @@ public class ProdutoController {
         return ResponseEntity.ok(produtosDTOS);
     }
 
-    /**
-     * Cria um novo produto.
-     *
-     * @param produtosDTO Os dados do produto a serem cadastrados.
-     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
-     */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> cadastrarProduto(@RequestBody @Validated ProdutosDTO produtosDTO) {
         try {
             this.produtoService.cadastrar(produtosDTO);
@@ -97,14 +88,8 @@ public class ProdutoController {
         }
     }
 
-    /**
-     * Atualiza as informações de um produto.
-     *
-     * @param id         O ID do produto a ser editado.
-     * @param produtosDTO Os dados atualizados do produto.
-     * @return ResponseEntity indicando o sucesso ou a falha da edição.
-     */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> editarProduto(@PathVariable Long id,
                                                  @RequestBody @Validated ProdutosDTO produtosDTO) {
         try {
@@ -116,13 +101,8 @@ public class ProdutoController {
         }
     }
 
-    /**
-     * Exclui um produto pelo seu ID.
-     *
-     * @param id O ID do produto a ser excluído.
-     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
-     */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> excluirProduto(@PathVariable("id") Long id) {
         try {
             this.produtoService.deletar(id);
