@@ -12,18 +12,21 @@ import java.util.List;
 @Table(name = "funcionarios",schema = "public")
 @Getter
 @Setter
-public class Funcionarios extends AbstractEntity{
+public class Usuario extends AbstractEntity{
 
-    @Column(name = "nome-func", nullable = false)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "cpf-func", nullable = false, unique = true)
+    @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
 
-    @Column(name = "telefone-cliente", nullable = false)
+    @Column(name = "password", nullable = false,unique = true)
+    private String password;
+
+    @Column(name = "telefone", nullable = false, unique = true)
     private String telefone;
 
-    @Column(name = "salario_func")
+    @Column(name = "salario")
     private BigDecimal salario;
 
     @OneToMany(mappedBy = "funcionario",cascade = CascadeType.ALL)

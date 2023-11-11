@@ -24,7 +24,7 @@ public class PedidosDTO extends AbstractEntityDTO {
 
     @NotNull(message = "É obrigatório informar o funcionário associado")
     @Valid
-    private FuncionariosDTO funcionario;
+    private UsuarioDTO funcionario;
 
     @NotEmpty(message = "A lista de produtos não pode estar vazia")
     @JsonIgnoreProperties("pedido")

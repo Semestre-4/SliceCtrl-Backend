@@ -26,7 +26,7 @@ public class Pedidos extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "funcionario_id", nullable = false)
     @JsonIgnoreProperties("pedidos")
-    private Funcionarios funcionario;
+    private Usuario funcionario;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("pedido")

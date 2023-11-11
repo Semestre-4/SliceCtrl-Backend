@@ -1,23 +1,23 @@
 package com.mensal.slicectrl.repository;
 
-import com.mensal.slicectrl.entity.Funcionarios;
+import com.mensal.slicectrl.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface FuncionarioRepository extends JpaRepository<Funcionarios,Long> {
+public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     @Query("SELECT f FROM Funcionarios f WHERE f.nome = :nome")
-    List<Funcionarios> findByNome(@Param("nome") String nome);
+    List<Usuario> findByNome(@Param("nome") String nome);
 
     @Query("SELECT f FROM Funcionarios f WHERE f.ativo = :ativo")
-    List<Funcionarios> findByAtivo(@Param("ativo") boolean ativo);
+    List<Usuario> findByAtivo(@Param("ativo") boolean ativo);
 
 
     @Query("SELECT f FROM Funcionarios f WHERE f.cpf = :cpf")
-    Funcionarios findByCpf(String cpf);
+    Usuario findByCpf(String cpf);
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Funcionarios c WHERE c.cpf = ?1")
     boolean existsByCpf(String cpf);

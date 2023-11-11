@@ -1,8 +1,7 @@
 package com.mensal.slicectrl.controller;
 
-import com.mensal.slicectrl.dto.FuncionariosDTO;
-import com.mensal.slicectrl.entity.Funcionarios;
-import com.mensal.slicectrl.service.FuncionarioService;
+import com.mensal.slicectrl.dto.UsuarioDTO;
+import com.mensal.slicectrl.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,10 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/funcionario")
-public class FuncionarioController {
+public class UsuarioController {
 
     @Autowired
-    private FuncionarioService funcionarioService;
+    private UsuarioService usuarioService;
 
     /**
      * Recupera um funcionário pelo seu ID.
@@ -28,8 +27,8 @@ public class FuncionarioController {
      * @return ResponseEntity contendo as informações do funcionário, se encontrado, ou uma resposta de "não encontrado".
      */
     @GetMapping("/id/{id}")
-    public ResponseEntity<FuncionariosDTO> getFuncionarioById(@PathVariable("id") Long id) {
-        FuncionariosDTO cliente = funcionarioService.findById(id);
+    public ResponseEntity<UsuarioDTO> getFuncionarioById(@PathVariable("id") Long id) {
+        UsuarioDTO cliente = usuarioService.findById(id);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
         } else {
@@ -44,20 +43,20 @@ public class FuncionarioController {
      * @return ResponseEntity contendo a lista de funcionários, se encontrados.
      */
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<FuncionariosDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
-        List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findByNome(nome);
-        if (!funcionariosDTOS.isEmpty()) {
-            return ResponseEntity.ok(funcionariosDTOS);
+    public ResponseEntity<List<UsuarioDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
+        List<UsuarioDTO> usuarioDTOS = usuarioService.findByNome(nome);
+        if (!usuarioDTOS.isEmpty()) {
+            return ResponseEntity.ok(usuarioDTOS);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/ativo/{ativo}")
-    public ResponseEntity<List<FuncionariosDTO>> getFuncionariosByAtivo(@PathVariable("ativo") boolean ativo) {
-        List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findByAtivo(ativo);
-        if (!funcionariosDTOS.isEmpty()) {
-            return ResponseEntity.ok(funcionariosDTOS);
+    public ResponseEntity<List<UsuarioDTO>> getFuncionariosByAtivo(@PathVariable("ativo") boolean ativo) {
+        List<UsuarioDTO> usuarioDTOS = usuarioService.findByAtivo(ativo);
+        if (!usuarioDTOS.isEmpty()) {
+            return ResponseEntity.ok(usuarioDTOS);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -70,10 +69,10 @@ public class FuncionarioController {
      * @return ResponseEntity contendo as informações do funcionário, se encontrado, ou uma resposta de "não encontrado".
      */
     @GetMapping("/cpf/{cpf}")
-    public ResponseEntity<FuncionariosDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
-        FuncionariosDTO funcionariosDTO = funcionarioService.findByCPF(cpf);
-        if (funcionariosDTO != null) {
-            return ResponseEntity.ok(funcionariosDTO);
+    public ResponseEntity<UsuarioDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
+        UsuarioDTO usuarioDTO = usuarioService.findByCPF(cpf);
+        if (usuarioDTO != null) {
+            return ResponseEntity.ok(usuarioDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -85,23 +84,23 @@ public class FuncionarioController {
      * @return ResponseEntity contendo a lista de todos os funcionários.
      */
     @GetMapping("/all")
-    public ResponseEntity<List<FuncionariosDTO>> getAllFuncionarios() {
-        List<FuncionariosDTO> funcionariosDTOS = funcionarioService.findAll();
-        return ResponseEntity.ok(funcionariosDTOS);
+    public ResponseEntity<List<UsuarioDTO>> getAllFuncionarios() {
+        List<UsuarioDTO> usuarioDTOS = usuarioService.findAll();
+        return ResponseEntity.ok(usuarioDTOS);
     }
 
     /**
      * Cria um novo funcionário.
      *
-     * @param funcionariosDTO Os dados do funcionário a serem cadastrados.
+     * @param usuarioDTO Os dados do funcionário a serem cadastrados.
      * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
      */
     @PostMapping
-    public ResponseEntity<String> cadastrarFuncionario(@RequestBody @Validated FuncionariosDTO funcionariosDTO) {
+    public ResponseEntity<String> cadastrarFuncionario(@RequestBody @Validated UsuarioDTO usuarioDTO) {
         try {
-            funcionarioService.createFuncionario(funcionariosDTO);
+            usuarioService.createFuncionario(usuarioDTO);
             return ResponseEntity.ok(String.format("O cadastro de '%s' foi realizado com sucesso.",
-                    funcionariosDTO.getNome()));
+                    usuarioDTO.getNome()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
         }
@@ -111,16 +110,16 @@ public class FuncionarioController {
      * Edita as informações de um funcionário.
      *
      * @param id          O ID do funcionário a ser editado.
-     * @param funcionariosDTO Os dados atualizados do funcionário.
+     * @param usuarioDTO Os dados atualizados do funcionário.
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
     @PutMapping("/{id}")
     public ResponseEntity<String> editarFuncionario(@PathVariable Long id,
-                                                    @RequestBody @Validated FuncionariosDTO funcionariosDTO) {
+                                                    @RequestBody @Validated UsuarioDTO usuarioDTO) {
         try {
-            funcionarioService.updateFuncionario(id, funcionariosDTO);
+            usuarioService.updateFuncionario(id, usuarioDTO);
             return ResponseEntity.ok(String.format("O cadastro de '%s' foi atualizado com sucesso.",
-                    funcionariosDTO.getNome()));
+                    usuarioDTO.getNome()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
         }
@@ -135,7 +134,7 @@ public class FuncionarioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirFuncionario(@PathVariable Long id) {
         try {
-            funcionarioService.deleteFuncionario(id);
+            usuarioService.deleteFuncionario(id);
             return ResponseEntity.ok().body("Funcionário excluído com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro: " + e.getMessage());

@@ -10,7 +10,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 
@@ -24,7 +23,7 @@ public class PedidoService {
     private final ProdutoRepository produtoRepository;
     private final PizzaRepository pizzaRepository;
     private final ClienteRepository clienteRepository;
-    private final FuncionarioRepository funcionarioRepository;
+    private final UsuarioRepository usuarioRepository;
     private final PedidoProdutoRepository pedidoProdutoRepository;
     private final PedidoPizzaRepository pedidoPizzaRepository;
     private final PagamentoRepository pagamentoRepository;
@@ -36,7 +35,7 @@ public class PedidoService {
                          ProdutoRepository produtoRepository,
                          PizzaRepository pizzaRepository,
                          ClienteRepository clienteRepository,
-                         FuncionarioRepository funcionarioRepository,
+                         UsuarioRepository usuarioRepository,
                          PedidoProdutoRepository pedidoProdutoRepository,
                          PedidoPizzaRepository pedidoPizzaRepository,
                          PagamentoRepository pagamentoRepository,
@@ -46,7 +45,7 @@ public class PedidoService {
         this.produtoRepository = produtoRepository;
         this.pizzaRepository = pizzaRepository;
         this.clienteRepository = clienteRepository;
-        this.funcionarioRepository = funcionarioRepository;
+        this.usuarioRepository = usuarioRepository;
         this.pedidoProdutoRepository = pedidoProdutoRepository;
         this.pedidoPizzaRepository = pedidoPizzaRepository;
         this.pagamentoRepository = pagamentoRepository;
@@ -115,11 +114,11 @@ public class PedidoService {
 
 
         // Encontrar o funcionário pelo ID
-        Funcionarios funcionarios = funcionarioRepository.findById(funcId).orElse(null);
+        Usuario usuario = usuarioRepository.findById(funcId).orElse(null);
 
 
         // Verificar se o cliente e o funcionário foram encontrados
-        if (clientes == null && funcionarios == null) {
+        if (clientes == null && usuario == null) {
             throw new IllegalArgumentException("Registro do Cliente ou Funcionario não encontrados");
         }
 
@@ -132,7 +131,7 @@ public class PedidoService {
 
         // Definir informações do pedido
         pedido.setCliente(clientes);
-        pedido.setFuncionario(funcionarios);
+        pedido.setFuncionario(usuario);
         pedido.setStatus(Status.PENDENTE);
         pedido.setFormaDeEntrega(formaDeEntrega);
         pedido.setValorTotal(Double.parseDouble("0"));

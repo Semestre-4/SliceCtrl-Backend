@@ -18,7 +18,7 @@ class PedidosDTOTest {
     void setUp() {
         pedidosDTO = new PedidosDTO();
         pedidosDTO.setCliente(new ClientesDTO());
-        pedidosDTO.setFuncionario(new FuncionariosDTO());
+        pedidosDTO.setFuncionario(new UsuarioDTO());
         pedidosDTO.setProdutos(new ArrayList<>());
         pedidosDTO.setPizzas(new ArrayList<>());
         pedidosDTO.setStatus(Status.PAGO);

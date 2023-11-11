@@ -1,6 +1,6 @@
 package com.mensal.slicectrl.EntityTest;
 
-import com.mensal.slicectrl.entity.Funcionarios;
+import com.mensal.slicectrl.entity.Usuario;
 import com.mensal.slicectrl.entity.Pedidos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,13 +10,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-class FuncionariosTest {
+class UsuarioTest {
 
-    private Funcionarios funcionario;
+    private Usuario funcionario;
 
     @BeforeEach
     public void setUp() {
-        funcionario = new Funcionarios();
+        funcionario = new Usuario();
         funcionario.setNome("John Doe");
         funcionario.setCpf("123456789");
         funcionario.setTelefone("555-555-5555");

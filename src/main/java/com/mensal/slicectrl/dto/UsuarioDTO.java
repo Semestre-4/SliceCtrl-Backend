@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Getter @Setter
 @NoArgsConstructor
-public class FuncionariosDTO extends AbstractEntityDTO {
+public class UsuarioDTO extends AbstractEntityDTO {
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
@@ -29,7 +29,7 @@ public class FuncionariosDTO extends AbstractEntityDTO {
 
     private BigDecimal salario;
 
-    public FuncionariosDTO(String nome, String cpf, String telefone, BigDecimal salario) {
+    public UsuarioDTO(String nome, String cpf, String telefone, BigDecimal salario) {
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -31,7 +30,7 @@ class PedidoServiceTest {
     private ClienteRepository clienteRepository;
 
     @Mock
-    private FuncionarioRepository funcionarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Mock
     private ProdutoRepository produtoRepository;
@@ -58,7 +57,7 @@ class PedidoServiceTest {
     Pedidos pedido1 = new Pedidos();
 
     Clientes cliente = new Clientes();
-    Funcionarios funcionarios = new Funcionarios();
+    Usuario usuario = new Usuario();
     Clientes cliente1 = new Clientes();
 
     Pizzas pizza = new Pizzas();
@@ -82,7 +81,7 @@ class PedidoServiceTest {
         pedido.setFormaDeEntrega(FormaDeEntrega.RETIRADA);
         cliente.setId(1L);
         pedido.setCliente(cliente);
-        pedido.setFuncionario(funcionarios);
+        pedido.setFuncionario(usuario);
         pedido.setValorTotal(100.0);
 
 
@@ -99,7 +98,7 @@ class PedidoServiceTest {
         pedido.setFormaDeEntrega(FormaDeEntrega.RETIRADA);
         cliente1.setId(2L);
         pedido1.setCliente(cliente1);
-        pedido1.setFuncionario(funcionarios);
+        pedido1.setFuncionario(usuario);
 
         pedidos.add(pedido);
         pedidos.add(pedido1);
@@ -111,7 +110,7 @@ class PedidoServiceTest {
         when(pedidoRepository.findByFunc(1L)).thenReturn(pedidos);
         when(modelMapper.map(pedido, PedidosDTO.class)).thenReturn(new PedidosDTO());
         when(modelMapper.map(cliente, ClientesDTO.class)).thenReturn(new ClientesDTO());
-        when(modelMapper.map(funcionarios, FuncionariosDTO.class)).thenReturn(new FuncionariosDTO());
+        when(modelMapper.map(usuario, UsuarioDTO.class)).thenReturn(new UsuarioDTO());
         when(pedidoProdutoRepository.save(pedidoProduto)).thenReturn(pedidoProduto);
         when(pedidoPizzaRepository.save(pedidoPizza)).thenReturn(pedidoPizza);
         when(pedidoRepository.save(pedido)).thenReturn(pedido);
@@ -179,7 +178,7 @@ class PedidoServiceTest {
         FormaDeEntrega formaDeEntrega = FormaDeEntrega.RETIRADA;
 
         when(clienteRepository.findById(clienteId)).thenReturn(Optional.of(cliente));
-        when(funcionarioRepository.findById(funcId)).thenReturn(Optional.of(funcionarios));
+        when(usuarioRepository.findById(funcId)).thenReturn(Optional.of(usuario));
         when(pedidoRepository.findByClienteAndStatus(cliente, Status.PENDENTE)).thenReturn(new ArrayList<>());
 
         PedidosDTO result = pedidoService.iniciarPedido(clienteId, pedido, funcId, formaDeEntrega);
@@ -194,7 +193,7 @@ class PedidoServiceTest {
         FormaDeEntrega deliveryMethod = FormaDeEntrega.ENTREGA;
 
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.empty());
-        when(funcionarioRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> pedidoService.iniciarPedido(1L, order, 2L, deliveryMethod));
     }
