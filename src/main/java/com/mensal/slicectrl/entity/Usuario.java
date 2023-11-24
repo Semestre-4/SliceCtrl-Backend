@@ -24,6 +24,9 @@ public class Usuario extends AbstractEntity implements UserDetails {
     @Column(name = "nome", nullable = false)
     private String nome;
 
+    @Column(name = "username", nullable = false)
+    private String username;
+
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
 
