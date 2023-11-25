@@ -6,29 +6,26 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
+
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 @Service
 public class JwtServiceGenerator {
 
     public String generateToken(Usuario userDetails) {
 
-
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("username", userDetails.getUsername());
         extraClaims.put("id", userDetails.getId().toString());
-
+        extraClaims.put("cpf", userDetails.getCpf());
 
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(userDetails.getCpf())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(new Date().getTime() + 3600000 * JwtParameters.HORAS_EXPIRACAO_TOKEN))
                 .signWith(getSigningKey(), JwtParameters.ALGORITMO_ASSINATURA)
@@ -45,10 +42,11 @@ public class JwtServiceGenerator {
     }
 
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return !isTokenExpired(token);
     }
+
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
