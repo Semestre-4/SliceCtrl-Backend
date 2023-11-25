@@ -4,35 +4,35 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.mensal.slicectrl.dto.FuncionariosDTO;
+import com.mensal.slicectrl.dto.UsuarioDTO;
 
 import java.math.BigDecimal;
 
-class FuncionariosDTOTest {
+class UsuarioDTOTest {
 
-    private FuncionariosDTO funcionariosDTO;
+    private UsuarioDTO usuarioDTO;
 
     @BeforeEach
     void setUp() {
-        funcionariosDTO = new FuncionariosDTO();
+        usuarioDTO = new UsuarioDTO();
     }
 
     @Test
     void testValidFuncionariosDTO() {
-        funcionariosDTO.setNome("John Doe");
-        funcionariosDTO.setCpf("12345678901");
-        funcionariosDTO.setTelefone("123-456-7890");
-        funcionariosDTO.setSalario(new BigDecimal("2500.00"));
+        usuarioDTO.setNome("John Doe");
+        usuarioDTO.setCpf("12345678901");
+        usuarioDTO.setTelefone("123-456-7890");
+        usuarioDTO.setSalario(new BigDecimal("2500.00"));
 
-        assertDoesNotThrow(() -> validateFuncionariosDTO(funcionariosDTO));
+        assertDoesNotThrow(() -> validateFuncionariosDTO(usuarioDTO));
     }
 
     @Test
     void testInvalidFuncionariosDTO() {
-        assertThrows(IllegalArgumentException.class, () -> validateFuncionariosDTO(funcionariosDTO));
+        assertThrows(IllegalArgumentException.class, () -> validateFuncionariosDTO(usuarioDTO));
     }
 
-    void validateFuncionariosDTO(FuncionariosDTO dto) {
+    void validateFuncionariosDTO(UsuarioDTO dto) {
         if (dto.getNome() == null || dto.getNome().length() < 2 || dto.getNome().length() > 100) {
             throw new IllegalArgumentException("Invalid nome");
         }

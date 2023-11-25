@@ -1,9 +1,6 @@
 package com.mensal.slicectrl.ServiceTest;
 
-import com.mensal.slicectrl.dto.FuncionariosDTO;
 import com.mensal.slicectrl.dto.PizzasDTO;
-import com.mensal.slicectrl.entity.PedidoPizza;
-import com.mensal.slicectrl.entity.Pedidos;
 import com.mensal.slicectrl.entity.Pizzas;
 import com.mensal.slicectrl.entity.enums.Tamanho;
 import com.mensal.slicectrl.repository.PizzaRepository;

@@ -5,6 +5,7 @@ import com.mensal.slicectrl.service.SaboresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +23,6 @@ public class SaboresController {
     @Autowired
     private SaboresService saboresService;
 
-    /**
-     * Recupera todos os sabores cadastrados.
-     *
-     * @return ResponseEntity contendo a lista de sabores ou uma resposta de erro.
-     */
     @GetMapping("/all")
     public ResponseEntity<List<SaboresDTO>> getAllSabores() {
         List<SaboresDTO> saboresDTOS = saboresService.getAll();
@@ -63,12 +59,7 @@ public class SaboresController {
         }
     }
 
-    /**
-     * Cria um novo sabor.
-     *
-     * @param saboresDTO Os dados do sabor a serem cadastrados.
-     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PostMapping
     public ResponseEntity<String> cadastrarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
         try {
@@ -80,12 +71,7 @@ public class SaboresController {
         }
     }
 
-    /**
-     * Atualiza as informações de um sabor.
-     *
-     * @param saboresDTO Os dados atualizados do sabor.
-     * @return ResponseEntity indicando o sucesso ou a falha da edição.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> editarSabor(@PathVariable Long id,
                                                @RequestBody @Validated SaboresDTO saboresDTO) {
@@ -98,12 +84,7 @@ public class SaboresController {
         }
     }
 
-    /**
-     * Exclui um sabor pelo seu ID.
-     *
-     * @param id O ID do sabor a ser excluído.
-     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirSabor(@PathVariable("id") Long id){
         try{

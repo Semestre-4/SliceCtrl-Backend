@@ -5,7 +5,6 @@ import com.mensal.slicectrl.dto.PedidoProdutoDTO;
 import com.mensal.slicectrl.dto.PedidosDTO;
 import com.mensal.slicectrl.entity.Pedidos;
 import com.mensal.slicectrl.entity.Produtos;
-import com.mensal.slicectrl.entity.Sabores;
 import com.mensal.slicectrl.entity.enums.FormaDeEntrega;
 import com.mensal.slicectrl.entity.enums.FormasDePagamento;
 import com.mensal.slicectrl.entity.enums.Status;
@@ -13,6 +12,7 @@ import com.mensal.slicectrl.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,37 +24,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/pedido")
+@CrossOrigin("http://localhost:4200")
 public class PedidoController {
 
     @Autowired
     public PedidoService pedidoService;
 
-
-    /**
-     * Recupera um pedido pelo seu ID.
-     *
-     * @param id O ID do pedido a ser recuperado.
-     * @return ResponseEntity contendo as informações do pedido, se encontrado, ou uma resposta de erro.
-     */
     @GetMapping("/id/{id}")
     public ResponseEntity<PedidosDTO> getPedidoById(@PathVariable("id") Long id) {
             PedidosDTO pedidosDTO = pedidoService.findById(id);
             return ResponseEntity.ok(pedidosDTO);
     }
 
-    /**
-     * Recupera uma lista de todos os pedidos.
-     *
-     * @return ResponseEntity contendo a lista de todos os pedidos.
-     */
     @GetMapping("/all")
     public ResponseEntity<List<PedidosDTO>> getAllPedidos() {
         List<PedidosDTO> pedidosDTOS = pedidoService.findAll();
         return ResponseEntity.ok(pedidosDTOS);
     }
-
-
-    // Métodos semelhantes para recuperar pedidos por status, cliente, funcionário e tipo de entrega
 
     @GetMapping("/status/{status}")
     public ResponseEntity<List<PedidosDTO>> getPedidosByStatus(@PathVariable Status status) {
@@ -96,13 +82,7 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findOrdersWithPendingPayments());
     }
 
-    /**
-     * Abre um novo pedido para um cliente específico.
-     *
-     * @param clienteId O ID do cliente para o qual o pedido será aberto.
-     * @param funcId    O ID do funcionário responsável pelo pedido.
-     * @return ResponseEntity contendo as informações do pedido aberto ou uma resposta de erro.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
     public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                   @PathVariable("funcId") Long funcId,
@@ -110,20 +90,13 @@ public class PedidoController {
         try {
             Pedidos pedido = new Pedidos();
             PedidosDTO savedPedido = pedidoService.iniciarPedido(clienteId, pedido,funcId,formaDeEntrega);
-//            return ResponseEntity.ok(String.format("%s",savedPedido));
             return  ResponseEntity.ok(savedPedido);
         } catch (Exception e) {
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
 
-    /**
-     * Adiciona um produto a um pedido existente.
-     *
-     * @param pedidoId         O ID do pedido ao qual o produto será adicionado.
-     * @param pedidoProdutoDTO O DTO contendo as informações do produto a ser adicionado.
-     * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/adicionar/produto/{pedidoId}")
     public ResponseEntity<String> addProdutoToPedido(
             @PathVariable Long pedidoId,
@@ -137,13 +110,7 @@ public class PedidoController {
         }
     }
 
-    /**
-     * Adiciona uma pizza a um pedido existente.
-     *
-     * @param pedidoId       O ID do pedido ao qual a pizza será adicionada.
-     * @param pedidoPizzaDTO O DTO contendo as informações da pizza a ser adicionada.
-     * @return ResponseEntity contendo as informações do pedido atualizado ou uma resposta de erro.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/adicionar/pizza/{pedidoId}")
     public ResponseEntity<String> addPizzaPedido(
             @PathVariable Long pedidoId,
@@ -156,13 +123,7 @@ public class PedidoController {
         }
     }
 
-    /**
-     * Finaliza um pedido realizando o pagamento.
-     *
-     * @param pedidoId         O ID do pedido a ser finalizado.
-     * @param formDePagamento  O tipo de forma de pagamento a ser usado.
-     * @return ResponseEntity contendo as informações do pedido finalizado ou uma resposta de erro.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{pedidoId}/pagamento/{formDePagamento}")
     public ResponseEntity<Pedidos> finalizarPedido(@PathVariable Long pedidoId,
                                                    @PathVariable FormasDePagamento formDePagamento) {
@@ -174,7 +135,7 @@ public class PedidoController {
         }
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping
     public ResponseEntity<Pedidos> updateOrderByUser(@RequestBody @Validated Pedidos pedido) {
      try{
@@ -186,6 +147,7 @@ public class PedidoController {
     }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{pedidoId}/remover-pedido-pizza/{pedidoPizzaId}")
     public ResponseEntity<Pedidos> removePedidoPizzaFromPedido(@PathVariable Long pedidoId, @PathVariable Long pedidoPizzaId) {
         try {
@@ -195,7 +157,6 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
 
 }

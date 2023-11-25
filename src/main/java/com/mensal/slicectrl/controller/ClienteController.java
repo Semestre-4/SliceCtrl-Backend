@@ -4,6 +4,7 @@ import com.mensal.slicectrl.dto.ClientesDTO;
 import com.mensal.slicectrl.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,17 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/cliente")
+@CrossOrigin("http://localhost:4200")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    /**
-     * Recupera um cliente pelo seu ID.
-     *
-     * @param id O ID do cliente a ser recuperado.
-     * @return ResponseEntity contendo as informações do cliente, se encontrado, ou uma resposta de "não encontrado".
-     */
     @GetMapping("/id/{id}")
     public ResponseEntity<ClientesDTO> getClienteById(@PathVariable("id") Long id) {
         ClientesDTO cliente = clienteService.findById(id);
@@ -36,12 +32,6 @@ public class ClienteController {
         }
     }
 
-    /**
-     * Recupera uma lista de clientes pelo nome.
-     *
-     * @param nome O nome dos clientes a serem recuperados.
-     * @return ResponseEntity contendo a lista de clientes, se encontrados, ou uma resposta de "não encontrado".
-     */
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<ClientesDTO>> getClientesByNome(@PathVariable("nome") String nome) {
         List<ClientesDTO> clientes = clienteService.findByNome(nome);
@@ -62,12 +52,6 @@ public class ClienteController {
         }
     }
 
-    /**
-     * Recupera um cliente pelo CPF.
-     *
-     * @param cpf O CPF do cliente a ser recuperado.
-     * @return ResponseEntity contendo as informações do cliente, se encontrado, ou uma resposta de "não encontrado".
-     */
     @GetMapping("/{cpf}")
     public ResponseEntity<ClientesDTO> getClientesByCPF(@PathVariable("cpf") String cpf) {
         ClientesDTO cliente = clienteService.findByCPF(cpf);
@@ -78,23 +62,12 @@ public class ClienteController {
         }
     }
 
-    /**
-     * Recupera uma lista de todos os clientes.
-     *
-     * @return ResponseEntity contendo a lista de todos os clientes.
-     */
     @GetMapping("/all")
     public ResponseEntity<List<ClientesDTO>> getAllClientes() {
         List<ClientesDTO> clientes = clienteService.findAll();
         return ResponseEntity.ok(clientes);
     }
 
-    /**
-     * Cria um novo cliente.
-     *
-     * @param clientesDTO Os dados do cliente a serem criados.
-     * @return ResponseEntity indicando o sucesso ou a falha da criação.
-     */
     @PostMapping
     public ResponseEntity<String> cadastrarCliente(@RequestBody @Validated ClientesDTO clientesDTO) {
         try {
@@ -107,13 +80,6 @@ public class ClienteController {
         }
     }
 
-    /**
-     * Atualiza as informações de um cliente.
-     *
-     * @param id          O ID do cliente a ser atualizado.
-     * @param clientesDTO Os dados atualizados do cliente.
-     * @return ResponseEntity indicando o sucesso ou a falha da atualização.
-     */
     @PutMapping("/{id}")
     public ResponseEntity<String> putCliente(@PathVariable Long id, @RequestBody @Validated ClientesDTO clientesDTO) {
         try {
@@ -126,12 +92,7 @@ public class ClienteController {
         }
     }
 
-    /**
-     * Exclui um cliente pelo seu ID.
-     *
-     * @param id O ID do cliente a ser excluído.
-     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO_TECNICO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirCliente(@PathVariable Long id) {
         try {

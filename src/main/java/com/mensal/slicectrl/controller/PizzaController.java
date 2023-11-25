@@ -6,6 +6,7 @@ import com.mensal.slicectrl.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,6 @@ public class PizzaController {
     @Autowired
     public PizzaService pizzaService;
 
-    /**
-     * Recupera uma pizza pelo seu ID.
-     *
-     * @param id O ID da pizza a ser recuperada.
-     * @return ResponseEntity contendo as informações da pizza, se encontrada, ou uma resposta de erro.
-     */
     @GetMapping("/id/{id}")
     public ResponseEntity<PizzasDTO> getPizzaById(@PathVariable("id") Long id) {
         PizzasDTO pizzasDTO = pizzaService.findById(id);
@@ -67,12 +62,7 @@ public class PizzaController {
         }
     }
 
-    /**
-     * Cria uma nova pizza.
-     *
-     * @param pizzaDTO Os dados da pizza a serem cadastrados.
-     * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PostMapping
     public ResponseEntity<String> cadastrarPizza(@RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
@@ -83,13 +73,7 @@ public class PizzaController {
         }
     }
 
-    /**
-     * Atualiza as informações de uma pizza.
-     *
-     * @param id       O ID da pizza a ser editada.
-     * @param pizzaDTO Os dados atualizados da pizza.
-     * @return ResponseEntity indicando o sucesso ou a falha da edição.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> editarPizza(@PathVariable Long id, @RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
@@ -100,12 +84,7 @@ public class PizzaController {
         }
     }
 
-    /**
-     * Exclui uma pizza pelo seu ID.
-     *
-     * @param id O ID da pizza a ser excluída.
-     * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
-     */
+    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirPizza(@PathVariable Long id) {
         try {
