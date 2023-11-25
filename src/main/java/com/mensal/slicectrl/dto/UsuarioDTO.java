@@ -1,16 +1,18 @@
 package com.mensal.slicectrl.dto;
 
-import com.mensal.slicectrl.entity.enums.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
-import java.util.List;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioDTO extends AbstractEntityDTO {
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
@@ -27,7 +29,7 @@ public class UsuarioDTO extends AbstractEntityDTO {
     @NotNull(message = "O campo 'Senha' não pode ser nulo")
     private String password;
 
-    private List<Role> roles;
+    private String role;
 
     private String token;
 

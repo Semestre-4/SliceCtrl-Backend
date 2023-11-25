@@ -18,16 +18,17 @@ public class LogInController {
     @Autowired  private LoginService loginService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<UsuarioDTO> authenticate(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginDTO loginDTO) {
         try {
             UsuarioDTO authenticatedUser = loginService.authenticate(loginDTO);
             return ResponseEntity.ok(authenticatedUser);
         } catch (AuthenticationException ex) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Authentication failed: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Bad request: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @GetMapping("/logout")
     public ResponseEntity<HttpStatus> logout() {
