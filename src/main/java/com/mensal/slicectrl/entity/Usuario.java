@@ -55,7 +55,7 @@ public class Usuario extends AbstractEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return cpf;
     }
 
     @Override
