@@ -1,16 +1,16 @@
 package com.mensal.slicectrl.dto;
 
+import com.mensal.slicectrl.entity.enums.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Getter @Setter
-@NoArgsConstructor
 public class UsuarioDTO extends AbstractEntityDTO {
 
     @NotBlank(message = "O nome do funcionario é obrigatório")
@@ -18,7 +18,7 @@ public class UsuarioDTO extends AbstractEntityDTO {
     @NotNull(message = "O campo 'nome' não pode ser nulo")
     private String nome;
 
-//    @CPF(message = "O CPF é inválido")
+    @CPF(message = "O CPF é inválido")
     @NotBlank(message = "O CPF do usuario é obrigatório")
     @NotNull(message = "O campo 'CPF' não pode ser nulo")
     private String cpf;
@@ -27,16 +27,8 @@ public class UsuarioDTO extends AbstractEntityDTO {
     @NotNull(message = "O campo 'Senha' não pode ser nulo")
     private String password;
 
-    @NotBlank(message = "O telefone do usuario é obrigatório")
-    @NotNull(message = "O campo 'telefone' não pode ser nulo")
-    private String telefone;
+    private List<Role> roles;
 
-    private BigDecimal salario;
+    private String token;
 
-    public UsuarioDTO(String nome, String cpf, String telefone, BigDecimal salario) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.salario = salario;
-    }
 }
