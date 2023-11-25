@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/funcionario")
+@RequestMapping("/api/usuario")
 @CrossOrigin("http://localhost:4200")
 public class UsuarioController {
 
@@ -68,7 +68,6 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDTOS);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<String> cadastrarFuncionario(@RequestBody @Validated UsuarioDTO usuarioDTO) {
         try {
@@ -80,7 +79,6 @@ public class UsuarioController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<String> editarFuncionario(@PathVariable Long id,
                                                     @RequestBody @Validated UsuarioDTO usuarioDTO) {
@@ -93,7 +91,6 @@ public class UsuarioController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirFuncionario(@PathVariable Long id) {
         try {
