@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface LoginRepository extends JpaRepository<Usuario, Long>{
     Optional<Usuario> findByCpf(String cpf);
+    boolean existsByCpfAndPassword(String cpf, String password);
+
 }
