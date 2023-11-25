@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/funcionario")
+@CrossOrigin("http://localhost:4200")
 public class UsuarioController {
 
     @Autowired

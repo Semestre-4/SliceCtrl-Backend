@@ -24,6 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/pedido")
+@CrossOrigin("http://localhost:4200")
 public class PedidoController {
 
     @Autowired
