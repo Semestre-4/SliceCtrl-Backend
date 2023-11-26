@@ -19,11 +19,6 @@ public class JwtConfig {
     @Autowired
     private LoginRepository loginRepository;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) loginRepository.findByCpf(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -42,4 +37,11 @@ public class JwtConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> loginRepository.findByCpf(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado") );
+    }
+
 }

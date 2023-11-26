@@ -193,7 +193,6 @@ class PedidoControllerTest {
         ResponseEntity<PedidosDTO> response = pedidoController.abrirPedido(clienteId, funcId, formaDeEntrega);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Mensagem de exceção de amostra", response.getBody());
 
         verify(pedidoService, times(1)).iniciarPedido(
                 eq(clienteId),

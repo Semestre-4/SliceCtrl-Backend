@@ -62,7 +62,6 @@ public class PizzaController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PostMapping
     public ResponseEntity<String> cadastrarPizza(@RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
@@ -73,7 +72,6 @@ public class PizzaController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> editarPizza(@PathVariable Long id, @RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
@@ -84,7 +82,6 @@ public class PizzaController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirPizza(@PathVariable Long id) {
         try {

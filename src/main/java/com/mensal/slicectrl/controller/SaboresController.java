@@ -59,7 +59,6 @@ public class SaboresController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PostMapping
     public ResponseEntity<String> cadastrarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
         try {
@@ -71,7 +70,6 @@ public class SaboresController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> editarSabor(@PathVariable Long id,
                                                @RequestBody @Validated SaboresDTO saboresDTO) {
@@ -84,7 +82,6 @@ public class SaboresController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirSabor(@PathVariable("id") Long id){
         try{

@@ -78,7 +78,6 @@ public class ProdutoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> cadastrarProduto(@RequestBody @Validated ProdutosDTO produtosDTO) {
         try {
             this.produtoService.cadastrar(produtosDTO);
@@ -90,7 +89,6 @@ public class ProdutoController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> editarProduto(@PathVariable Long id,
                                                  @RequestBody @Validated ProdutosDTO produtosDTO) {
         try {
@@ -103,7 +101,6 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> excluirProduto(@PathVariable("id") Long id) {
         try {
             this.produtoService.deletar(id);

@@ -81,7 +81,7 @@ class PedidoServiceTest {
         pedido.setFormaDeEntrega(FormaDeEntrega.RETIRADA);
         cliente.setId(1L);
         pedido.setCliente(cliente);
-        pedido.setFuncionario(usuario);
+        pedido.setUsuario(usuario);
         pedido.setValorTotal(100.0);
 
 
@@ -98,7 +98,7 @@ class PedidoServiceTest {
         pedido.setFormaDeEntrega(FormaDeEntrega.RETIRADA);
         cliente1.setId(2L);
         pedido1.setCliente(cliente1);
-        pedido1.setFuncionario(usuario);
+        pedido1.setUsuario(usuario);
 
         pedidos.add(pedido);
         pedidos.add(pedido1);

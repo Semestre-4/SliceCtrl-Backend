@@ -92,7 +92,6 @@ public class ClienteController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO_TECNICO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirCliente(@PathVariable Long id) {
         try {
