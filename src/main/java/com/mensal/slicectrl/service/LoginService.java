@@ -1,4 +1,3 @@
-//AuthenticationService.java
 package com.mensal.slicectrl.service;
 
 import com.mensal.slicectrl.config.security.JwtServiceGenerator;
@@ -13,36 +12,37 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
-	
-	@Autowired
-	private LoginRepository repository;
-	@Autowired
-	private JwtServiceGenerator jwtService;
-	@Autowired
-	private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private LoginRepository repository;
+    @Autowired
+    private JwtServiceGenerator jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	public UsuarioDTO logar(LoginDTO loginDTO) {
-		authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-						loginDTO.getUsername(),
-						loginDTO.getPassword()
-						)
-				);
-		Usuario user = repository.findByUsername(loginDTO.getUsername()).orElseThrow();
-		var jwtToken = jwtService.generateToken(user);
-		
-		return toUserDTO(user, jwtToken);
-	}
+    public UsuarioDTO authenticate(LoginDTO loginDTO) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDTO.getCpf(),
+                        loginDTO.getPassword()
+                )
+        );
+        Usuario user = repository.findByCpf(loginDTO.getCpf()).orElseThrow();
+        var jwtToken = jwtService.generateToken(user);
 
+        return toUsuarioDTO(user, jwtToken);
+    }
 
-	private UsuarioDTO toUserDTO(Usuario user, String token) {
-		UsuarioDTO userDTO = new UsuarioDTO();
-		userDTO.setId(user.getId());
-		userDTO.setRoles(user.getRoles());
-		userDTO.setToken(token);
-		userDTO.setUsername(user.getUsername());
-		return userDTO;
-	}
+    private UsuarioDTO toUsuarioDTO(Usuario user, String token) {
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setId(user.getId());
+        usuarioDTO.setNome(user.getNome());
+        usuarioDTO.setToken(token);
+        usuarioDTO.setCpf(user.getCpf());
+        usuarioDTO.setPassword(user.getPassword());
+        usuarioDTO.setRole(user.getRole());
+        return usuarioDTO;
+    }
+
 
 }

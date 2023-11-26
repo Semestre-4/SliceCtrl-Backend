@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface LoginRepository extends JpaRepository<Usuario, Long>{
-
-    public Optional<Usuario> findByUsername(String login);
+    Optional<Usuario> findByCpf(String cpf);
+    boolean existsByCpfAndPassword(String cpf, String password);
 
 }

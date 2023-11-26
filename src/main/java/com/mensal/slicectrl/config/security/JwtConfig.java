@@ -15,13 +15,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class ApplicationConfig {
+public class JwtConfig {
     @Autowired
     private LoginRepository loginRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) loginRepository.findByUsername(username)
+        return username -> (UserDetails) loginRepository.findByCpf(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 

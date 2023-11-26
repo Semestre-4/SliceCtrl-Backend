@@ -10,10 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "usuario",schema = "public")
@@ -23,9 +22,6 @@ public class Usuario extends AbstractEntity implements UserDetails {
 
     @Column(name = "nome", nullable = false)
     private String nome;
-
-    @Column(name = "username", nullable = false)
-    private String username;
 
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
@@ -39,10 +35,7 @@ public class Usuario extends AbstractEntity implements UserDetails {
     @Column(name = "salario")
     private BigDecimal salario;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id"))
-    private Set<Role> roles;
+    private String role;
 
     @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
     @JsonIgnore
@@ -50,15 +43,15 @@ public class Usuario extends AbstractEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.role));
+        return authorities;
     }
 
 
     @Override
     public String getUsername() {
-        return null;
+        return cpf;
     }
 
     @Override
