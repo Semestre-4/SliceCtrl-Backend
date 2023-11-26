@@ -18,7 +18,7 @@ class PedidosDTOTest {
     void setUp() {
         pedidosDTO = new PedidosDTO();
         pedidosDTO.setCliente(new ClientesDTO());
-        pedidosDTO.setUsuarioDTO(new UsuarioDTO());
+        pedidosDTO.setUsuario(new UsuarioDTO());
         pedidosDTO.setProdutos(new ArrayList<>());
         pedidosDTO.setPizzas(new ArrayList<>());
         pedidosDTO.setStatus(Status.PAGO);
@@ -39,7 +39,7 @@ class PedidosDTOTest {
     }
 
     private void validatePedidosDTO(PedidosDTO dto) {
-        if (dto.getCliente() == null || dto.getUsuarioDTO() == null) {
+        if (dto.getCliente() == null || dto.getUsuario() == null) {
             throw new IllegalArgumentException("Cliente and Funcionario must not be null");
         }
 

@@ -91,7 +91,7 @@ class UsuarioServiceTest {
 
     @Test
     void testCadastrarFuncService(){
-        Usuario resposta = usuarioService.createFuncionario(usuarioDTO);
+        Usuario resposta = usuarioService.createUsuario(usuarioDTO);
         assertNotNull(resposta);
         assertEquals(resposta, usuario);
     }

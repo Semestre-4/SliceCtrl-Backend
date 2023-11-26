@@ -197,7 +197,7 @@ class UsuarioControllerTest {
         assertEquals("O cadastro de 'John Doe' foi realizado com sucesso.", response.getBody());
 
         // Verificar se o método createFuncionario foi chamado exatamente uma vez
-        verify(usuarioService, times(1)).createFuncionario(funcionarioDTO);
+        verify(usuarioService, times(1)).createUsuario(funcionarioDTO);
     }
 
     @Test
@@ -205,7 +205,7 @@ class UsuarioControllerTest {
         UsuarioDTO funcionarioDTO = new UsuarioDTO(); // Criar um FuncionariosDTO de exemplo
 
         // Simular uma exceção sendo lançada durante a criação
-        when(usuarioService.createFuncionario(funcionarioDTO)).thenThrow(new RuntimeException("Erro durante a criação"));
+        when(usuarioService.createUsuario(funcionarioDTO)).thenThrow(new RuntimeException("Erro durante a criação"));
 
         // Chamar o método e verificar o resultado
         ResponseEntity<String> response = usuarioController.cadastrarFuncionario(funcionarioDTO);
@@ -215,7 +215,7 @@ class UsuarioControllerTest {
         assertTrue(Objects.requireNonNull(response.getBody()).contains("Ocorreu um erro durante o cadastro"));
 
         // Verificar se o método createFuncionario foi chamado exatamente uma vez
-        verify(usuarioService, times(1)).createFuncionario(funcionarioDTO);
+        verify(usuarioService, times(1)).createUsuario(funcionarioDTO);
     }
 
     @Test
@@ -227,7 +227,7 @@ class UsuarioControllerTest {
         funcionarioDTO.setCpf("12345678901");
 
         // Chamar o método e verificar o resultado
-        ResponseEntity<String> response = usuarioController.editarFuncionario(funcionarioId, funcionarioDTO);
+        ResponseEntity<String> response = usuarioController.editarUsuario(funcionarioId, funcionarioDTO);
 
         // Verificar se a resposta tem o código de status esperado e o corpo esperado
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -247,7 +247,7 @@ class UsuarioControllerTest {
                 .thenThrow(new RuntimeException("Erro durante a atualização"));
 
         // Chamar o método e verificar o resultado
-        ResponseEntity<String> response = usuarioController.editarFuncionario(funcionarioId, funcionarioDTO);
+        ResponseEntity<String> response = usuarioController.editarUsuario(funcionarioId, funcionarioDTO);
 
         // Verificar se a resposta tem o código de status esperado e contém a mensagem de erro esperada
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());

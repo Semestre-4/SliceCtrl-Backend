@@ -149,7 +149,7 @@ class PedidoControllerTest {
         // Adicionando um objeto PedidosDTO de amostra à lista
         PedidosDTO samplePedido = new PedidosDTO();
         samplePedido.setId(2L);
-        samplePedido.setUsuarioDTO(new UsuarioDTO());
+        samplePedido.setUsuario(new UsuarioDTO());
         pedidosDTOList.add(samplePedido);
 
         when(pedidoService.findByFuncionarioId(funcionarioId)).thenReturn(pedidosDTOList);

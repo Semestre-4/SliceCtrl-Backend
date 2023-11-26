@@ -29,12 +29,13 @@ public class Usuario extends AbstractEntity implements UserDetails {
     @Column(name = "password", nullable = false,unique = true)
     private String password;
 
-    @Column(name = "telefone", nullable = false, unique = true)
+    @Column(name = "telefone")
     private String telefone;
 
     @Column(name = "salario")
     private BigDecimal salario;
 
+    @Column(name = "role",nullable = false)
     private String role;
 
     @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
