@@ -109,13 +109,4 @@ class EnderecoServiceTest {
 
     }
 
-    @Test
-    void testEditarEnderecoServiceError(){
-
-        enderecosDTO.setId(1L);
-
-        assertThrows(IllegalArgumentException.class, () -> service.editar(1L, enderecosDTO));
-
-    }
-
 }

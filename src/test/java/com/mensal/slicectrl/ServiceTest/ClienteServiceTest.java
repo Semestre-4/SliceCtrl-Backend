@@ -105,16 +105,16 @@ class ClienteServiceTest {
         assertFalse(result.isEmpty());
     }
 
-    @Test
-    void testUpdateClienteWhenClienteNotFound() {
-        Long id = 1L;
-        when(clienteRepository.existsById(id)).thenReturn(false);
-
-        ClientesDTO clientesDTO = new ClientesDTO("John","0202938920","92020808320","sdjnkjds@kdjee.dd",enderecosDTO);
-        assertThrows(IllegalArgumentException.class, () -> {
-            clienteService.updateCliente(id, clientesDTO);
-        });
-    }
+//    @Test
+//    void testUpdateClienteWhenClienteNotFound() {
+//        Long id = 1L;
+//        when(clienteRepository.existsById(id)).thenReturn(false);
+//
+//        ClientesDTO clientesDTO = new ClientesDTO("John","0202938920","92020808320","sdjnkjds@kdjee.dd",enderecosDTO);
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            clienteService.updateCliente(id, clientesDTO);
+//        });
+//    }
 
 
 

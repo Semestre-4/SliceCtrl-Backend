@@ -62,9 +62,9 @@ class UsuarioServiceTest {
         when(usuarioRepository.findAll()).thenReturn(usuarioList);
         when(usuarioRepository.findByNome("John")).thenReturn(List.of(usuario));
         when(usuarioRepository.findByCpf("0202938920")).thenReturn(usuario);
-        when(modelMapper.map(usuario, UsuarioDTO.class)).thenReturn(new UsuarioDTO());
-        when(modelMapper.map(usuario, UsuarioDTO.class)).thenReturn(new UsuarioDTO());
-        when(modelMapper.map(usuario2, UsuarioDTO.class)).thenReturn(new UsuarioDTO());
+        when(modelMapper.map(usuario, UsuarioFrontDTO.class)).thenReturn(usuarioDTO);
+        when(modelMapper.map(usuario, UsuarioFrontDTO.class)).thenReturn(usuarioDTO);
+        when(modelMapper.map(usuario2, UsuarioFrontDTO.class)).thenReturn(usuarioDTO);
         when(usuarioService.toFunc(usuarioDTO1)).thenReturn(usuario);
         when(usuarioRepository.save(usuario)).thenReturn(usuario);    }
 
@@ -114,8 +114,7 @@ class UsuarioServiceTest {
     void testUpdateFuncWhenIdMismatch() {
         Long id = 1L;
         when(usuarioRepository.existsById(id)).thenReturn(true);
-        UsuarioDTO usuarioDTO1 = new UsuarioDTO( "0202938920", "1111", "123456");
-        usuarioDTO1.setId(2L);
+        usuario.setId(2L);
 
         assertThrows(IllegalArgumentException.class, () -> {
             usuarioService.updateUsuario(id, usuario);
