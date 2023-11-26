@@ -63,7 +63,6 @@ public class UsuarioService implements UserDetailsService {
         if (usuarioRepository.existsByCpf(usuarioDTO.getCpf())) {
             throw new IllegalArgumentException("Funcionario com CPF = " + usuarioDTO.getCpf() + " já existe");
         }
-        usuarioDTO.setPassword(encode().encode(usuarioDTO.getPassword()));
         Usuario usuario = toFunc(usuarioDTO);
         return usuarioRepository.save(usuario);
     }

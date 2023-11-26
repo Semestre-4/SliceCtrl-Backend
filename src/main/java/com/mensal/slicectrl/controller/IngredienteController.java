@@ -87,7 +87,6 @@ public class IngredienteController {
      * @return ResponseEntity indicando o sucesso ou a falha do cadastro.
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> cadastrarIngrediente(@RequestBody @Validated IngredientesDTO ingredientesDTO) {
         try {
             this.ingredienteService.cadastrar(ingredientesDTO);
@@ -106,7 +105,6 @@ public class IngredienteController {
      * @return ResponseEntity indicando o sucesso ou a falha da edição.
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> editarIngrediente(@PathVariable("id") final Long id,
                                                      @RequestBody @Validated IngredientesDTO ingredientesDTO) {
         try {
@@ -125,7 +123,6 @@ public class IngredienteController {
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<String> excluirIngrediente(@PathVariable("id") final Long id) {
         try {
             this.ingredienteService.delete(id);

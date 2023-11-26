@@ -82,7 +82,6 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.findOrdersWithPendingPayments());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
     public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                   @PathVariable("funcId") Long funcId,
@@ -96,7 +95,6 @@ public class PedidoController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/adicionar/produto/{pedidoId}")
     public ResponseEntity<String> addProdutoToPedido(
             @PathVariable Long pedidoId,
@@ -110,7 +108,6 @@ public class PedidoController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/adicionar/pizza/{pedidoId}")
     public ResponseEntity<String> addPizzaPedido(
             @PathVariable Long pedidoId,
@@ -123,7 +120,6 @@ public class PedidoController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{pedidoId}/pagamento/{formDePagamento}")
     public ResponseEntity<Pedidos> finalizarPedido(@PathVariable Long pedidoId,
                                                    @PathVariable FormasDePagamento formDePagamento) {
@@ -135,7 +131,6 @@ public class PedidoController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping
     public ResponseEntity<Pedidos> updateOrderByUser(@RequestBody @Validated Pedidos pedido) {
      try{
@@ -147,7 +142,6 @@ public class PedidoController {
     }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'FUNCIONARIO')")
     @PutMapping("/{pedidoId}/remover-pedido-pizza/{pedidoPizzaId}")
     public ResponseEntity<Pedidos> removePedidoPizzaFromPedido(@PathVariable Long pedidoId, @PathVariable Long pedidoPizzaId) {
         try {

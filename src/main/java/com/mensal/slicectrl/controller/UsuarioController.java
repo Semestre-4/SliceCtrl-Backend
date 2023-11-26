@@ -3,6 +3,7 @@ package com.mensal.slicectrl.controller;
 import com.mensal.slicectrl.dto.UsuarioDTO;
 import com.mensal.slicectrl.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -72,8 +73,7 @@ public class UsuarioController {
     public ResponseEntity<String> cadastrarFuncionario(@RequestBody @Validated UsuarioDTO usuarioDTO) {
         try {
             usuarioService.createFuncionario(usuarioDTO);
-            return ResponseEntity.ok(String.format("O cadastro de '%s' foi realizado com sucesso.",
-                    usuarioDTO.getNome()));
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
         }
@@ -84,8 +84,7 @@ public class UsuarioController {
                                                     @RequestBody @Validated UsuarioDTO usuarioDTO) {
         try {
             usuarioService.updateFuncionario(id, usuarioDTO);
-            return ResponseEntity.ok(String.format("O cadastro de '%s' foi atualizado com sucesso.",
-                    usuarioDTO.getNome()));
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
         }

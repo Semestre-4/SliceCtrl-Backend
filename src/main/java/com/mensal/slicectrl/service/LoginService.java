@@ -36,10 +36,8 @@ public class LoginService {
     private UsuarioDTO toUsuarioDTO(Usuario user, String token) {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId(user.getId());
-        usuarioDTO.setNome(user.getNome());
         usuarioDTO.setToken(token);
         usuarioDTO.setCpf(user.getCpf());
-        usuarioDTO.setPassword(user.getPassword());
         usuarioDTO.setRole(user.getRole());
         return usuarioDTO;
     }
