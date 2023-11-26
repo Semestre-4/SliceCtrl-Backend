@@ -1,6 +1,8 @@
 package com.mensal.slicectrl.controller;
 
 import com.mensal.slicectrl.dto.UsuarioDTO;
+import com.mensal.slicectrl.dto.UsuarioFrontDTO;
+import com.mensal.slicectrl.entity.Usuario;
 import com.mensal.slicectrl.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +26,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<UsuarioDTO> getFuncionarioById(@PathVariable("id") Long id) {
-        UsuarioDTO cliente = usuarioService.findById(id);
+    public ResponseEntity<UsuarioFrontDTO> getFuncionarioById(@PathVariable("id") Long id) {
+        UsuarioFrontDTO cliente = usuarioService.findById(id);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
         } else {
@@ -34,8 +36,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<UsuarioDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
-        List<UsuarioDTO> usuarioDTOS = usuarioService.findByNome(nome);
+    public ResponseEntity<List<UsuarioFrontDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
+        List<UsuarioFrontDTO> usuarioDTOS = usuarioService.findByNome(nome);
         if (!usuarioDTOS.isEmpty()) {
             return ResponseEntity.ok(usuarioDTOS);
         } else {
@@ -44,8 +46,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/ativo/{ativo}")
-    public ResponseEntity<List<UsuarioDTO>> getFuncionariosByAtivo(@PathVariable("ativo") boolean ativo) {
-        List<UsuarioDTO> usuarioDTOS = usuarioService.findByAtivo(ativo);
+    public ResponseEntity<List<UsuarioFrontDTO>> getFuncionariosByAtivo(@PathVariable("ativo") boolean ativo) {
+        List<UsuarioFrontDTO> usuarioDTOS = usuarioService.findByAtivo(ativo);
         if (!usuarioDTOS.isEmpty()) {
             return ResponseEntity.ok(usuarioDTOS);
         } else {
@@ -54,8 +56,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/cpf/{cpf}")
-    public ResponseEntity<UsuarioDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
-        UsuarioDTO usuarioDTO = usuarioService.findByCPF(cpf);
+    public ResponseEntity<UsuarioFrontDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
+        UsuarioFrontDTO usuarioDTO = usuarioService.findByCPF(cpf);
         if (usuarioDTO != null) {
             return ResponseEntity.ok(usuarioDTO);
         } else {
@@ -64,15 +66,15 @@ public class UsuarioController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UsuarioDTO>> getAllFuncionarios() {
-        List<UsuarioDTO> usuarioDTOS = usuarioService.findAll();
+    public ResponseEntity<List<UsuarioFrontDTO>> getAllFuncionarios() {
+        List<UsuarioFrontDTO> usuarioDTOS = usuarioService.findAll();
         return ResponseEntity.ok(usuarioDTOS);
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarFuncionario(@RequestBody @Validated UsuarioDTO usuarioDTO) {
+    public ResponseEntity<String> cadastrarUsuario(@RequestBody @Validated Usuario usuario) {
         try {
-            usuarioService.createFuncionario(usuarioDTO);
+            usuarioService.createUsuario(usuario);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());
@@ -80,10 +82,10 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarFuncionario(@PathVariable Long id,
-                                                    @RequestBody @Validated UsuarioDTO usuarioDTO) {
+    public ResponseEntity<String> editarUsuario(@PathVariable Long id,
+                                                @RequestBody @Validated Usuario usuario) {
         try {
-            usuarioService.updateFuncionario(id, usuarioDTO);
+            usuarioService.updateUsuario(id, usuario);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocorreu um erro durante o cadastro: " + e.getMessage());

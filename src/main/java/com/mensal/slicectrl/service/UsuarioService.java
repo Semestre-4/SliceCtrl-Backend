@@ -1,6 +1,7 @@
 package com.mensal.slicectrl.service;
 
 import com.mensal.slicectrl.dto.UsuarioDTO;
+import com.mensal.slicectrl.dto.UsuarioFrontDTO;
 import com.mensal.slicectrl.entity.Usuario;
 import com.mensal.slicectrl.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,61 +29,50 @@ public class UsuarioService implements UserDetailsService {
         this.modelMapper = modelMapper;
     }
 
-    public UsuarioDTO findById(Long id) {
+    public UsuarioFrontDTO findById(Long id) {
         try {
             Usuario usuarioEncontrado = usuarioRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado: " + id));
-            return toFuncDTO(usuarioEncontrado);
+            return toUsuarioFrontDTO(usuarioEncontrado);
         } catch (EntityNotFoundException ex) {
             throw new IllegalArgumentException("Ocorreu um erro ao tentar recuperar o registro do funcionário.", ex);
         }
     }
 
-    private PasswordEncoder encode(){
-        return new BCryptPasswordEncoder();
+    public List<UsuarioFrontDTO> findByAtivo(boolean ativo) {
+        return usuarioRepository.findByAtivo(ativo).stream().map(this::toUsuarioFrontDTO).toList();
     }
 
-    public List<UsuarioDTO> findByNome(String nome) {
-        return usuarioRepository.findByNome(nome).stream().map(this::toFuncDTO).toList();
+    public UsuarioFrontDTO findByCPF(String cpf) {
+        return toUsuarioFrontDTO(usuarioRepository.findByCpf(cpf));
     }
 
-    public List<UsuarioDTO> findByAtivo(boolean ativo) {
-        return usuarioRepository.findByAtivo(ativo).stream().map(this::toFuncDTO).toList();
-    }
-
-    public UsuarioDTO findByCPF(String cpf) {
-        return toFuncDTO(usuarioRepository.findByCpf(cpf));
-    }
-
-    public List<UsuarioDTO> findAll() {
-        return usuarioRepository.findAll().stream().map(this::toFuncDTO).toList();
+    public List<UsuarioFrontDTO> findAll() {
+        return usuarioRepository.findAll().stream().map(this::toUsuarioFrontDTO).toList();
     }
 
     @Transactional
-    public Usuario createFuncionario(UsuarioDTO usuarioDTO) {
-        if (usuarioRepository.existsByCpf(usuarioDTO.getCpf())) {
-            throw new IllegalArgumentException("Funcionario com CPF = " + usuarioDTO.getCpf() + " já existe");
+    public Usuario createUsuario(Usuario usuario) {
+        if (usuarioRepository.existsByCpf(usuario.getCpf())) {
+            throw new IllegalArgumentException("Funcionario com CPF = " + usuario.getCpf() + " já existe");
         }
-        Usuario usuario = toFunc(usuarioDTO);
         return usuarioRepository.save(usuario);
     }
 
     @Transactional
-    public Usuario updateFuncionario(Long id, UsuarioDTO usuarioDTO) {
+    public Usuario updateUsuario(Long id, Usuario usuario) {
 
         if (!usuarioRepository.existsById(id)) {
             throw new EntityNotFoundException("Funcionario com ID = " + id + " nao encontrado");
         }
 
-        if (!id.equals(usuarioDTO.getId())) {
+        if (!id.equals(usuario.getId())) {
             throw new IllegalArgumentException("O ID na URL não corresponde ao ID no corpo da requisição");
         }
 
-        if (usuarioRepository.existsByCpfAndIdNot(usuarioDTO.getCpf(), id)) {
+        if (usuarioRepository.existsByCpfAndIdNot(usuario.getCpf(), id)) {
             throw new IllegalArgumentException("CPF já está sendo usado por outro Funcionario");
         }
-
-        Usuario usuario = toFunc(usuarioDTO);
         return usuarioRepository.save(usuario);
     }
 
@@ -96,8 +86,8 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(funcToDelete);
     }
 
-    public UsuarioDTO toFuncDTO(Usuario usuario) {
-        return modelMapper.map(usuario, UsuarioDTO.class);
+    public UsuarioFrontDTO toUsuarioFrontDTO(Usuario usuario) {
+        return modelMapper.map(usuario, UsuarioFrontDTO.class);
     }
 
     public Usuario toFunc(UsuarioDTO usuarioDTO) {
@@ -107,5 +97,9 @@ public class UsuarioService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return usuarioRepository.findByCpf(username);
+    }
+
+    public List<UsuarioFrontDTO> findByNome(String nome) {
+        return usuarioRepository.findByNome(nome).stream().map(this::toUsuarioFrontDTO).toList();
     }
 }
