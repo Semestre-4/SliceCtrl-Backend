@@ -333,6 +333,11 @@ public class PedidoService {
             pedidosDTO.setPagamentoDTO(pagamentoDTO);
         }
 
+        if (pedidos.getUsuario() != null) {
+            UsuarioFrontDTO usuarioFrontDTO = modelMapper.map(pedidos.getUsuario(), UsuarioFrontDTO.class);
+            pedidosDTO.setUsuario(usuarioFrontDTO);
+        }
+
         return pedidosDTO;
     }
 

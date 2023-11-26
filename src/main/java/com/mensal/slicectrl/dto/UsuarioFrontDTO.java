@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioFrontDTO {
+public class UsuarioFrontDTO extends AbstractEntityDTO{
 
     private String nome;
 
