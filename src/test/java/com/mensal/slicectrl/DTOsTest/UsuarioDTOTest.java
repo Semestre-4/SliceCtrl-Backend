@@ -1,5 +1,6 @@
 package com.mensal.slicectrl.DTOsTest;
 
+import com.mensal.slicectrl.dto.UsuarioFrontDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,16 +11,15 @@ import java.math.BigDecimal;
 
 class UsuarioDTOTest {
 
-    private UsuarioDTO usuarioDTO;
+    private UsuarioFrontDTO usuarioDTO;
 
     @BeforeEach
     void setUp() {
-        usuarioDTO = new UsuarioDTO();
+        usuarioDTO = new UsuarioFrontDTO();
     }
 
     @Test
     void testValidFuncionariosDTO() {
-        usuarioDTO.setNome("John Doe");
         usuarioDTO.setCpf("12345678901");
         usuarioDTO.setTelefone("123-456-7890");
         usuarioDTO.setSalario(new BigDecimal("2500.00"));
@@ -32,10 +32,7 @@ class UsuarioDTOTest {
         assertThrows(IllegalArgumentException.class, () -> validateFuncionariosDTO(usuarioDTO));
     }
 
-    void validateFuncionariosDTO(UsuarioDTO dto) {
-        if (dto.getNome() == null || dto.getNome().length() < 2 || dto.getNome().length() > 100) {
-            throw new IllegalArgumentException("Invalid nome");
-        }
+    void validateFuncionariosDTO(UsuarioFrontDTO dto) {
 
         if (dto.getCpf() == null || dto.getCpf().isEmpty()) {
             throw new IllegalArgumentException("Invalid cpf");

@@ -1,6 +1,7 @@
 package com.mensal.slicectrl.ServiceTest;
 
 import com.mensal.slicectrl.dto.UsuarioDTO;
+import com.mensal.slicectrl.dto.UsuarioFrontDTO;
 import com.mensal.slicectrl.entity.Usuario;
 import com.mensal.slicectrl.repository.UsuarioRepository;
 import com.mensal.slicectrl.service.UsuarioService;
@@ -35,7 +36,10 @@ class UsuarioServiceTest {
 
     private List<Usuario> usuarioList = new ArrayList<>();
     Usuario usuario = new Usuario();
-    UsuarioDTO usuarioDTO = new UsuarioDTO("Jonh","0202938920","1111", BigDecimal.TEN);
+    UsuarioFrontDTO usuarioDTO = new UsuarioFrontDTO("0202938920","ADMIN","123456789");
+
+    UsuarioDTO usuarioDTO1 = new UsuarioDTO("0202938920","ADMIN","123456789");
+
     Usuario usuario2 = new Usuario();
 
     @BeforeEach
@@ -58,15 +62,15 @@ class UsuarioServiceTest {
         when(usuarioRepository.findAll()).thenReturn(usuarioList);
         when(usuarioRepository.findByNome("John")).thenReturn(List.of(usuario));
         when(usuarioRepository.findByCpf("0202938920")).thenReturn(usuario);
-        when(modelMapper.map(usuario, UsuarioDTO.class)).thenReturn(new UsuarioDTO());
-        when(modelMapper.map(usuario, UsuarioDTO.class)).thenReturn(new UsuarioDTO());
-        when(modelMapper.map(usuario2, UsuarioDTO.class)).thenReturn(new UsuarioDTO());
-        when(usuarioService.toFunc(usuarioDTO)).thenReturn(usuario);
+        when(modelMapper.map(usuario, UsuarioFrontDTO.class)).thenReturn(usuarioDTO);
+        when(modelMapper.map(usuario, UsuarioFrontDTO.class)).thenReturn(usuarioDTO);
+        when(modelMapper.map(usuario2, UsuarioFrontDTO.class)).thenReturn(usuarioDTO);
+        when(usuarioService.toFunc(usuarioDTO1)).thenReturn(usuario);
         when(usuarioRepository.save(usuario)).thenReturn(usuario);    }
 
     @Test
     void testFindById_ValidId() {
-        UsuarioDTO result = usuarioService.findById(1L);
+        UsuarioFrontDTO result = usuarioService.findById(1L);
         assertNotNull(result);
     }
 
@@ -77,7 +81,7 @@ class UsuarioServiceTest {
 
     @Test
     void testGetAll() {
-        List<UsuarioDTO> result = usuarioService.findAll();
+        List<UsuarioFrontDTO> result = usuarioService.findAll();
         assertEquals(2, result.size());
     }
 
@@ -85,13 +89,13 @@ class UsuarioServiceTest {
     void testFindByNome_ValidResult() {
         String validNome = "John";
         when(usuarioRepository.findByNome(validNome)).thenReturn(usuarioList);
-        List<UsuarioDTO> result = usuarioService.findByNome(validNome);
+        List<UsuarioFrontDTO> result = usuarioService.findByNome(validNome);
         assertFalse(result.isEmpty());
     }
 
     @Test
     void testCadastrarFuncService(){
-        Usuario resposta = usuarioService.createUsuario(usuarioDTO);
+        Usuario resposta = usuarioService.createUsuario(usuario);
         assertNotNull(resposta);
         assertEquals(resposta, usuario);
     }
@@ -101,10 +105,8 @@ class UsuarioServiceTest {
         Long id = 1L;
         when(usuarioRepository.existsById(id)).thenReturn(false);
 
-        UsuarioDTO usuarioDTO1 = new UsuarioDTO("Jonh","0202938920","1111", BigDecimal.TEN);
-
         assertThrows(EntityNotFoundException.class, () -> {
-            usuarioService.updateFuncionario(id, usuarioDTO1);
+            usuarioService.updateUsuario(id, usuario);
         });
     }
 
@@ -112,11 +114,10 @@ class UsuarioServiceTest {
     void testUpdateFuncWhenIdMismatch() {
         Long id = 1L;
         when(usuarioRepository.existsById(id)).thenReturn(true);
-        UsuarioDTO usuarioDTO1 = new UsuarioDTO("Jonh", "0202938920", "1111", BigDecimal.TEN);
-        usuarioDTO1.setId(2L);
+        usuario.setId(2L);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            usuarioService.updateFuncionario(id, usuarioDTO1);
+            usuarioService.updateUsuario(id, usuario);
         });
     }
 

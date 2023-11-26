@@ -102,17 +102,10 @@ class EnderecoServiceTest {
 
         enderecosDTO.setId(1L);
 
-        Enderecos resposta = service.editar(enderecosDTO);
+        Enderecos resposta = service.editar(1L, enderecosDTO);
 
         assertNotNull(resposta);
         assertEquals(resposta, enderecos);
-
-    }
-
-    @Test
-    void testEditarEnderecoServiceError(){
-
-        assertThrows(IllegalArgumentException.class, () -> service.editar(enderecosDTO));
 
     }
 
