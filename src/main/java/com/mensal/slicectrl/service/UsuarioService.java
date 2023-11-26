@@ -77,6 +77,8 @@ public class UsuarioService implements UserDetailsService {
         if (usuarioRepository.existsByCpfAndIdNot(usuario.getCpf(), id)) {
             throw new IllegalArgumentException("CPF já está sendo usado por outro Funcionario");
         }
+        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(encodedPassword);
         return usuarioRepository.save(usuario);
     }
 
