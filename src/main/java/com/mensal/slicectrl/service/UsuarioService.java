@@ -22,11 +22,13 @@ public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final ModelMapper modelMapper;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper) {
+    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UsuarioFrontDTO findById(Long id) {
@@ -56,6 +58,8 @@ public class UsuarioService implements UserDetailsService {
         if (usuarioRepository.existsByCpf(usuario.getCpf())) {
             throw new IllegalArgumentException("Funcionario com CPF = " + usuario.getCpf() + " já existe");
         }
+        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(encodedPassword);
         return usuarioRepository.save(usuario);
     }
 

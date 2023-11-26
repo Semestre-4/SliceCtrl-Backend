@@ -18,9 +18,13 @@ import java.util.List;
 @NoArgsConstructor
 public class UsuarioFrontDTO {
 
+    private String nome;
+
     private String cpf;
 
     private String role;
+
+    private String password;
 
     private String telefone;
 
