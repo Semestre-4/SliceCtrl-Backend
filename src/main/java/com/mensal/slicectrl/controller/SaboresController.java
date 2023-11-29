@@ -60,6 +60,7 @@ public class SaboresController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF','ADMIN')")
     public ResponseEntity<String> cadastrarSabor(@RequestBody @Validated SaboresDTO saboresDTO) {
         try {
             this.saboresService.cadastrar(saboresDTO);
@@ -71,6 +72,7 @@ public class SaboresController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF','ADMIN')")
     public ResponseEntity<String> editarSabor(@PathVariable Long id,
                                                @RequestBody @Validated SaboresDTO saboresDTO) {
         try {
@@ -83,6 +85,7 @@ public class SaboresController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF','ADMIN')")
     public ResponseEntity<String> excluirSabor(@PathVariable("id") Long id){
         try{
             this.saboresService.deletar(id);

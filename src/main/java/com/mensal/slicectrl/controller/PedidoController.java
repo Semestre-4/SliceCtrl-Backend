@@ -83,6 +83,7 @@ public class PedidoController {
     }
 
     @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF' , 'FUNCIONARIO' ,'ADMIN')")
     public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                   @PathVariable("funcId") Long funcId,
                                                   @PathVariable("formaDeEntrega") FormaDeEntrega formaDeEntrega){
@@ -143,6 +144,7 @@ public class PedidoController {
     }
 
     @PutMapping("/{pedidoId}/remover-pedido-pizza/{pedidoPizzaId}")
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF' , 'FUNCIONARIO' ,'ADMIN')")
     public ResponseEntity<Pedidos> removePedidoPizzaFromPedido(@PathVariable Long pedidoId, @PathVariable Long pedidoPizzaId) {
         try {
             Pedidos pedido = pedidoService.removePedidoPizzaFromPedido(pedidoId, pedidoPizzaId);

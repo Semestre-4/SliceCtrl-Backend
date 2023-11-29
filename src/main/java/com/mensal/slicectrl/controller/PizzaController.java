@@ -63,6 +63,7 @@ public class PizzaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF','ADMIN')")
     public ResponseEntity<String> cadastrarPizza(@RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
             pizzaService.createPizza(pizzaDTO);
@@ -73,6 +74,7 @@ public class PizzaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF','ADMIN')")
     public ResponseEntity<String> editarPizza(@PathVariable Long id, @RequestBody @Validated PizzasDTO pizzaDTO) {
         try {
             pizzaService.updatePizza(id, pizzaDTO);
@@ -83,6 +85,7 @@ public class PizzaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF','ADMIN')")
     public ResponseEntity<String> excluirPizza(@PathVariable Long id) {
         try {
             pizzaService.deletePizza(id);

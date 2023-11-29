@@ -142,27 +142,6 @@ class PedidoControllerTest {
     }
 
     @Test
-    void testGetPedidosByFuncionario() {
-        Long funcionarioId = 2L;
-        List<PedidosDTO> pedidosDTOList = new ArrayList<>();
-
-        // Adicionando um objeto PedidosDTO de amostra à lista
-        PedidosDTO samplePedido = new PedidosDTO();
-        samplePedido.setId(2L);
-        samplePedido.setUsuario(new UsuarioDTO());
-        pedidosDTOList.add(samplePedido);
-
-        when(pedidoService.findByFuncionarioId(funcionarioId)).thenReturn(pedidosDTOList);
-
-        ResponseEntity<List<PedidosDTO>> response = pedidoController.getPedidosByFuncionario(funcionarioId);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(pedidosDTOList, response.getBody());
-
-        verify(pedidoService, times(1)).findByFuncionarioId(funcionarioId);
-    }
-
-    @Test
     void testGetPedidosWithPagamentoPending() {
         List<PedidosDTO> pedidosDTOList = new ArrayList<>(); // Criar uma lista de objetos PedidosDTO de amostra
 

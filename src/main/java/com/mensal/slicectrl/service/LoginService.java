@@ -1,6 +1,5 @@
 package com.mensal.slicectrl.service;
 
-import com.mensal.slicectrl.config.security.JwtServiceGenerator;
 import com.mensal.slicectrl.dto.LoginDTO;
 import com.mensal.slicectrl.dto.UsuarioDTO;
 import com.mensal.slicectrl.entity.Usuario;
@@ -16,7 +15,7 @@ public class LoginService {
     @Autowired
     private LoginRepository repository;
     @Autowired
-    private JwtServiceGenerator jwtService;
+    private JwtTokenService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
 

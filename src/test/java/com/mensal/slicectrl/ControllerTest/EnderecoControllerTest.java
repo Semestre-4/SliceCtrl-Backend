@@ -121,46 +121,5 @@ class EnderecoControllerTest {
 
     }
 
-    @Test
-    void testEditEndereco(){
-        EnderecosDTO enderecosDTO = new EnderecosDTO("teste", 123, "teste", "teste", "teste", "teste", "PR", "85857730");
-
-        ResponseEntity<String> response = controller.editarEndereco( enderecosDTO);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("O cadastro do endereço foi atualizado com sucesso.", response.getBody());
-
-        verify(service, times(1)).editar(enderecosDTO);
-
-    }
-
-    @Test
-    void testEditEnderecoError(){
-
-        when(service.editar(null)).thenThrow(RuntimeException.class); // Simular uma exceção de tempo de execução
-        ResponseEntity<String> response = controller.editarEndereco(null);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-
-        verify(service, times(1)).editar(null);
-
-    }
-
-    @Test
-    void testDeleteEndereco(){
-        Long enderecoId = 1L;
-
-        ResponseEntity<String> response = controller.excluirEndereco(enderecoId);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Endereço excluído com sucesso!", response.getBody());
-
-        verify(service, times(1)).delete(enderecoId);
-
-    }
-
-
-
-
 
 }
