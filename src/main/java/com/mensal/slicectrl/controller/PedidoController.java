@@ -83,7 +83,6 @@ public class PedidoController {
     }
 
     @PostMapping("/abrir/{clienteId}/{funcId}/{formaDeEntrega}")
-    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF' , 'FUNCIONARIO' ,'ADMIN')")
     public ResponseEntity<PedidosDTO> abrirPedido(@PathVariable("clienteId") Long clienteId,
                                                   @PathVariable("funcId") Long funcId,
                                                   @PathVariable("formaDeEntrega") FormaDeEntrega formaDeEntrega){

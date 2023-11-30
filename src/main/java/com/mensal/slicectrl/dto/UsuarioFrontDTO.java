@@ -32,4 +32,6 @@ public class UsuarioFrontDTO extends AbstractEntityDTO{
 
     private List<Pedidos> pedidos;
 
+    public UsuarioFrontDTO(String cpf, String role, String telefone) {
+    }
 }
