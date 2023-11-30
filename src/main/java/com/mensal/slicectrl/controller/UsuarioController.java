@@ -1,6 +1,6 @@
 package com.mensal.slicectrl.controller;
 
-import com.mensal.slicectrl.dto.UsuarioDTO;
+
 import com.mensal.slicectrl.dto.UsuarioFrontDTO;
 import com.mensal.slicectrl.entity.Usuario;
 import com.mensal.slicectrl.service.UsuarioService;
@@ -36,6 +36,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/nome/{nome}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UsuarioFrontDTO>> getFuncionariosByNome(@PathVariable("nome") String nome) {
         List<UsuarioFrontDTO> usuarioDTOS = usuarioService.findByNome(nome);
         if (!usuarioDTOS.isEmpty()) {
@@ -46,6 +47,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/ativo/{ativo}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UsuarioFrontDTO>> getFuncionariosByAtivo(@PathVariable("ativo") boolean ativo) {
         List<UsuarioFrontDTO> usuarioDTOS = usuarioService.findByAtivo(ativo);
         if (!usuarioDTOS.isEmpty()) {
@@ -66,12 +68,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UsuarioFrontDTO>> getAllFuncionarios() {
         List<UsuarioFrontDTO> usuarioDTOS = usuarioService.findAll();
         return ResponseEntity.ok(usuarioDTOS);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> cadastrarUsuario(@RequestBody @Validated Usuario usuario) {
         try {
             usuarioService.createUsuario(usuario);
@@ -82,6 +86,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> editarUsuario(@PathVariable Long id,
                                                 @RequestBody @Validated Usuario usuario) {
         try {
@@ -93,6 +98,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> excluirFuncionario(@PathVariable Long id) {
         try {
             usuarioService.deleteFuncionario(id);

@@ -93,6 +93,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USUARIO_TECNICO','ADMIN')")
     public ResponseEntity<String> excluirCliente(@PathVariable Long id) {
         try {
             clienteService.deleteCliente(id);
@@ -101,4 +102,5 @@ public class ClienteController {
             return ResponseEntity.badRequest().body("Ocorreu um erro: " + e.getMessage());
         }
     }
+
 }

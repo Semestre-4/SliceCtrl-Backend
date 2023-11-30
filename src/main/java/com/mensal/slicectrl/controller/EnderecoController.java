@@ -4,6 +4,7 @@ import com.mensal.slicectrl.dto.EnderecosDTO;
 import com.mensal.slicectrl.service.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,6 +102,7 @@ public class EnderecoController {
      * @return ResponseEntity indicando o sucesso ou a falha da exclusão.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USUARIO_TECNICO','ADMIN')")
     public ResponseEntity<String> excluirEndereco(@PathVariable("id") Long id) {
         try {
             this.enderecoService.delete(id);

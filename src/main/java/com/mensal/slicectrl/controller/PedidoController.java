@@ -143,6 +143,7 @@ public class PedidoController {
     }
 
     @PutMapping("/{pedidoId}/remover-pedido-pizza/{pedidoPizzaId}")
+    @PreAuthorize("hasAnyAuthority('FUNCIONARIO_CHEF' , 'FUNCIONARIO' ,'ADMIN')")
     public ResponseEntity<Pedidos> removePedidoPizzaFromPedido(@PathVariable Long pedidoId, @PathVariable Long pedidoPizzaId) {
         try {
             Pedidos pedido = pedidoService.removePedidoPizzaFromPedido(pedidoId, pedidoPizzaId);

@@ -1,4 +1,4 @@
-package com.mensal.slicectrl.config.security;
+package com.mensal.slicectrl.utils;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 
