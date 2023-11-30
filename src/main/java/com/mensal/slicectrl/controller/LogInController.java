@@ -10,6 +10,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+import java.security.InvalidKeyException;
+
 @RestController
 @RequestMapping("/api/login")
 @CrossOrigin("http://localhost:4200")
@@ -18,7 +21,7 @@ public class LogInController {
     @Autowired  private LoginService loginService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginDTO loginDTO) throws AccessDeniedException, InvalidKeyException {
         try {
             UsuarioDTO authenticatedUser = loginService.authenticate(loginDTO);
             return ResponseEntity.ok(authenticatedUser);

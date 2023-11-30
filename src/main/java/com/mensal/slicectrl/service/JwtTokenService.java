@@ -1,6 +1,7 @@
-package com.mensal.slicectrl.config.security;
+package com.mensal.slicectrl.service;
 
 import com.mensal.slicectrl.entity.Usuario;
+import com.mensal.slicectrl.utils.JwtParameters;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceGenerator {
+public class JwtTokenService {
 
 
     public String generateToken(Usuario userDetails) {

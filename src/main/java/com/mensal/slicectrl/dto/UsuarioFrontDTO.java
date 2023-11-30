@@ -16,11 +16,15 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioFrontDTO {
+public class UsuarioFrontDTO extends AbstractEntityDTO{
+
+    private String nome;
 
     private String cpf;
 
     private String role;
+
+    private String password;
 
     private String telefone;
 
