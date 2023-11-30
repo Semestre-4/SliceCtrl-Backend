@@ -26,7 +26,6 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/id/{id}")
-    @PreAuthorize("hasAnyAuthority('USUARIO_TECNICO','ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<UsuarioFrontDTO> getFuncionarioById(@PathVariable("id") Long id) {
         UsuarioFrontDTO cliente = usuarioService.findById(id);
         if (cliente != null) {
@@ -59,7 +58,6 @@ public class UsuarioController {
     }
 
     @GetMapping("/cpf/{cpf}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'FUNCIONARIO')")
     public ResponseEntity<UsuarioFrontDTO> getFuncionarioByCPF(@PathVariable("cpf") String cpf) {
         UsuarioFrontDTO usuarioDTO = usuarioService.findByCPF(cpf);
         if (usuarioDTO != null) {

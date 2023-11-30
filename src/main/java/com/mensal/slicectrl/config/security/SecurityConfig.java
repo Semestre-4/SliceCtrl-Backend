@@ -40,15 +40,17 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.OPTIONS,"/*","/ativo/*").permitAll()
+                        .requestMatchers("/*").permitAll()
+                        .requestMatchers("/ativo/*").permitAll()
                         .requestMatchers("/api/login/authenticate").permitAll()
+                        .requestMatchers("/api/pedidos").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
-    }
+}
 
 
     @Bean
